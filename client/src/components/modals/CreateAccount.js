@@ -52,7 +52,7 @@ const CreateAccount = (props) => {
 							<WRow className="modal-col-gap signup-modal">
 								<WCol size="6">
 									<WInput 
-										className="" onBlur={updateInput} name="Name" labelAnimation="up" 
+										className="" onBlur={updateInput} name="name" labelAnimation="up" 
 										barAnimation="solid" labelText="Name" wType="outlined" inputType="text" 
 									/>
 								</WCol>
