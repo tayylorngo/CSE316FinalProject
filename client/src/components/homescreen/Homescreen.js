@@ -17,6 +17,7 @@ import { UpdateListField_Transaction,
 	ReorderItems_Transaction, 
 	EditItem_Transaction } 				from '../../utils/jsTPS';
 import UpdateAccount from '../modals/UpdateAccount';
+import Welcome from '../Welcome/Welcome';
 
 const Homescreen = (props) => {
 
@@ -297,6 +298,8 @@ const Homescreen = (props) => {
 				}
 
 			</WLMain> */}
+
+			{props.user ? null : <Welcome/>}
 
 			{
 				showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} setShowDelete={setShowDelete} />)

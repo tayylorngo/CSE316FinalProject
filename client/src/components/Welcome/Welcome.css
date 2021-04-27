@@ -1,0 +1,10 @@
+#welcome{
+    position:absolute;
+    font-size: 85px;
+    height:20%;
+    bottom:10%;
+    right:30%;
+    left:30%;
+    text-align: center;
+    color: white;
+}
