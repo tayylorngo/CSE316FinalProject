@@ -5,10 +5,8 @@ export const LOGIN = gql`
 		login(email: $email, password: $password) {
 			email 
 			_id
-			firstName
-			lastName
+			name
 			password
-			initials
 		}
 	}
 `;
@@ -25,6 +23,16 @@ export const REGISTER = gql`
 export const LOGOUT = gql`
 	mutation Logout {
 		logout 
+	}
+`;
+
+export const UPDATE_ACCOUNT = gql`
+	mutation Update($email: String!, $password: String!, $name: String!, $_id: String!){
+		update(email: $email, password: $password, name: $name, _id: $_id){
+			email
+			password
+			name
+		}
 	}
 `;
 

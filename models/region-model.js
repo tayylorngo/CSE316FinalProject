@@ -18,6 +18,10 @@ const regionSchema = new Schema(
             type: String,
             required: true
         },
+        parentRegion: {
+            type: String,
+            required: true
+        },
         subregions: [String],
         landmarks: [String]
     }

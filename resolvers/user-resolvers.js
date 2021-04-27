@@ -78,6 +78,13 @@ module.exports = {
 			res.clearCookie('refresh-token');
 			res.clearCookie('access-token');
 			return true;
-		}
+		},
+		update: async (_, args) => {
+			const { email, password, name, _id } = args;
+			const hashed = await bcrypt.hash(password, 10);
+			const userId = new ObjectId(_id);
+			await User.updateOne({_id: userId}, { email: email, password: hashed, name: name});
+			return User.findOne({_id: userId});
+		},
 	}
 }

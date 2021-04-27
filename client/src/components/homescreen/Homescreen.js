@@ -16,6 +16,7 @@ import { UpdateListField_Transaction,
 	UpdateListItems_Transaction, 
 	ReorderItems_Transaction, 
 	EditItem_Transaction } 				from '../../utils/jsTPS';
+import UpdateAccount from '../modals/UpdateAccount';
 
 const Homescreen = (props) => {
 
@@ -34,6 +35,7 @@ const Homescreen = (props) => {
 	document.onkeydown = keyCombination;
 
 	const auth = props.user === null ? false : true;
+
 	let todolists 	= [];
 	let SidebarData = [];
 	const [sortRule, setSortRule] = useState('unsorted'); // 1 is ascending, -1 desc
@@ -43,6 +45,8 @@ const Homescreen = (props) => {
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+
+	const[showUpdate, toggleShowUpdate] = useState(false);
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_TODOS);
 
@@ -205,20 +209,30 @@ const Homescreen = (props) => {
 	const setShowLogin = () => {
 		toggleShowDelete(false);
 		toggleShowCreate(false);
+		toggleShowUpdate(false);
 		toggleShowLogin(!showLogin);
 	};
 
 	const setShowCreate = () => {
 		toggleShowDelete(false);
 		toggleShowLogin(false);
+		toggleShowUpdate(false);
 		toggleShowCreate(!showCreate);
 	};
 
 	const setShowDelete = () => {
 		toggleShowCreate(false);
 		toggleShowLogin(false);
+		toggleShowUpdate(false);
 		toggleShowDelete(!showDelete)
 	};
+
+	const setShowUpdate = () => {
+		toggleShowDelete(false);
+		toggleShowLogin(false);
+		toggleShowCreate(false);
+		toggleShowUpdate(!showUpdate);
+	}
 	
 	const sort = (criteria) => {
 		let prevSortRule = sortRule;
@@ -227,7 +241,6 @@ const Homescreen = (props) => {
 		console.log(transaction)
 		props.tps.addTransaction(transaction);
 		tpsRedo();
-		
 	}
 
 	return (
@@ -243,13 +256,15 @@ const Homescreen = (props) => {
 						<NavbarOptions
 							fetchUser={props.fetchUser} 	auth={auth} 
 							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
+							setShowUpdate={setShowUpdate}
 							reloadTodos={refetch} 			setActiveList={loadTodoList}
+							user={props.user}
 						/>
 					</ul>
 				</WNavbar>
 			</WLHeader>
 
-			<WLSide side="left">
+			{/* <WLSide side="left">
 				<WSidebar>
 					{
 						activeList ? 
@@ -281,10 +296,14 @@ const Homescreen = (props) => {
 							<div className="container-secondary" />
 				}
 
-			</WLMain>
+			</WLMain> */}
 
 			{
 				showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} setShowDelete={setShowDelete} />)
+			}
+
+			{
+				showLogin && (<Login fetchUser={props.fetchUser} reloadTodos={refetch}setShowLogin={setShowLogin} />)
 			}
 
 			{
@@ -292,8 +311,9 @@ const Homescreen = (props) => {
 			}
 
 			{
-				showLogin && (<Login fetchUser={props.fetchUser} reloadTodos={refetch}setShowLogin={setShowLogin} />)
+				showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowCreate={setShowUpdate} user={props.user} />)
 			}
+
 
 		</WLayout>
 	);
