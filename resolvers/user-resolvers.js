@@ -43,27 +43,23 @@ module.exports = {
 			@returns {object} the user object or an object with an error message
 		**/
 		register: async (_, args, { res }) => {
-			const { email, password, firstName, lastName } = args;
+			const { email, password, name } = args;
 			const alreadyRegistered = await User.findOne({email: email});
 			if(alreadyRegistered) {
 				console.log('User with that email already registered.');
 				return(new User({
 					_id: '',
-					firstName: '',
-					lastName: '',
+					name: '',
 					email: 'already exists', 
-					password: '',
-					initials: ''}));
+					password: '',}));
 			}
 			const hashed = await bcrypt.hash(password, 10);
 			const _id = new ObjectId();
 			const user = new User({
 				_id: _id,
-				firstName: firstName,
-				lastName: lastName,
+				name: name,
 				email: email, 
 				password: hashed,
-				initials: `${firstName[0]}.${lastName[0]}.`
 			})
 			const saved = await user.save();
 			// After registering the user, their tokens are generated here so they

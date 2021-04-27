@@ -67,8 +67,6 @@ const Homescreen = (props) => {
 		}
 	}
 
-
-	
 	// NOTE: might not need to be async
 	const reloadList = async () => {
 		if (activeList._id) {

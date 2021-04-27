@@ -5,7 +5,7 @@ import { useMutation }    	from '@apollo/client';
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
 const CreateAccount = (props) => {
-	const [input, setInput] = useState({ email: '', password: '', firstName: '', lastName: '' });
+	const [input, setInput] = useState({ email: '', password: '', name: ''});
 	const [loading, toggleLoading] = useState(false);
 	const [Register] = useMutation(REGISTER);
 
@@ -52,16 +52,16 @@ const CreateAccount = (props) => {
 							<WRow className="modal-col-gap signup-modal">
 								<WCol size="6">
 									<WInput 
-										className="" onBlur={updateInput} name="firstName" labelAnimation="up" 
-										barAnimation="solid" labelText="First Name" wType="outlined" inputType="text" 
+										className="" onBlur={updateInput} name="Name" labelAnimation="up" 
+										barAnimation="solid" labelText="Name" wType="outlined" inputType="text" 
 									/>
 								</WCol>
-								<WCol size="6">
+								{/* <WCol size="6">
 									<WInput 
 										className="" onBlur={updateInput} name="lastName" labelAnimation="up" 
 										barAnimation="solid" labelText="Last Name" wType="outlined" inputType="text" 
 									/>
-								</WCol>
+								</WCol> */}
 							</WRow>
 
 							<div className="modal-spacer">&nbsp;</div>
@@ -77,7 +77,7 @@ const CreateAccount = (props) => {
 					</WMMain>
 			}
 			<WMFooter>
-				<WButton className="modal-button" onClick={handleCreateAccount} span clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
+				<WButton className="modal-button" onClick={handleCreateAccount} span clickAnimation="ripple-light" hoverAnimation="modal-button" shape="rounded" color="modal-button">
 					Submit
 				</WButton>
 			</WMFooter>
