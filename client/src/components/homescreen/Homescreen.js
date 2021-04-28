@@ -7,6 +7,7 @@ import NavbarOptions 					from '../navbar/NavbarOptions';
 import * as mutations 					from '../../cache/mutations';
 import SidebarContents 					from '../sidebar/SidebarContents';
 import { GET_DB_TODOS } 				from '../../cache/queries';
+import { GET_DB_REGIONS }				from '../../cache/queries';
 import React, { useState } 				from 'react';
 import { useMutation, useQuery } 		from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } 	from 'wt-frontend';
@@ -18,6 +19,7 @@ import { UpdateListField_Transaction,
 	EditItem_Transaction } 				from '../../utils/jsTPS';
 import UpdateAccount from '../modals/UpdateAccount';
 import Welcome from '../Welcome/Welcome';
+import MapsList from '../MapsList/MapsList';
 
 const Homescreen = (props) => {
 
@@ -38,6 +40,8 @@ const Homescreen = (props) => {
 	const auth = props.user === null ? false : true;
 
 	let todolists 	= [];
+	let regions = [];
+
 	let SidebarData = [];
 	const [sortRule, setSortRule] = useState('unsorted'); // 1 is ascending, -1 desc
 	const [activeList, setActiveList] 		= useState({});
@@ -49,14 +53,14 @@ const Homescreen = (props) => {
 
 	const[showUpdate, toggleShowUpdate] = useState(false);
 
-	const { loading, error, data, refetch } = useQuery(GET_DB_TODOS);
+	const { loading, error, data, refetch } = useQuery(GET_DB_REGIONS);
 
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
 	if(data) { 
 		// Assign todolists 
-		for(let todo of data.getAllTodos) {
-			todolists.push(todo)
+		for(let region of data.getAllRegions) {
+			regions.push(region)
 		}
 		// if a list is selected, shift it to front of todolists
 		if(activeList._id) {
@@ -86,11 +90,10 @@ const Homescreen = (props) => {
 		setCanUndo(props.tps.hasTransactionToUndo());
 		setCanRedo(props.tps.hasTransactionToRedo());
 		setActiveList(list);
-
 	}
 
 	const mutationOptions = {
-		refetchQueries: [{ query: GET_DB_TODOS }], 
+		refetchQueries: [{ query: GET_DB_REGIONS }], 
 		awaitRefetchQueries: true,
 		onCompleted: () => reloadList()
 	}
@@ -103,6 +106,9 @@ const Homescreen = (props) => {
 	const [AddTodoItem] 			= useMutation(mutations.ADD_ITEM, mutationOptions);
 	const [AddTodolist] 			= useMutation(mutations.ADD_TODOLIST);
 	const [DeleteTodolist] 			= useMutation(mutations.DELETE_TODOLIST);
+
+	const [AddMap] 					= useMutation(mutations.ADD_MAP, mutationOptions);
+	const [AddRegion] 				= useMutation(mutations.ADD_REGION, mutationOptions);
 
 
 	
@@ -174,6 +180,23 @@ const Homescreen = (props) => {
 		tpsRedo();
 
 	};
+
+	const addNewMap = async (name) => {
+		let map = {
+			_id: '',
+			name: name,
+			owner: props.user._id,
+			capital: "none",
+			leader: "none",
+			parentRegion: "none",
+			subregions: [],
+			landmarks: []
+		}
+		const { data } = await AddMap({ variables: {region: map}, refetchQueries: [{query: GET_DB_REGIONS}]});
+		if(data){
+			console.log(data);
+		}
+	}
 
 	const createNewList = async () => {
 		let list = {
@@ -265,39 +288,7 @@ const Homescreen = (props) => {
 				</WNavbar>
 			</WLHeader>
 
-			{/* <WLSide side="left">
-				<WSidebar>
-					{
-						activeList ? 
-							<SidebarContents
-								listIDs={SidebarData} 				activeid={activeList._id} auth={auth}
-								handleSetActive={handleSetActive} 	createNewList={createNewList}
-								updateListField={updateListField} 	key={activeList._id}
-							/>
-							:
-							<></>
-					}
-				</WSidebar>
-			</WLSide>
-			<WLMain>
-				{
-					activeList ? 
-					
-							<div className="container-secondary">
-								<MainContents
-									addItem={addItem} 				deleteItem={deleteItem}
-									editItem={editItem} 			reorderItem={reorderItem}
-									setShowDelete={setShowDelete} 	undo={tpsUndo} redo={tpsRedo}
-									activeList={activeList} 		setActiveList={loadTodoList}
-									canUndo={canUndo} 				canRedo={canRedo}
-									sort={sort}
-								/>
-							</div>
-						:
-							<div className="container-secondary" />
-				}
-
-			</WLMain> */}
+			{props.user ? <MapsList addMap={addNewMap} />: null}
 
 			{props.user ? null : <Welcome/>}
 
@@ -306,7 +297,7 @@ const Homescreen = (props) => {
 			}
 
 			{
-				showLogin && (<Login fetchUser={props.fetchUser} reloadTodos={refetch}setShowLogin={setShowLogin} />)
+				showLogin && (<Login fetchUser={props.fetchUser} reloadTodos={refetch}setShowLogin={setShowLogin}/>)
 			}
 
 			{

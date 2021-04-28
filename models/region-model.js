@@ -22,6 +22,10 @@ const regionSchema = new Schema(
             type: String,
             required: true
         },
+        owner: {
+            type: String,
+            required: true
+        },
         subregions: [String],
         landmarks: [String]
     }

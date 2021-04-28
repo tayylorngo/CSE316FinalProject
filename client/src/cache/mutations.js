@@ -42,6 +42,18 @@ export const ADD_ITEM = gql`
 	}
 `;
 
+export const ADD_MAP = gql`
+	mutation AddMap($region: RegionInput!){
+		addMap(region: $region)
+	}
+`;
+
+export const ADD_REGION = gql`
+	mutation AddRegion($region: RegionInput!, $_id: String!, $index: Int!){
+		addRegion(region: $region, _id: $_id, index: $index)
+	}
+`;
+
 export const DELETE_ITEM = gql`
 	mutation DeleteItem($itemId: String!, $_id: String!) {
 		deleteItem(itemId: $itemId, _id: $_id) {

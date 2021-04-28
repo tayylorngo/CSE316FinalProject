@@ -10,19 +10,17 @@ export const GET_DB_USER = gql`
 	}
 `;
 
-export const GET_DB_MAPS = gql`
-	query GetDBMaps {
-		getAllMaps{
+export const GET_DB_REGIONS = gql`
+	query GetDBRegions {
+		getAllRegions{
 			_id
 			name
-			regions{
-				_id
-				name
-				capital
-				leader
-				landmarks
-				subregions
-			}
+			capital
+			leader
+			parentRegion
+			owner
+			subregions
+			landmarks
 		}
 	}
 `;
