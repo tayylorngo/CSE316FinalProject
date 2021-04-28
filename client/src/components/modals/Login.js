@@ -27,7 +27,7 @@ const Login = (props) => {
 		}
 		if (data) {
 			props.fetchUser();
-			// props.reloadTodos();
+			props.reloadMaps();
 			toggleLoading(false)
 			props.setShowLogin(false)
 		};

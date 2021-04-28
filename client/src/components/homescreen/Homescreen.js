@@ -273,7 +273,7 @@ const Homescreen = (props) => {
 							fetchUser={props.fetchUser} 	auth={auth} 
 							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
 							setShowUpdate={setShowUpdate}
-							reloadTodos={refetch} 			setActiveList={loadTodoList}
+							reloadMaps={refetch} 			setActiveList={loadTodoList}
 							user={props.user}
 						/>
 					</ul>
@@ -290,7 +290,7 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showLogin && (<Login fetchUser={props.fetchUser} reloadTodos={refetch}setShowLogin={setShowLogin}/>)
+					showLogin && (<Login fetchUser={props.fetchUser} reloadMaps={refetch}setShowLogin={setShowLogin}/>)
 				}
 
 				{
