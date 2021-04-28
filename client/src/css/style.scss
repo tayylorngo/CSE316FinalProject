@@ -1,7 +1,7 @@
 @use 'node_modules/wt-frontend/build/global/theme' with (
-    $primary-color: #ffc800,
-    $background-color: rgb(64, 69, 78),//#d9d6cc,
-    $navbar-background-color: #353a44,//rgb(64, 69, 78),
+    $primary-color: white,
+    $background-color: #4f5250,
+    $navbar-background-color: black,//rgb(64, 69, 78),
     $sidebar-background-color: #2b2e36,//#353a44,
     $text-color: #e9edf0,
     $modal-background: black,
@@ -231,4 +231,8 @@ html, body {
 .table-entry-buttons-disabled {
     color: var(--warm-black);
     cursor: default;
+}
+
+.create-account-button{
+    color: magenta;
 }

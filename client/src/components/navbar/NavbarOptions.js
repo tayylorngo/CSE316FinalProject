@@ -36,7 +36,7 @@ const LoggedOut = (props) => {
     return (
         <>
             <WNavItem hoverAnimation="lighten">
-                <WButton className="navbar-options" onClick={props.setShowCreate} wType="texted" hoverAnimation="text-primary"> 
+                <WButton className="navbar-options create-account-button" onClick={props.setShowCreate} wType="texted" hoverAnimation="text-primary"> 
                     Create Account
                 </WButton>
             </WNavItem>
