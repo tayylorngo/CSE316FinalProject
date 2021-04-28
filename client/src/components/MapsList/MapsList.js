@@ -1,22 +1,22 @@
 import React from 'react';
 import './MapsList.css';
+import MapEntry from '../MapEntry/MapEntry';
 
 const MapsList = (props) => {
 
-    const handleAddMap = (e) => {
-        props.addMap(e.target.value);
-    } 
-
     return(
-        <div>
-            <h1>
-                Add Map
-            </h1>
-            <input onBlur={handleAddMap}>
-            
-            </input>
-
-        </div>
+        <>
+        {
+            props.maps && 
+            props.maps.map(entry => (
+                <MapEntry
+                    key={entry._id}
+                    name={entry.name}                
+                />
+                )
+            )
+        }
+        </>
     )
 }
 

@@ -19,7 +19,8 @@ import { UpdateListField_Transaction,
 	EditItem_Transaction } 				from '../../utils/jsTPS';
 import UpdateAccount from '../modals/UpdateAccount';
 import Welcome from '../Welcome/Welcome';
-import MapsList from '../MapsList/MapsList';
+import MapContents from '../MapContents/MapContents';
+import './Homescreen.css';
 
 const Homescreen = (props) => {
 
@@ -41,6 +42,7 @@ const Homescreen = (props) => {
 
 	let todolists 	= [];
 	let regions = [];
+	let maps = [];
 
 	let SidebarData = [];
 	const [sortRule, setSortRule] = useState('unsorted'); // 1 is ascending, -1 desc
@@ -58,21 +60,11 @@ const Homescreen = (props) => {
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
 	if(data) { 
-		// Assign todolists 
 		for(let region of data.getAllRegions) {
 			regions.push(region)
-		}
-		// if a list is selected, shift it to front of todolists
-		if(activeList._id) {
-			let selectedListIndex = todolists.findIndex(entry => entry._id === activeList._id);
-			let removed = todolists.splice(selectedListIndex, 1);
-			todolists.unshift(removed[0]);
-		}
-		// create data for sidebar links
-		for(let todo of todolists) {
-			if(todo) {
-				SidebarData.push({_id: todo._id, name: todo.name});
-			}	
+			if(region.parentRegion === "none"){
+				maps.push(region);
+			}
 		}
 	}
 
@@ -268,7 +260,7 @@ const Homescreen = (props) => {
 	}
 
 	return (
-		<WLayout wLayout="header-lside">
+		<WLayout wLayout="header">
 			<WLHeader>
 				<WNavbar color="colored">
 					<ul>
@@ -288,27 +280,27 @@ const Homescreen = (props) => {
 				</WNavbar>
 			</WLHeader>
 
-			{props.user ? <MapsList addMap={addNewMap} />: null}
+			<WLMain id="main-page">
+				{props.user ? <MapContents addMap={addNewMap} maps={maps}/>: null}
 
-			{props.user ? null : <Welcome/>}
+				{props.user ? null : <Welcome/>}
 
-			{
-				showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} setShowDelete={setShowDelete} />)
-			}
+				{
+					showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} setShowDelete={setShowDelete} />)
+				}
 
-			{
-				showLogin && (<Login fetchUser={props.fetchUser} reloadTodos={refetch}setShowLogin={setShowLogin}/>)
-			}
+				{
+					showLogin && (<Login fetchUser={props.fetchUser} reloadTodos={refetch}setShowLogin={setShowLogin}/>)
+				}
 
-			{
-				showCreate && (<CreateAccount fetchUser={props.fetchUser} setShowCreate={setShowCreate} />)
-			}
+				{
+					showCreate && (<CreateAccount fetchUser={props.fetchUser} setShowCreate={setShowCreate} />)
+				}
 
-			{
-				showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowCreate={setShowUpdate} user={props.user} />)
-			}
-
-
+				{
+					showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowCreate={setShowUpdate} user={props.user} />)
+				}
+			</WLMain>
 		</WLayout>
 	);
 };
