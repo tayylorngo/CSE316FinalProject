@@ -2,7 +2,7 @@
     text-align: center;
     margin: 0 auto;
     margin-top: 4%;
-    border: solid 1px black;
+    /* border: solid 1px black; */
     width: 40%;
 }
 
@@ -14,7 +14,6 @@ img{
 }
 
 .map-list-col{
-    border-left: solid 1px black;
     border-top: solid 1px black;
 }
 

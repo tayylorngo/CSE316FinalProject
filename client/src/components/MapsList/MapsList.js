@@ -3,7 +3,6 @@ import './MapsList.css';
 import MapEntry from '../MapEntry/MapEntry';
 
 const MapsList = (props) => {
-
     return(
         <>
         {
@@ -11,7 +10,9 @@ const MapsList = (props) => {
             props.maps.map(entry => (
                 <MapEntry
                     key={entry._id}
-                    name={entry.name}                
+                    id={entry._id}
+                    name={entry.name}    
+                    setShowDelete={props.setShowDelete}            
                 />
                 )
             )

@@ -43,6 +43,7 @@ const Homescreen = (props) => {
 	let todolists 	= [];
 	let regions = [];
 	let maps = [];
+	let activeMap;
 
 	let SidebarData = [];
 	const [sortRule, setSortRule] = useState('unsorted'); // 1 is ascending, -1 desc
@@ -190,21 +191,10 @@ const Homescreen = (props) => {
 		}
 	}
 
-	const createNewList = async () => {
-		let list = {
-			_id: '',
-			name: 'Untitled',
-			owner: props.user._id,
-			items: [],
-			sortRule: 'task',
-			sortDirection: 1
-		}
-		const { data } = await AddTodolist({ variables: { todolist: list }, refetchQueries: [{ query: GET_DB_TODOS }] });
-		if(data) {
-			loadTodoList(data.addTodolist);
-		} 
-		
-	};
+	const deleteMap = async (_id) => {
+
+	}
+
 	const deleteList = async (_id) => {
 		DeleteTodolist({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_TODOS }] });
 		loadTodoList({});
@@ -236,11 +226,17 @@ const Homescreen = (props) => {
 		toggleShowCreate(!showCreate);
 	};
 
-	const setShowDelete = () => {
+	const setShowDelete = (id) => {
 		toggleShowCreate(false);
 		toggleShowLogin(false);
 		toggleShowUpdate(false);
-		toggleShowDelete(!showDelete)
+		toggleShowDelete(!showDelete);
+		if(activeMap){
+			activeMap = null;
+		}
+		else{
+			activeMap = id;
+		}
 	};
 
 	const setShowUpdate = () => {
@@ -281,12 +277,12 @@ const Homescreen = (props) => {
 			</WLHeader>
 
 			<WLMain id="main-page">
-				{props.user ? <MapContents addMap={addNewMap} maps={maps}/>: null}
+				{props.user ? <MapContents addMap={addNewMap} maps={maps} setShowDelete={setShowDelete}/>: null}
 
 				{props.user ? null : <Welcome/>}
 
 				{
-					showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} setShowDelete={setShowDelete} />)
+					showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} setShowDelete={setShowDelete} activeMap={activeMap} />)
 				}
 
 				{

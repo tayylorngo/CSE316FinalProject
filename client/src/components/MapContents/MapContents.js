@@ -6,8 +6,8 @@ import MapsList from '../MapsList/MapsList';
 const MapContents = (props) => {
 
     const handleAddMap = () => {
-        props.addMap("Untitled");
-    } 
+        props.addMap("Untitled Map");
+    }
 
     return(
         <div id="map-contents">
@@ -18,7 +18,7 @@ const MapContents = (props) => {
             </WRow>
             <WRow>
                 <WCol size="6" className="map-list-col" id="map-list-col-left">
-                    <MapsList maps={props.maps} />
+                    <MapsList maps={props.maps} setShowDelete={props.setShowDelete}/>
                 </WCol>
                 <WCol size="6" className="map-list-col" id="map-list-col-right">
                     <img src="https://i.pinimg.com/originals/ea/43/aa/ea43aa960e4f41d083204c24af2743cc.png"></img>
