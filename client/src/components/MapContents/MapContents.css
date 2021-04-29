@@ -20,4 +20,31 @@ img{
 
 #add-map-button{
     margin-bottom: 4%;
+    background-color: red;
+    text-align: center;
+    margin: 0 auto;
+    width: fill;
+}
+
+#map-header{
+    background-color: black;
+}
+
+#map-header-title{
+    color: white;
+}
+
+#map-list-col-left{
+    background-color: lightpink;
+}
+
+#map-list-col-right{
+    background-color: white;
+}
+
+#add-map-button-text{
+    text-align: center;
+    margin: auto 0;
+    color: white;
+    width: fill;
 }

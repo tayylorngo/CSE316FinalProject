@@ -12,24 +12,23 @@ const MapContents = (props) => {
     return(
         <div id="map-contents">
             <WRow>
-                <WCol size="12">
-                    <h1>Your Maps</h1>
+                <WCol size="12" id="map-header">
+                    <h1 id="map-header-title">Your Maps</h1>
                 </WCol>
             </WRow>
             <WRow>
-                <WCol size="6" className="map-list-col">
+                <WCol size="6" className="map-list-col" id="map-list-col-left">
                     <MapsList maps={props.maps} />
                 </WCol>
-                <WCol size="6" className="map-list-col">
+                <WCol size="6" className="map-list-col" id="map-list-col-right">
                     <img src="https://i.pinimg.com/originals/ea/43/aa/ea43aa960e4f41d083204c24af2743cc.png"></img>
                     <WButton 
-                            color="primary"
                             hoverAnimation="lighten"
                             clickAnimation="ripple-light"
                             onClick={handleAddMap}
                             id="add-map-button"
                     > 
-                    ADD NEW MAP 
+                    <h3 id="add-map-button-text">Create New Map</h3> 
                     </WButton>
                 </WCol>
             </WRow>
