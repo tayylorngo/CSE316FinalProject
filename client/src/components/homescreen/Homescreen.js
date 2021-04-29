@@ -113,6 +113,7 @@ const Homescreen = (props) => {
 	const [AddMap] 					= useMutation(mutations.ADD_MAP, mutationOptions);
 	const [DeleteMap]				= useMutation(mutations.DELETE_MAP, mutationOptions);
 	const [AddRegion] 				= useMutation(mutations.ADD_REGION, mutationOptions);
+	const [EditMapName]				= useMutation(mutations.EDIT_MAP_NAME, mutationOptions);
 
 
 	
@@ -207,10 +208,10 @@ const Homescreen = (props) => {
 		loadMapToBeDeleted({});
 	}
 
-	const deleteList = async (_id) => {
-		DeleteTodolist({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_TODOS }] });
-		loadTodoList({});
-	};
+	const editMapName = async (_id, name) => {
+		console.log(_id);
+		await EditMapName({variables: {_id: _id, name: name}, refetchQueries: [{query: GET_DB_REGIONS}]});
+	}
 
 	const updateListField = async (_id, field, value, prev) => {
 		let transaction = new UpdateListField_Transaction(_id, field, prev, value, UpdateTodolistField);
@@ -294,7 +295,7 @@ const Homescreen = (props) => {
 			</WLHeader>
 
 			<WLMain id="main-page">
-				{props.user ? <MapContents addMap={addNewMap} maps={maps} setShowDelete={setShowDelete}/>: null}
+				{props.user ? <MapContents addMap={addNewMap} maps={maps} setShowDelete={setShowDelete} editMapName={editMapName}/>: null}
 
 				{props.user ? null : <Welcome/>}
 

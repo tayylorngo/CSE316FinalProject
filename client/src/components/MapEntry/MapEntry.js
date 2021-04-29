@@ -1,23 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './MapEntry.css';
-import { WRow, WCol } from 'wt-frontend';
+import { WRow, WCol, WInput } from 'wt-frontend';
 
 const MapEntry = (props) => {
 
-    let mapName = props.name;
+    const [editingMapName, toggleEditingMapName] = useState(false);
 
     const handleDeleteMap = () => {
         props.setShowDelete(props.id);
-    } 
+    }
+
+    const handleEditMapName = (e) => {
+        props.editMapName(props.id, e.target.value);
+        toggleEditingMapName(!editingMapName);
+    }
 
     return(
         <div className="map-entry">
             <WRow>
                 <WCol size="6">
-                    <span class="map-name">{mapName}</span>
+                    {
+                        editingMapName ? 
+                        <WInput 
+                        wType="outlined"
+                        barAnimation="border-highlight"
+                        hoverAnimation="solid"
+                        defaultValue={props.name}
+                        onBlur={handleEditMapName}
+                 /> 
+                 : <span class="map-name">{props.name}</span>
+                    }
                 </WCol>
                 <WCol size="6">
-                    <span onClick={() => {console.log("YO")}}class="material-icons edit-button">edit</span>
+                    <span onClick={() => {toggleEditingMapName(!editingMapName)}}class="material-icons edit-button">edit</span>
                     <span onClick={handleDeleteMap}class="material-icons delete-button">delete</span>
                 </WCol>
             </WRow>

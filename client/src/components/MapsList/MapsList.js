@@ -11,7 +11,8 @@ const MapsList = (props) => {
                 <MapEntry
                     key={entry._id}
                     id={entry._id}
-                    name={entry.name}    
+                    name={entry.name}
+                    editMapName={props.editMapName}    
                     setShowDelete={props.setShowDelete}            
                 />
                 )
