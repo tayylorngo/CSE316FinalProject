@@ -43,7 +43,9 @@ const Homescreen = (props) => {
 	let todolists 	= [];
 	let regions = [];
 	let maps = [];
-	let activeMap;
+
+	const [activeMap, setActiveMap] 		  = useState({});
+	const [mapToBeDeleted, setMapToBeDeleted] = useState({});
 
 	let SidebarData = [];
 	const [sortRule, setSortRule] = useState('unsorted'); // 1 is ascending, -1 desc
@@ -85,6 +87,14 @@ const Homescreen = (props) => {
 		setActiveList(list);
 	}
 
+	const loadMap = (map) => {
+		setActiveMap(map);
+	}
+
+	const loadMapToBeDeleted = (map) => {
+		setMapToBeDeleted(map);
+	}
+
 	const mutationOptions = {
 		refetchQueries: [{ query: GET_DB_REGIONS }], 
 		awaitRefetchQueries: true,
@@ -101,6 +111,7 @@ const Homescreen = (props) => {
 	const [DeleteTodolist] 			= useMutation(mutations.DELETE_TODOLIST);
 
 	const [AddMap] 					= useMutation(mutations.ADD_MAP, mutationOptions);
+	const [DeleteMap]				= useMutation(mutations.DELETE_MAP, mutationOptions);
 	const [AddRegion] 				= useMutation(mutations.ADD_REGION, mutationOptions);
 
 
@@ -192,7 +203,8 @@ const Homescreen = (props) => {
 	}
 
 	const deleteMap = async (_id) => {
-
+		await DeleteMap({variables: {_id: _id}, refetchQueries: [{query: GET_DB_REGIONS}]});
+		loadMapToBeDeleted({});
 	}
 
 	const deleteList = async (_id) => {
@@ -211,6 +223,16 @@ const Homescreen = (props) => {
 		const selectedList = todolists.find(todo => todo._id === _id);
 		loadTodoList(selectedList);
 	};
+
+	const handleSetActiveMap = (_id) => {
+		const selectedMap = maps.find(map => map._id === _id);
+		loadMap(selectedMap);
+	}
+
+	const handleSetMapToBeDeleted = (_id) => {
+		const selectedMap = maps.find(map => map._id === _id);
+		loadMapToBeDeleted(selectedMap);
+	}
 
 	const setShowLogin = () => {
 		toggleShowDelete(false);
@@ -231,12 +253,7 @@ const Homescreen = (props) => {
 		toggleShowLogin(false);
 		toggleShowUpdate(false);
 		toggleShowDelete(!showDelete);
-		if(activeMap){
-			activeMap = null;
-		}
-		else{
-			activeMap = id;
-		}
+		handleSetMapToBeDeleted(id);
 	};
 
 	const setShowUpdate = () => {
@@ -282,7 +299,7 @@ const Homescreen = (props) => {
 				{props.user ? null : <Welcome/>}
 
 				{
-					showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} setShowDelete={setShowDelete} activeMap={activeMap} />)
+					showDelete && (<Delete deleteMap={deleteMap} setShowDelete={setShowDelete} activeMap={mapToBeDeleted} />)
 				}
 
 				{

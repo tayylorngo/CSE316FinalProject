@@ -5,14 +5,14 @@ import { WModal, WMHeader, WMMain, WButton } from 'wt-frontend';
 const Delete = (props) => {
 
     const handleDelete = async () => {
-        props.deleteList(props.activeid);
+        props.deleteMap(props.activeMap._id);
         props.setShowDelete(false);
     }
 
     return (
         <WModal className="delete-modal" cover="true" visible={props.setShowDelete}>
             <WMHeader  className="modal-header" onClose={() => props.setShowDelete(false)}>
-                Delete Map?
+                Delete {props.activeMap.name}?
 			</WMHeader >
 
             <WMMain>

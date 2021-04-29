@@ -56,6 +56,12 @@ module.exports = {
 
 			if(updated) return (region._id)
 			else return ('Could not add region');
+		},
+		deleteMap: async(_, args) => {
+			const { _id } = args;
+			const objectId = new ObjectId(_id);
+			const deleted = await Region.deleteOne({_id: objectId});
+			return "YO";
 		}
 	}
 }

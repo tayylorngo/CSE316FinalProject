@@ -22,7 +22,7 @@ img{
     background-color: red;
     text-align: center;
     margin: 0 auto;
-    width: fill;
+    width: stretch;
 }
 
 #map-header{
@@ -45,5 +45,5 @@ img{
     text-align: center;
     margin: auto 0;
     color: white;
-    width: fill;
+    width: stretch;
 }

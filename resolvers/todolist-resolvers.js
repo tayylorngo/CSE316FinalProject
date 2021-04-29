@@ -91,7 +91,6 @@ module.exports = {
 			const updated = await Todolist.updateOne({_id: listId}, { items: listItems })
 			if(updated) return (listItems);
 			else return (found.items);
-
 		},
 		/** 
 		 	@param 	 {object} args - a todolist objectID 
