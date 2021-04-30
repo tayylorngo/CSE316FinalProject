@@ -21,6 +21,7 @@ import UpdateAccount from '../modals/UpdateAccount';
 import Welcome from '../Welcome/Welcome';
 import MapContents from '../MapContents/MapContents';
 import './Homescreen.css';
+import MapSpreadsheet from '../MapSpreadsheet/MapSpreadsheet';
 
 const Homescreen = (props) => {
 
@@ -294,7 +295,17 @@ const Homescreen = (props) => {
 			</WLHeader>
 
 			<WLMain id="main-page">
-				{props.user ? <MapContents addMap={addNewMap} maps={maps} setShowDelete={setShowDelete} editMapName={editMapName}/>: null}
+				{props.user && (Object.keys(activeMap).length === 0) ? <MapContents
+												addMap={addNewMap} 
+												maps={maps} 
+												setShowDelete={setShowDelete} 
+												editMapName={editMapName}
+												handleSetActive={handleSetActiveMap}
+											/>
+												: <MapSpreadsheet
+													map={activeMap}
+												
+												/>}
 
 				{props.user ? null : <Welcome/>}
 

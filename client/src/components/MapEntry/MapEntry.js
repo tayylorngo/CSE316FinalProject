@@ -15,6 +15,10 @@ const MapEntry = (props) => {
         toggleEditingMapName(!editingMapName);
     }
 
+    const handleSetActiveMap = () => {
+        props.handleSetActive(props.id);
+    }
+
     return(
         <div className="map-entry">
             <WRow>
@@ -30,7 +34,7 @@ const MapEntry = (props) => {
                         className="map-name-input"
                         >
                         </WInput>
-                 : <span class="map-name">{props.name}</span>
+                 : <span class="map-name" onClick={handleSetActiveMap}>{props.name}</span>
                     }
                 </WCol>
                 <WCol size="6">

@@ -13,7 +13,8 @@ const MapsList = (props) => {
                     id={entry._id}
                     name={entry.name}
                     editMapName={props.editMapName}    
-                    setShowDelete={props.setShowDelete}            
+                    setShowDelete={props.setShowDelete}
+                    handleSetActive={props.handleSetActive}            
                 />
                 )
             )
