@@ -3,7 +3,7 @@
     $background-color: #4f5250,
     $navbar-background-color: black,//rgb(64, 69, 78),
     $sidebar-background-color: #2b2e36,//#353a44,
-    $text-color: #e9edf0,
+    $text-color: white,
     $modal-background: black,
     $modal-section-padding: 24px,
     $modal-radius: 4px,
@@ -11,6 +11,7 @@
     $modal-button-color: gray,
     $modal-button-hover: #e9edf0,
     $button-text-color: black,
+    $accent-color: black
     // other variable changes here
 );
 
@@ -235,4 +236,8 @@ html, body {
 
 .create-account-button{
     color: magenta;
+}
+
+.delete-map-name{
+    color: white;
 }

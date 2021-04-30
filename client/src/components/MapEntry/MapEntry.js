@@ -22,12 +22,14 @@ const MapEntry = (props) => {
                     {
                         editingMapName ? 
                         <WInput 
-                        wType="outlined"
+                        wType="filled"
                         barAnimation="border-highlight"
                         hoverAnimation="solid"
                         defaultValue={props.name}
                         onBlur={handleEditMapName}
-                 /> 
+                        className="map-name-input"
+                        >
+                        </WInput>
                  : <span class="map-name">{props.name}</span>
                     }
                 </WCol>

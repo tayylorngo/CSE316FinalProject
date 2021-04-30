@@ -17,3 +17,12 @@
     margin-top: 2%;
     margin-bottom: 4%;
 }
+
+.map-name-input{
+    margin-left: 30%;
+    color: black !important;
+    font-size: 1rem;
+    height: stretch;
+    width: stretch;
+    background-color: transparent;
+}

@@ -116,7 +116,6 @@ const Homescreen = (props) => {
 	const [EditMapName]				= useMutation(mutations.EDIT_MAP_NAME, mutationOptions);
 
 
-	
 	const tpsUndo = async () => {
 		const ret = await props.tps.undoTransaction();
 		if(ret) {
