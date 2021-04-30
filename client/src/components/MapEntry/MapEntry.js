@@ -34,7 +34,7 @@ const MapEntry = (props) => {
                         className="map-name-input"
                         >
                         </WInput>
-                 : <span class="map-name" onClick={handleSetActiveMap}>{props.name}</span>
+                 : <span className="map-name" onClick={handleSetActiveMap}>{props.name}</span>
                     }
                 </WCol>
                 <WCol size="6">

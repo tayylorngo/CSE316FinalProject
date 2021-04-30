@@ -43,19 +43,25 @@ module.exports = {
 			return "";
 		},
 		addRegion: async(_, args) => {
-			const { _id, region, index } = args;
-			const regionId = new ObjectId(_id);
-			const found = await Region.findOne({_id: regionId});
-			if(!found) return ('Region not found');
-			if(region._id === '') region._id = objectId;
+			const { _id, index } = args;
+			const objectId = new ObjectId(_id);
+			const found = await Region.findOne({_id: objectId});
 			let subregions = found.subregions;
-			if(index < 0) subregions.push(region);
-			else subregions.splice(index, 0, region);
-			
-			const updated = await Region.updateOne({_id: regionId}, { subregions: subregions });
-
-			if(updated) return (region._id)
-			else return ('Could not add region');
+			const newId = new ObjectId();
+			subregions.splice(index, 0, newId);
+			let newRegion = new Region({
+				_id: newId,
+				owner: found.owner,
+				name: "Untitled Region",
+				capital: "None",
+				leader: "None",
+				parentRegion: _id,
+				subregions: [],
+				landmarks: []
+			});
+			await Region.updateOne({_id: objectId}, {subregions: subregions});
+			const updated = await newRegion.save();
+			return "";
 		},
 		deleteMap: async(_, args) => {
 			const { _id } = args;

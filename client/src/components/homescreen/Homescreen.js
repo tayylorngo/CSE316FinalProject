@@ -44,6 +44,7 @@ const Homescreen = (props) => {
 	let todolists 	= [];
 	let regions = [];
 	let maps = [];
+	let activeSubregions = [];
 
 	const [activeMap, setActiveMap] 		  = useState({});
 	const [mapToBeDeleted, setMapToBeDeleted] = useState({});
@@ -69,6 +70,16 @@ const Homescreen = (props) => {
 			if(region.parentRegion === "none"){
 				maps.push(region);
 			}
+		}
+		if(Object.keys(activeMap).length !== 0){
+			let subregions = activeMap.subregions;
+			subregions.forEach((subregion) => {
+				regions.forEach((region) => {
+					if(subregion === region._id){
+						activeSubregions.push(region);
+					}
+				});
+			});
 		}
 	}
 
@@ -133,6 +144,12 @@ const Homescreen = (props) => {
 		}
 	}
 
+	const addRegion = async () => {
+		let currMap = activeMap;
+		AddRegion({variables: {_id: currMap._id, index: currMap.subregions.length - 1}, refetchQueries: [{query: GET_DB_REGIONS}]});
+		handleSetActiveMap(currMap._id);
+	}
+
 	const addItem = async () => {
 		let list = activeList;
 		const items = list.items;
@@ -183,7 +200,6 @@ const Homescreen = (props) => {
 		let transaction = new ReorderItems_Transaction(listID, itemID, dir, ReorderTodoItems);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
-
 	};
 
 	const addNewMap = async (name) => {
@@ -197,7 +213,7 @@ const Homescreen = (props) => {
 			subregions: [],
 			landmarks: []
 		}
-		const { data } = await AddMap({ variables: {region: map}, refetchQueries: [{query: GET_DB_REGIONS}]});
+		const { data } = await AddMap({variables: {region: map}, refetchQueries: [{query: GET_DB_REGIONS}]});
 		if(data){
 			console.log(data);
 		}
@@ -302,10 +318,15 @@ const Homescreen = (props) => {
 												editMapName={editMapName}
 												handleSetActive={handleSetActiveMap}
 											/>
-												: <MapSpreadsheet
-													map={activeMap}
-												
-												/>}
+												: null}
+
+				{props.user && Object.keys(activeMap).length !== 0 ?
+					<MapSpreadsheet
+						map={activeMap}
+						addRegion={addRegion}
+						activeSubregions={activeSubregions}
+					/> 
+					: null} 
 
 				{props.user ? null : <Welcome/>}
 
