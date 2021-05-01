@@ -3,14 +3,27 @@
     cursor: pointer;
 }
 
+.edit-button:hover{
+    color: white;
+}
+
 .delete-button{
     cursor: pointer;
+}
+
+.delete-button:hover{
+    color: red;
 }
 
 .map-name{
     margin-left: 30%;
     font-size: 1.5rem;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.map-name:hover{
+    color: blue;
 }
 
 .map-entry{

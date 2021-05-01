@@ -4,7 +4,6 @@ import {WRow, WCol} from 'wt-frontend';
 
 const RegionEntry = (props) => {
 
-
     return(
         <div>
             <WRow>
