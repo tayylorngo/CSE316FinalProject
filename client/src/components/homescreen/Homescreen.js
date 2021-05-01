@@ -92,6 +92,14 @@ const Homescreen = (props) => {
 		}
 	}
 
+	const reloadMap = async () => {
+		if(activeMap._id){
+			let tempID = activeMap._id;
+			let map = maps.find(map => map._id === tempID);
+			setActiveMap(map);
+		}
+	}
+
 	const loadTodoList = (list) => {
 		props.tps.clearAllTransactions();
 		setCanUndo(props.tps.hasTransactionToUndo());
@@ -110,7 +118,7 @@ const Homescreen = (props) => {
 	const mutationOptions = {
 		refetchQueries: [{ query: GET_DB_REGIONS }], 
 		awaitRefetchQueries: true,
-		onCompleted: () => reloadList()
+		onCompleted: () => reloadMap()
 	}
 
 	const [ReorderTodoItems] 		= useMutation(mutations.REORDER_ITEMS, mutationOptions);
@@ -146,8 +154,19 @@ const Homescreen = (props) => {
 
 	const addRegion = async () => {
 		let currMap = activeMap;
-		AddRegion({variables: {_id: currMap._id, index: currMap.subregions.length - 1}, refetchQueries: [{query: GET_DB_REGIONS}]});
-		handleSetActiveMap(currMap._id);
+		let newRegion = {
+			_id: '',
+			owner: props.user._id,
+			name: "Untitled Region",
+			capital: "None",
+			leader: "None",
+			parentRegion: currMap._id,
+			subregions: [],
+			landmarks: []
+		};
+		let index = currMap.subregions.length;
+		AddRegion({variables: {region: newRegion, _id: currMap._id, index: index}, refetchQueries: [{query: GET_DB_REGIONS}]});
+		// handleSetActiveMap(currMap._id);
 	}
 
 	const addItem = async () => {

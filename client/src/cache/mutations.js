@@ -49,8 +49,8 @@ export const ADD_MAP = gql`
 `;
 
 export const ADD_REGION = gql`
-	mutation AddRegion($_id: String!, $index: Int!){
-		addRegion(_id: $_id, index: $index)
+	mutation AddRegion($region: RegionInput!, $_id: String!, $index: Int!){
+		addRegion(region: $region, _id: $_id, index: $index)
 	}
 `;
 
