@@ -8,20 +8,20 @@ const RegionEntry = (props) => {
     return(
         <div>
             <WRow>
-            <WCol size="2">
-                    {props.entry.name}
+                <WCol size="2" className="tableEntry subregion-name">
+                    <div className="entry-name">{props.entry.name}</div>
                 </WCol>
-                <WCol size="2">
-                    {props.entry.capital}
+                <WCol size="2" className="tableEntry capital-name">
+                    <div className="entry-name">{props.entry.capital}</div>
                 </WCol>
-                <WCol size="2">
-                    {props.entry.leader}
+                <WCol size="2" className="tableEntry leader-name">
+                    <div className="entry-name">{props.entry.leader}</div>
                 </WCol>
-                <WCol size="2">
-                    {props.entry._id}
+                <WCol size="2" className="tableEntry flag">
+                    <div className="entry-name">{props.entry._id}</div>
                 </WCol>
-                <WCol size="4">
-                    {props.entry.landmarks}
+                <WCol size="4" className="tableEntry landmarks">
+                    <div className="entry-name">{props.entry.landmarks}</div>
                 </WCol>
             </WRow>
         </div>
