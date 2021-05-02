@@ -3,5 +3,29 @@
     margin: 0 auto;
     width: 50%;
     margin-top: 3%;
-    border: solid 1px black;
+}
+
+.region-viewer-title{
+    font-size: 1.5rem;
+    margin-right: 5%;
+    margin-left: 11%;
+}
+
+.region-data-titles{
+    text-align: left;
+    color: white;
+    font-weight: bold;
+}
+
+.region-data-titles div{
+    margin-bottom: 5%;
+}
+
+.region-data{
+    font-size: 1.5rem;
+    color: white;
+}
+
+#parent-region-style{
+    color: lightblue;
 }

@@ -20,10 +20,14 @@ const LoggedIn = (props) => {
         props.setShowUpdate();
     }
 
+    const colorMagenta = {
+        color: "magenta"
+    }
+
     return (
         <WNavItem hoverAnimation="lighten">
             <WButton className="navbar-options" onClick={handleUpdateUser} wType="texted" hoverAnimation="text-primary">
-                {props.user.name}
+                <span style={colorMagenta}>{props.user.name}</span>
             </WButton>
             <WButton className="navbar-options" onClick={handleLogout} wType="texted" hoverAnimation="text-primary">
                 Logout
