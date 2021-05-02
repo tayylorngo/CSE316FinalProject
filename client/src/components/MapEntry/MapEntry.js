@@ -19,6 +19,11 @@ const MapEntry = (props) => {
         props.handleSetActive(props.id);
     }
 
+    const blackColor = {
+        color: "black",
+        fontSize: "1.15rem"
+    }
+
     return(
         <div className="map-entry">
             <WRow>
@@ -26,12 +31,13 @@ const MapEntry = (props) => {
                     {
                         editingMapName ? 
                         <WInput 
-                        wType="filled"
-                        barAnimation="border-highlight"
-                        hoverAnimation="solid"
-                        defaultValue={props.name}
-                        onBlur={handleEditMapName}
-                        className="map-name-input"
+                            wType="lined"
+                            barAnimation="border-highlight"
+                            hoverAnimation="solid"
+                            defaultValue={props.name}
+                            onBlur={handleEditMapName}
+                            style={blackColor}
+                            className="map-name-input"
                         >
                         </WInput>
                  : <span className="map-name" onClick={handleSetActiveMap}>{props.name}</span>

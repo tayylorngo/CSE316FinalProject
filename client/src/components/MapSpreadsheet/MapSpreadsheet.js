@@ -14,13 +14,13 @@ const MapSpreadsheet = (props) => {
 
     const whiteColor = {
         color: "white",
-        fontSize: "1.5rem",
+        fontSize: "2rem",
         marginRight: "0.5%"
     }
 
     const blueColor = {
         color: "lightblue",
-        fontSize: "1.5rem",
+        fontSize: "2rem",
         fontWeight: "bold",
         cursor: "pointer"
     }
@@ -48,8 +48,12 @@ const MapSpreadsheet = (props) => {
             <div id="regionName"><span style={whiteColor}>Region Name: </span><span onClick={toggleShowRegionViewer}style={blueColor}>{props.map.name}</span></div>
             <WRow>
                 <WCol id="controls">
-                    <WButton onClick={handleAddRegion}>
-                        ADD REGION
+                    <WButton 
+                        onClick={handleAddRegion}
+                        color="primary"
+                        shape="pill"
+                    >
+                        <span class="material-icons">add</span>
                     </WButton>
                 </WCol>
             </WRow>
