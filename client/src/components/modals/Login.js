@@ -39,7 +39,6 @@ const Login = (props) => {
 			<WMHeader  className="modal-header" onClose={() => props.setShowLogin(false)}>
 				Login
 			</WMHeader >
-
 			{
 				loading ? <div />
 					: <WMMain className="main-login-modal">

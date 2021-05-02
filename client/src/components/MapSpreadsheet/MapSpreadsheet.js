@@ -80,6 +80,7 @@ const MapSpreadsheet = (props) => {
                     <RegionEntry
                         key={entry._id}
                         entry={entry}
+                        handleSetActiveMap={props.setActiveMap}
                     />
                     )
                 )

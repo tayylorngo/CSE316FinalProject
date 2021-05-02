@@ -4,11 +4,15 @@ import {WRow, WCol} from 'wt-frontend';
 
 const RegionEntry = (props) => {
 
+    const openNewRegion = () => {
+        props.handleSetActiveMap(props.entry._id);
+    }
+
     return(
         <div>
             <WRow>
                 <WCol size="2" className="tableEntry subregion-name">
-                    <div className="entry-name">{props.entry.name}</div>
+                    <div className="entry-name" onClick={openNewRegion}>{props.entry.name}</div>
                 </WCol>
                 <WCol size="2" className="tableEntry capital-name">
                     <div className="entry-name">{props.entry.capital}</div>

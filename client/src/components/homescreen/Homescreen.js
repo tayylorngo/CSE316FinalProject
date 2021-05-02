@@ -20,8 +20,8 @@ import { UpdateListField_Transaction,
 import UpdateAccount from '../modals/UpdateAccount';
 import Welcome from '../Welcome/Welcome';
 import MapContents from '../MapContents/MapContents';
-import './Homescreen.css';
 import MapSpreadsheet from '../MapSpreadsheet/MapSpreadsheet';
+import './Homescreen.css';
 
 const Homescreen = (props) => {
 
@@ -95,7 +95,7 @@ const Homescreen = (props) => {
 	const reloadMap = async () => {
 		if(activeMap._id){
 			let tempID = activeMap._id;
-			let map = maps.find(map => map._id === tempID);
+			let map = regions.find(map => map._id === tempID);
 			setActiveMap(map);
 		}
 	}
@@ -265,6 +265,11 @@ const Homescreen = (props) => {
 		loadMap(selectedMap);
 	}
 
+	const handleSetActiveRegion = (_id) => {
+		const selectedRegion = regions.find(region => region._id === _id);
+		loadMap(selectedRegion);
+	}
+
 	const handleSetMapToBeDeleted = (_id) => {
 		const selectedMap = maps.find(map => map._id === _id);
 		loadMapToBeDeleted(selectedMap);
@@ -330,20 +335,20 @@ const Homescreen = (props) => {
 			</WLHeader>
 
 			<WLMain id="main-page">
-				{props.user && (Object.keys(activeMap).length === 0) ? <MapContents
-												addMap={addNewMap} 
-												maps={maps} 
-												setShowDelete={setShowDelete} 
-												editMapName={editMapName}
-												handleSetActive={handleSetActiveMap}
-											/>
-												: null}
-
+				{props.user && (Object.keys(activeMap).length === 0) ? 
+					<MapContents
+						addMap={addNewMap} 
+						maps={maps} 
+						setShowDelete={setShowDelete} 
+						editMapName={editMapName}
+						handleSetActive={handleSetActiveMap}
+					/> : null}
 				{props.user && Object.keys(activeMap).length !== 0 ?
 					<MapSpreadsheet
 						map={activeMap}
 						addRegion={addRegion}
 						activeSubregions={activeSubregions}
+						setActiveMap={handleSetActiveRegion}
 					/> 
 					: null} 
 
