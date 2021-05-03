@@ -21,6 +21,7 @@ import UpdateAccount from '../modals/UpdateAccount';
 import Welcome from '../Welcome/Welcome';
 import MapContents from '../MapContents/MapContents';
 import MapSpreadsheet from '../MapSpreadsheet/MapSpreadsheet';
+import RegionViewer from '../RegionViewer/RegionViewer';
 import './Homescreen.css';
 import {Route, useHistory, Switch} from 'react-router-dom';
 
@@ -368,8 +369,10 @@ const Homescreen = (props) => {
 				}
 			</WLMain>
 				<Switch>
-					<Route path="/home" render={() => 
-						 <Welcome/>
+					<Route exact path="/home" render={() => 
+						<WLMain id="main-page">
+						 	<Welcome/>
+						</WLMain>
 					}/>
 					<Route exact path="/maps" render={() =>
 						<WLMain id="main-page">
@@ -389,9 +392,19 @@ const Homescreen = (props) => {
 								addRegion={addRegion}
 								activeSubregions={activeSubregions}
 								setActiveMap={handleSetActiveRegion}
+								history={history}
 							/> 	
 						</WLMain>
 					}/>
+					<Route exact path='/viewer/:id' render={() => 
+                        <WLMain id="main-page">
+							<RegionViewer
+            					map={activeMap}
+								history={history}
+								setActiveMap={handleSetActiveRegion}
+        					/>    	
+						</WLMain>
+                	}/>
 				</Switch>
 		</WLayout>
 	);

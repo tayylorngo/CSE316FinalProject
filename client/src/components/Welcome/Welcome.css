@@ -8,3 +8,10 @@
     text-align: center;
     color: white;
 }
+
+#globe-pic{
+    margin-bottom: 0;
+    margin-top: 5%;
+    height: 700px;
+    width: 700px;
+}

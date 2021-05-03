@@ -3,14 +3,11 @@ import './MapSpreadsheet.css';
 import {WRow, WCol, WButton} from 'wt-frontend';
 import RegionEntry from '../RegionEntry/RegionEntry';
 import RegionViewer from '../RegionViewer/RegionViewer';
+import {Switch, Route} from 'react-router-dom';
 
 const MapSpreadsheet = (props) => {
 
     const [showRegionViewer, toggleShowRegionViewer] = useState(false);
-
-    const handleShowRegionViewer = () =>{
-        toggleShowRegionViewer(!showRegionViewer);
-    }
 
     const whiteColor = {
         color: "white",
@@ -45,13 +42,11 @@ const MapSpreadsheet = (props) => {
         marginTop: "1.4%"
     }
 
+    if(showRegionViewer && props.map){
+        props.history.push("/viewer/" + props.map._id);
+    }
+
     return(
-        showRegionViewer ? 
-        <RegionViewer
-            map={props.map}
-            toggleShowRegionViewer={handleShowRegionViewer}
-        />                
-        :
         <div id="map-spreadsheet">
             <div id="regionName"><span style={whiteColor}>Region Name: </span><span onClick={toggleShowRegionViewer}style={blueColor}>{props.map.name}</span></div>
             <WRow>

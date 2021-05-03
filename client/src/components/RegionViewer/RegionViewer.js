@@ -1,13 +1,44 @@
 import React from 'react';
 import './RegionViewer.css';
-import {WRow, WCol} from 'wt-frontend';
+import {WRow, WCol, WButton} from 'wt-frontend';
 
 const RegionViewer = (props) => {
 
     const pic = 'https://cdn11.bigcommerce.com/s-kh80nbh17m/images/stencil/1280x1280/products/8349/36571/352BB113-139F-4718-A609-46F63A57B849-xl__41206.1561690686.1280.1280__08270.1574698216.jpg?c=2';
 
+    if(Object.keys(props.map).length === 0){
+        props.history.push('/maps');
+        return(null);
+    }
+
+    const goHome = () => {
+        props.setActiveMap();
+    }
+
+    const returnToSpreadsheet = () => {
+        props.history.push('/maps/' + props.map._id);
+    }
+
     return(
         <div className='region-viewer'>
+            <WRow>
+                <WCol id="controls" size='2'>
+                    <WButton 
+                        color="primary"
+                        shape="pill"
+                        onClick={goHome}
+                    >
+                    <span class="material-icons">home</span>
+                    </WButton>
+                    <WButton 
+                        color="primary"
+                        shape="pill"
+                        onClick={returnToSpreadsheet}
+                    >
+                    <span class="material-icons">arrow_back</span>
+                    </WButton>
+                </WCol>
+            </WRow>
             <WRow>
                 <WCol size='6'>
                     <img src={pic}></img>
