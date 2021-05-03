@@ -8,7 +8,7 @@ import * as mutations 					from '../../cache/mutations';
 import SidebarContents 					from '../sidebar/SidebarContents';
 import { GET_DB_TODOS } 				from '../../cache/queries';
 import { GET_DB_REGIONS }				from '../../cache/queries';
-import React, { useState } 				from 'react';
+import React, { useEffect, useState } 				from 'react';
 import { useMutation, useQuery } 		from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } 	from 'wt-frontend';
 import { WLayout, WLHeader, WLMain, WLSide } from 'wt-frontend';
@@ -22,6 +22,7 @@ import Welcome from '../Welcome/Welcome';
 import MapContents from '../MapContents/MapContents';
 import MapSpreadsheet from '../MapSpreadsheet/MapSpreadsheet';
 import './Homescreen.css';
+import {Route, useHistory, Switch} from 'react-router-dom';
 
 const Homescreen = (props) => {
 
@@ -313,6 +314,20 @@ const Homescreen = (props) => {
 		tpsRedo();
 	}
 
+	const history = useHistory();
+
+	useEffect(() => {
+		if(!props.user){
+			history.push('/home');
+		}
+		if(props.user && Object.keys(activeMap).length === 0){
+			history.push('/maps');
+		}
+		if(props.user && Object.keys(activeMap).length !== 0){
+			history.push('/maps/' + activeMap._id);
+		}
+	});
+
 	return (
 		<WLayout wLayout="header">
 			<WLHeader>
@@ -335,25 +350,6 @@ const Homescreen = (props) => {
 			</WLHeader>
 
 			<WLMain id="main-page">
-				{props.user && (Object.keys(activeMap).length === 0) ? 
-					<MapContents
-						addMap={addNewMap} 
-						maps={maps} 
-						setShowDelete={setShowDelete} 
-						editMapName={editMapName}
-						handleSetActive={handleSetActiveMap}
-					/> : null}
-				{props.user && Object.keys(activeMap).length !== 0 ?
-					<MapSpreadsheet
-						map={activeMap}
-						addRegion={addRegion}
-						activeSubregions={activeSubregions}
-						setActiveMap={handleSetActiveRegion}
-					/> 
-					: null} 
-
-				{props.user ? null : <Welcome/>}
-
 				{
 					showDelete && (<Delete deleteMap={deleteMap} setShowDelete={setShowDelete} activeMap={mapToBeDeleted} />)
 				}
@@ -370,6 +366,32 @@ const Homescreen = (props) => {
 					showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowCreate={setShowUpdate} user={props.user} />)
 				}
 			</WLMain>
+				<Switch>
+					<Route path="/home" render={() => 
+						 <Welcome/>
+					}/>
+					<Route exact path="/maps" render={() =>
+						<WLMain id="main-page">
+							<MapContents
+								addMap={addNewMap} 
+								maps={maps} 
+								setShowDelete={setShowDelete} 
+								editMapName={editMapName}
+								handleSetActive={handleSetActiveMap}
+								/>
+						</WLMain>
+					} />
+					<Route path="/maps/:id" render={() =>
+						<WLMain id="main-page">
+							<MapSpreadsheet
+								map={activeMap}
+								addRegion={addRegion}
+								activeSubregions={activeSubregions}
+								setActiveMap={handleSetActiveRegion}
+							/> 	
+						</WLMain>
+					}/>
+				</Switch>
 		</WLayout>
 	);
 };

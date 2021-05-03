@@ -3,7 +3,7 @@ import Homescreen 		from './components/homescreen/Homescreen';
 import { useQuery } 	from '@apollo/client';
 import * as queries 	from './cache/queries';
 import { jsTPS } 		from './utils/jsTPS';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect, withRouter } from 'react-router-dom';
  
 const App = () => {
 	let user = null;
@@ -19,19 +19,9 @@ const App = () => {
     }
 	return(
 		<BrowserRouter>
-			<Switch>
-				<Redirect exact from="/" to={ {pathname: "/home"} } />
-				<Route 
-					path="/home" 
-					name="home" 
-					render={() => 
-						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>
-					} 
-				/>
-				<Route/>
-			</Switch>
+			<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>
 		</BrowserRouter>
 	);
 }
 
-export default App;
+export default withRouter(App);

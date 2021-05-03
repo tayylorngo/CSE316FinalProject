@@ -12,7 +12,7 @@ const RegionEntry = (props) => {
         <div>
             <WRow>
                 <WCol size="2" className="tableEntry subregion-name">
-                    <div className="entry-name" onClick={openNewRegion}>{props.entry.name}</div>
+                    <div className="entry-name region-name" onClick={openNewRegion}>{props.entry.name}</div>
                 </WCol>
                 <WCol size="2" className="tableEntry capital-name">
                     <div className="entry-name">{props.entry.capital}</div>

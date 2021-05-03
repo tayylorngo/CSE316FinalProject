@@ -29,3 +29,7 @@
 #parent-region-style{
     color: lightblue;
 }
+
+.region-name{
+    cursor: pointer;
+}
