@@ -7,7 +7,6 @@ const MapContents = (props) => {
 
     const handleAddMap = () => {
         props.setShowNewMap();
-        // props.addMap("Untitled Map");
     }
 
     return(

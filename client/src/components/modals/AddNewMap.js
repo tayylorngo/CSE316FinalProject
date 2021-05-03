@@ -1,12 +1,14 @@
-import React from 'react';
-
+import React, {useState} from 'react';
 import { WModal, WMHeader, WMMain, WButton, WInput } from 'wt-frontend';
 
 const AddNewMap = (props) => {
 
+    const [name, setName] = useState('');
+
     const handleAddNewMap = (e) => {
-        props.addNewMap(e.target.value);
+        props.addNewMap(name);
         props.setShowNewMap();
+        e.preventDefault();
     }
 
     return (
@@ -15,17 +17,18 @@ const AddNewMap = (props) => {
                <span className="delete-map-name">Create New Map</span>
 			</WMHeader >
             <WMMain>
-                <form>
-                    <WInput className="modal-input" name='name' labelAnimation="up" barAnimation="solid" labelText="Name" wType="outlined" inputType='text' />
+                <form onSubmit={handleAddNewMap}>
+                    <WInput onChange={(e) => setName(e.target.value)} className="modal-input" name='name' labelAnimation="up" barAnimation="solid" labelText="Map Name" wType="outlined" inputType='text' />
                         <br/>
-                        <WButton className="modal-button cancel-button" onClick={() => props.setShowNewMap()} wType="texted">
+                    <WButton className="modal-button cancel-button" onClick={() => props.setShowNewMap()} wType="texted">
                         <span>Cancel</span>
-                        </WButton>
+                    </WButton>
                         <label className="col-spacer">&nbsp;</label>
-                        <WButton onClick={handleAddNewMap} className="modal-button" clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
-                            Add New Map
-                        </WButton>
+                    <WButton type='submit' className="modal-button" clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
+                        Add New Map
+                    </WButton>
                 </form>
+
             </WMMain>
 
         </WModal >
