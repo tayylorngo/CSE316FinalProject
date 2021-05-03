@@ -24,6 +24,7 @@ import MapSpreadsheet from '../MapSpreadsheet/MapSpreadsheet';
 import RegionViewer from '../RegionViewer/RegionViewer';
 import './Homescreen.css';
 import {Route, useHistory, Switch} from 'react-router-dom';
+import AddNewMap from '../modals/AddNewMap';
 
 const Homescreen = (props) => {
 
@@ -57,6 +58,8 @@ const Homescreen = (props) => {
 	const [showDelete, toggleShowDelete] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
+	const [showNewMap, toggleShowNewMap] 	= useState(false);
+
 	const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
@@ -300,6 +303,13 @@ const Homescreen = (props) => {
 		handleSetMapToBeDeleted(id);
 	};
 
+	const setShowNewMap = () => {
+		toggleShowDelete(false);
+		toggleShowLogin(false);
+		toggleShowUpdate(false);
+		toggleShowNewMap(!showNewMap);
+	};
+
 	const setShowUpdate = () => {
 		toggleShowDelete(false);
 		toggleShowLogin(false);
@@ -367,6 +377,10 @@ const Homescreen = (props) => {
 				{
 					showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowCreate={setShowUpdate} user={props.user} />)
 				}
+
+				{
+					showNewMap && (<AddNewMap fetchUser={props.fetchUser} addNewMap={addNewMap} setShowNewMap={setShowNewMap} user={props.user} />)
+				}
 			</WLMain>
 				<Switch>
 					<Route exact path="/home" render={() => 
@@ -379,7 +393,8 @@ const Homescreen = (props) => {
 							<MapContents
 								addMap={addNewMap} 
 								maps={maps} 
-								setShowDelete={setShowDelete} 
+								setShowDelete={setShowDelete}
+								setShowNewMap={setShowNewMap} 
 								editMapName={editMapName}
 								handleSetActive={handleSetActiveMap}
 								/>

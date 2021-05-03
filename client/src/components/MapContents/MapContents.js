@@ -6,7 +6,8 @@ import MapsList from '../MapsList/MapsList';
 const MapContents = (props) => {
 
     const handleAddMap = () => {
-        props.addMap("Untitled Map");
+        props.setShowNewMap();
+        // props.addMap("Untitled Map");
     }
 
     return(
