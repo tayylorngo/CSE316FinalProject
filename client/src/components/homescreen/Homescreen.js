@@ -267,7 +267,8 @@ const Homescreen = (props) => {
 	}
 
 	const handleSetActiveRegion = (_id) => {
-		const selectedRegion = regions.find(region => region._id === _id);
+		let selectedRegion = regions.find(region => region._id === _id);
+		if(selectedRegion === undefined) selectedRegion = {}
 		loadMap(selectedRegion);
 	}
 

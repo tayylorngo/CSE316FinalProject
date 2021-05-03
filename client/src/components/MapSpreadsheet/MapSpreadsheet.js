@@ -29,6 +29,14 @@ const MapSpreadsheet = (props) => {
         props.addRegion();
     }
 
+    const goHome = () => {
+        props.setActiveMap();
+    }
+
+    const returnToParentRegion = () => {
+        props.setActiveMap(props.map.parentRegion);
+    }
+
     const marginTop = {
         marginTop: "2.3%"
     }
@@ -47,9 +55,9 @@ const MapSpreadsheet = (props) => {
         <div id="map-spreadsheet">
             <div id="regionName"><span style={whiteColor}>Region Name: </span><span onClick={toggleShowRegionViewer}style={blueColor}>{props.map.name}</span></div>
             <WRow>
-                <WCol id="controls">
+                <WCol id="controls" size='2'>
                     <WButton 
-                        onClick={handleAddRegion}
+                        onClick={goHome}
                         color="primary"
                         shape="pill"
                     >
@@ -61,6 +69,13 @@ const MapSpreadsheet = (props) => {
                         shape="pill"
                     >
                         <span class="material-icons">add</span>
+                    </WButton>
+                    <WButton 
+                        onClick={returnToParentRegion}
+                        color="primary"
+                        shape="pill"
+                    >
+                        <span class="material-icons">arrow_back</span>
                     </WButton>
                 </WCol>
             </WRow>
