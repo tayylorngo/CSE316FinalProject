@@ -24,3 +24,14 @@
 #controls button{
     margin-right: 2%;
 }
+
+#nameOfRegion{
+    color: lightblue;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#nameOfRegion:hover{
+    color: darkblue;
+}

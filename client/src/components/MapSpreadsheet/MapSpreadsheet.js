@@ -15,13 +15,6 @@ const MapSpreadsheet = (props) => {
         marginRight: "0.5%"
     }
 
-    const blueColor = {
-        color: "lightblue",
-        fontSize: "2rem",
-        fontWeight: "bold",
-        cursor: "pointer"
-    }
-
     const handleAddRegion = () => {
         props.addRegion();
     }
@@ -48,7 +41,7 @@ const MapSpreadsheet = (props) => {
 
     return(
         <div id="map-spreadsheet">
-            <div id="regionName"><span style={whiteColor}>Region Name: </span><span onClick={toggleShowRegionViewer}style={blueColor}>{props.map.name}</span></div>
+            <div id="regionName"><span style={whiteColor}>Region Name: </span><span id="nameOfRegion" onClick={toggleShowRegionViewer}>{props.map.name}</span></div>
             <WRow>
                 <WCol id="controls" size='2'>
                     <WButton 
@@ -56,21 +49,21 @@ const MapSpreadsheet = (props) => {
                         color="primary"
                         shape="pill"
                     >
-                        <span class="material-icons">home</span>
+                        <span className="material-icons">home</span>
                     </WButton>
                     <WButton 
                         onClick={handleAddRegion}
                         color="primary"
                         shape="pill"
                     >
-                        <span class="material-icons">add</span>
+                        <span className="material-icons">add</span>
                     </WButton>
                     <WButton 
                         onClick={returnToParentRegion}
                         color="primary"
                         shape="pill"
                     >
-                        <span class="material-icons">arrow_back</span>
+                        <span className="material-icons">arrow_back</span>
                     </WButton>
                 </WCol>
             </WRow>

@@ -1,6 +1,7 @@
 import React from 'react';
 import './RegionViewer.css';
 import {WRow, WCol, WButton} from 'wt-frontend';
+import LandmarksList from '../LandmarksList/LandmarksList';
 
 const RegionViewer = (props) => {
 
@@ -28,27 +29,20 @@ const RegionViewer = (props) => {
                         shape="pill"
                         onClick={goHome}
                     >
-                    <span class="material-icons">home</span>
+                    <span className="material-icons">home</span>
                     </WButton>
                     <WButton 
                         color="primary"
                         shape="pill"
                         onClick={returnToSpreadsheet}
                     >
-                    <span class="material-icons">arrow_back</span>
+                    <span className="material-icons">arrow_back</span>
                     </WButton>
                 </WCol>
             </WRow>
             <WRow>
-                <WCol size='6'>
-                    <img src={pic}></img>
-                </WCol>
-                <WCol size='6'>
-                    <h1>Region Landmarks: </h1>
-                </WCol>
-            </WRow>
-            <WRow>
                 <WCol size='6' className='region-data-titles'>
+                    <img src={pic}></img>
                     <div>
                         <span className='region-viewer-title'>Region Name: </span>
                         <span className='region-data'>{props.map.name}</span>
@@ -71,7 +65,10 @@ const RegionViewer = (props) => {
                     </div>
                 </WCol>
                 <WCol size='6'>
-
+                    <h1 id="region-landmark-title">Region Landmarks: </h1>
+                    <div id='landmark-list'>
+                        <LandmarksList map={props.map}/>
+                    </div>
                 </WCol>
             </WRow>
         </div>

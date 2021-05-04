@@ -44,8 +44,8 @@ const MapEntry = (props) => {
                     }
                 </WCol>
                 <WCol size="6">
-                    <span onClick={() => {toggleEditingMapName(!editingMapName)}}class="material-icons edit-button">edit</span>
-                    <span onClick={handleDeleteMap}class="material-icons delete-button">delete</span>
+                    <span onClick={() => {toggleEditingMapName(!editingMapName)}}className="material-icons edit-button">edit</span>
+                    <span onClick={handleDeleteMap}className="material-icons delete-button">delete</span>
                 </WCol>
             </WRow>
         </div>

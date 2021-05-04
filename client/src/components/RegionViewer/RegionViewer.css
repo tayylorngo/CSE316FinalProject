@@ -38,3 +38,14 @@
     margin-bottom: 5%;
     text-align: left;
 }
+
+#landmark-list{
+    color: white;
+    height: 800px;
+    border: solid 1px black;
+    background-color: black;
+}
+
+#region-landmark-title{
+    color: white;
+}
