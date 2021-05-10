@@ -41,7 +41,7 @@ const MapSpreadsheet = (props) => {
 
     return(
         <div id="map-spreadsheet">
-            <div id="regionName"><span style={whiteColor}>Region Name: </span><span id="nameOfRegion" onClick={toggleShowRegionViewer}>{props.map.name}</span></div>
+            <div id="regionName"><span style={whiteColor}>Region Name: </span><span id="nameOfRegion">{props.map.name}</span></div>
             <WRow>
                 <WCol id="controls" size='2'>
                     <WButton 
@@ -91,6 +91,7 @@ const MapSpreadsheet = (props) => {
                         key={entry._id}
                         entry={entry}
                         handleSetActiveMap={props.setActiveMap}
+                        showRegionViewer={toggleShowRegionViewer}
                     />
                     )
                 )

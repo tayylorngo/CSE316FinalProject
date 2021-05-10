@@ -23,7 +23,7 @@ const RegionEntry = (props) => {
                 <WCol size="2" className="tableEntry flag">
                     <div className="entry-name">{props.entry._id}</div>
                 </WCol>
-                <WCol size="4" className="tableEntry landmarks">
+                <WCol size="4" className="tableEntry landmarks" onClick={props.showRegionViewer}>
                     <div className="entry-name">{props.entry.landmarks}</div>
                 </WCol>
             </WRow>
