@@ -2,11 +2,16 @@ import React from 'react';
 import './MapContents.css';
 import {WRow, WCol, WButton} from 'wt-frontend';
 import MapsList from '../MapsList/MapsList';
+import {Redirect} from 'react-router-dom';
 
 const MapContents = (props) => {
 
     const handleAddMap = () => {
         props.setShowNewMap();
+    }
+
+	if(!props.user){
+        return <Redirect to='/home'/>
     }
 
     return(

@@ -23,7 +23,7 @@ import MapContents from '../MapContents/MapContents';
 import MapSpreadsheet from '../MapSpreadsheet/MapSpreadsheet';
 import RegionViewer from '../RegionViewer/RegionViewer';
 import './Homescreen.css';
-import {Route, useHistory, Switch} from 'react-router-dom';
+import {Route, useHistory, Switch, Redirect} from 'react-router-dom';
 import AddNewMap from '../modals/AddNewMap';
 
 const Homescreen = (props) => {
@@ -47,9 +47,7 @@ const Homescreen = (props) => {
 	let todolists 	= [];
 	let regions = [];
 	let maps = [];
-	let activeSubregions = [];
 
-	const [activeMap, setActiveMap] 		  = useState({});
 	const [mapToBeDeleted, setMapToBeDeleted] = useState({});
 
 	let SidebarData = [];
@@ -237,15 +235,7 @@ const Homescreen = (props) => {
 	};
 
 	const handleSetActiveMap = (_id) => {
-		const selectedMap = maps.find(map => map._id === _id);
 		history.push('/maps/' + _id);
-		// loadMap(selectedMap);
-	}
-
-	const handleSetActiveRegion = (_id) => {
-		let selectedRegion = regions.find(region => region._id === _id);
-		if(selectedRegion === undefined) selectedRegion = {}
-		// loadMap(selectedRegion);
 	}
 
 	const handleSetMapToBeDeleted = (_id) => {
@@ -300,21 +290,6 @@ const Homescreen = (props) => {
 
 	const history = useHistory();
 
-	useEffect(() => {
-		// if(!props.user){
-		// 	history.push('/home');
-		// }
-		// if(props.user){
-		// 	history.push('/maps');
-		// }
-		// if(props.user && Object.keys(activeMap).length === 0){
-		// 	history.push('/maps');
-		// }
-		// if(props.user && Object.keys(activeMap).length !== 0){
-		// 	history.push('/maps/' + activeMap._id);
-		// }
-	});
-
 	return (
 		<WLayout wLayout="header">
 			<WLHeader>
@@ -331,6 +306,7 @@ const Homescreen = (props) => {
 							setShowUpdate={setShowUpdate}
 							reloadMaps={refetch} 			setActiveList={loadTodoList}
 							user={props.user}
+							history={history}
 						/>
 					</ul>
 				</WNavbar>
@@ -342,7 +318,7 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showLogin && (<Login fetchUser={props.fetchUser} reloadMaps={refetch}setShowLogin={setShowLogin}/>)
+					showLogin && (<Login fetchUser={props.fetchUser} reloadMaps={refetch}setShowLogin={setShowLogin} history={history}/>)
 				}
 
 				{
@@ -360,7 +336,9 @@ const Homescreen = (props) => {
 				<Switch>
 					<Route exact path="/home" render={() => 
 						<WLMain id="main-page">
-						 	<Welcome/>
+						 	<Welcome
+								user={props.user}
+							 />
 						</WLMain>
 					}/>
 					<Route exact path="/maps" render={() =>
@@ -372,15 +350,13 @@ const Homescreen = (props) => {
 								setShowNewMap={setShowNewMap} 
 								editMapName={editMapName}
 								handleSetActive={handleSetActiveMap}
+								user={props.user}
 								/>
 						</WLMain>
 					} />
 					<Route path="/maps/:id" render={() =>
 						<WLMain id="main-page">
 							<MapSpreadsheet
-								map={activeMap}
-								activeSubregions={activeSubregions}
-								setActiveMap={handleSetActiveRegion}
 								history={history}
 								user={props.user}
 							/> 	
@@ -389,9 +365,7 @@ const Homescreen = (props) => {
 					<Route exact path='/viewer/:id' render={() => 
                         <WLMain id="main-page">
 							<RegionViewer
-            					map={activeMap}
 								history={history}
-								setActiveMap={handleSetActiveRegion}
         					/>    	
 						</WLMain>
                 	}/>

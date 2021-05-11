@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import './MapSpreadsheet.css';
 import {WRow, WCol, WButton} from 'wt-frontend';
 import RegionEntry from '../RegionEntry/RegionEntry';
-import {Switch, Route, useParams} from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
 import * as mutations 					from '../../cache/mutations';
@@ -20,7 +20,6 @@ const MapSpreadsheet = (props) => {
     let activeRegion = {};
     let subregions = [];
 
-    const [showRegionViewer, toggleShowRegionViewer] = useState(false);
     const {id} = useParams();
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_REGIONS);
@@ -87,10 +86,6 @@ const MapSpreadsheet = (props) => {
         marginRight: "0.5%"
     }
 
-    if(showRegionViewer && props.map){
-        props.history.push("/viewer/" + props.map._id);
-    }
-
     return(
         <div id="map-spreadsheet">
             <div id="regionName"><span style={whiteColor}>Region Name: </span><span id="nameOfRegion">{activeRegion.name}</span></div>
@@ -143,7 +138,8 @@ const MapSpreadsheet = (props) => {
                         key={entry._id}
                         entry={entry}
                         handleSetActiveMap={setOtherRegion}
-                        showRegionViewer={toggleShowRegionViewer}
+                        activeRegion={activeRegion}
+                        history={props.history}
                     />
                     )
                 )

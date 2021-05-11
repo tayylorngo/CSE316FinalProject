@@ -8,6 +8,10 @@ const RegionEntry = (props) => {
         props.handleSetActiveMap(props.entry._id);
     }
 
+    const openRegionViewer = () => {
+        props.history.push("/viewer/" + props.activeRegion._id);
+    }
+
     return(
         <div>
             <WRow>
@@ -23,7 +27,7 @@ const RegionEntry = (props) => {
                 <WCol size="2" className="tableEntry flag">
                     <div className="entry-name">{props.entry._id}</div>
                 </WCol>
-                <WCol size="4" className="tableEntry landmarks" onClick={props.showRegionViewer}>
+                <WCol size="4" className="tableEntry landmarks" onClick={openRegionViewer}>
                     <div className="entry-name">{props.entry.landmarks}</div>
                 </WCol>
             </WRow>
