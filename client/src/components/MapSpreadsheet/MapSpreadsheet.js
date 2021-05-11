@@ -86,8 +86,8 @@ const MapSpreadsheet = (props) => {
         marginRight: "0.5%"
     }
 
-    if(!props.user){
-        return <Redirect to='/home'/>;
+    if(!loading && Object.keys(activeRegion).length === 0){
+        return <Redirect to='/home'/>
     }
 
     return(

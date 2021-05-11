@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './RegionViewer.css';
 import {WRow, WCol, WButton} from 'wt-frontend';
 import LandmarksList from '../LandmarksList/LandmarksList';
-import {useParams} from 'react-router-dom';
+import {useParams, Redirect} from 'react-router-dom';
 import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
 
@@ -38,6 +38,10 @@ const RegionViewer = (props) => {
 
     const returnToSpreadsheet = () => {
         props.history.push('/maps/' + activeRegion._id);
+    }
+
+    if(!loading && Object.keys(activeRegion).length === 0){
+        return <Redirect to='/home'/>
     }
 
     return(
