@@ -5,7 +5,8 @@ import { useMutation }    	from '@apollo/client';
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
 const UpdateAccount= (props) => {
-	const [input, setInput] = useState({ email: '', password: '', name: ''});
+	const [input, setInput] = useState({ email: props.user.email, password: props.user.password, name:  props.user.name});
+
 	const [loading, toggleLoading] = useState(false);
 	const [Update] = useMutation(UPDATE_ACCOUNT);
 
@@ -27,16 +28,22 @@ const UpdateAccount= (props) => {
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
 		if (data) {
-			console.log(data)
-			toggleLoading(false);
-			props.fetchUser();
-			props.setShowCreate(false);
+			if(data.update.email === 'already exists') {
+				alert('User with that email already registered');
+				props.setShowUpdate(false);
+			}
+			else{
+				console.log(data)
+				toggleLoading(false);
+				props.fetchUser();
+				props.setShowUpdate(false);
+			}
 		};
 	};
 
 	return (
-		<WModal className="signup-modal"  cover="true" visible={props.setShowCreate}>
-			<WMHeader  className="modal-header" onClose={() => props.setShowCreate(false)}>
+		<WModal className="signup-modal"  cover="true" visible={props.setShowUpdate}>
+			<WMHeader  className="modal-header" onClose={() => props.setShowUpdate(false)}>
 				Enter Updated Account Information
 			</WMHeader>
 

@@ -327,7 +327,7 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowCreate={setShowUpdate} user={props.user} />)
+					showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} user={props.user} />)
 				}
 
 				{

@@ -36,7 +36,6 @@ const CreateAccount = (props) => {
 				props.fetchUser();
 			}
 			props.setShowCreate(false);
-
 		};
 	};
 
@@ -56,12 +55,6 @@ const CreateAccount = (props) => {
 										barAnimation="solid" labelText="Name" wType="outlined" inputType="text" 
 									/>
 								</WCol>
-								{/* <WCol size="6">
-									<WInput 
-										className="" onBlur={updateInput} name="lastName" labelAnimation="up" 
-										barAnimation="solid" labelText="Last Name" wType="outlined" inputType="text" 
-									/>
-								</WCol> */}
 							</WRow>
 
 							<div className="modal-spacer">&nbsp;</div>
