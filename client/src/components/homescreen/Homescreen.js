@@ -76,16 +76,6 @@ const Homescreen = (props) => {
 				maps.push(region);
 			}
 		}
-		if(Object.keys(activeMap).length !== 0){
-			let subregions = activeMap.subregions;
-			subregions.forEach((subregion) => {
-				regions.forEach((region) => {
-					if(subregion === region._id){
-						activeSubregions.push(region);
-					}
-				});
-			});
-		}
 	}
 
 	// NOTE: might not need to be async
@@ -97,13 +87,13 @@ const Homescreen = (props) => {
 		}
 	}
 
-	const reloadMap = async () => {
-		if(activeMap._id){
-			let tempID = activeMap._id;
-			let map = regions.find(map => map._id === tempID);
-			setActiveMap(map);
-		}
-	}
+	// const reloadMap = async () => {
+	// 	if(activeMap._id){
+	// 		let tempID = activeMap._id;
+	// 		let map = regions.find(map => map._id === tempID);
+	// 		setActiveMap(map);
+	// 	}
+	// }
 
 	const loadTodoList = (list) => {
 		props.tps.clearAllTransactions();
@@ -112,9 +102,9 @@ const Homescreen = (props) => {
 		setActiveList(list);
 	}
 
-	const loadMap = (map) => {
-		setActiveMap(map);
-	}
+	// const loadMap = (map) => {
+	// 	setActiveMap(map);
+	// }
 
 	const loadMapToBeDeleted = (map) => {
 		setMapToBeDeleted(map);
@@ -123,7 +113,7 @@ const Homescreen = (props) => {
 	const mutationOptions = {
 		refetchQueries: [{ query: GET_DB_REGIONS }], 
 		awaitRefetchQueries: true,
-		onCompleted: () => reloadMap()
+		// onCompleted: () => reloadMap()
 	}
 
 	const [ReorderTodoItems] 		= useMutation(mutations.REORDER_ITEMS, mutationOptions);
@@ -137,9 +127,7 @@ const Homescreen = (props) => {
 
 	const [AddMap] 					= useMutation(mutations.ADD_MAP, mutationOptions);
 	const [DeleteMap]				= useMutation(mutations.DELETE_MAP, mutationOptions);
-	const [AddRegion] 				= useMutation(mutations.ADD_REGION, mutationOptions);
 	const [EditMapName]				= useMutation(mutations.EDIT_MAP_NAME, mutationOptions);
-
 
 	const tpsUndo = async () => {
 		const ret = await props.tps.undoTransaction();
@@ -155,23 +143,6 @@ const Homescreen = (props) => {
 			setCanUndo(props.tps.hasTransactionToUndo());
 			setCanRedo(props.tps.hasTransactionToRedo());
 		}
-	}
-
-	const addRegion = async () => {
-		let currMap = activeMap;
-		let newRegion = {
-			_id: '',
-			owner: props.user._id,
-			name: "Untitled Region",
-			capital: "None",
-			leader: "None",
-			parentRegion: currMap._id,
-			subregions: [],
-			landmarks: []
-		};
-		let index = currMap.subregions.length;
-		AddRegion({variables: {region: newRegion, _id: currMap._id, index: index}, refetchQueries: [{query: GET_DB_REGIONS}]});
-		// handleSetActiveMap(currMap._id);
 	}
 
 	const addItem = async () => {
@@ -267,13 +238,14 @@ const Homescreen = (props) => {
 
 	const handleSetActiveMap = (_id) => {
 		const selectedMap = maps.find(map => map._id === _id);
-		loadMap(selectedMap);
+		history.push('/maps/' + _id);
+		// loadMap(selectedMap);
 	}
 
 	const handleSetActiveRegion = (_id) => {
 		let selectedRegion = regions.find(region => region._id === _id);
 		if(selectedRegion === undefined) selectedRegion = {}
-		loadMap(selectedRegion);
+		// loadMap(selectedRegion);
 	}
 
 	const handleSetMapToBeDeleted = (_id) => {
@@ -329,15 +301,18 @@ const Homescreen = (props) => {
 	const history = useHistory();
 
 	useEffect(() => {
-		if(!props.user){
-			history.push('/home');
-		}
-		if(props.user && Object.keys(activeMap).length === 0){
-			history.push('/maps');
-		}
-		if(props.user && Object.keys(activeMap).length !== 0){
-			history.push('/maps/' + activeMap._id);
-		}
+		// if(!props.user){
+		// 	history.push('/home');
+		// }
+		// if(props.user){
+		// 	history.push('/maps');
+		// }
+		// if(props.user && Object.keys(activeMap).length === 0){
+		// 	history.push('/maps');
+		// }
+		// if(props.user && Object.keys(activeMap).length !== 0){
+		// 	history.push('/maps/' + activeMap._id);
+		// }
 	});
 
 	return (
@@ -404,10 +379,10 @@ const Homescreen = (props) => {
 						<WLMain id="main-page">
 							<MapSpreadsheet
 								map={activeMap}
-								addRegion={addRegion}
 								activeSubregions={activeSubregions}
 								setActiveMap={handleSetActiveRegion}
 								history={history}
+								user={props.user}
 							/> 	
 						</WLMain>
 					}/>
