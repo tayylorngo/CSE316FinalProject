@@ -81,7 +81,7 @@ const RegionViewer = (props) => {
                     </div>
                     <div>
                         <span className='region-viewer-title'># Of Sub Regions: </span>
-                        <span className='region-data'>{activeRegion.subregions.length}</span>
+                        <span className='region-data'>{subregions.length}</span>
                     </div>
                 </WCol>
                 <WCol size='6'>
