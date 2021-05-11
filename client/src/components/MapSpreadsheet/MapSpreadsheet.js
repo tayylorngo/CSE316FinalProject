@@ -86,6 +86,10 @@ const MapSpreadsheet = (props) => {
         marginRight: "0.5%"
     }
 
+    if(!props.user){
+        return <Redirect to='/home'/>;
+    }
+
     return(
         <div id="map-spreadsheet">
             <div id="regionName"><span style={whiteColor}>Region Name: </span><span id="nameOfRegion">{activeRegion.name}</span></div>
