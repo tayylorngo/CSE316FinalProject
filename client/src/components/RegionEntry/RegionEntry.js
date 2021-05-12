@@ -45,14 +45,20 @@ const RegionEntry = (props) => {
                 <WCol size="2" className="tableEntry subregion-name">
                     {!editingName ? 
                             <div className="entry-name" onDoubleClick={() => {toggleEditingName(!editingName)}}>
-                                <span className='deleteButton'>
-                                    <button onClick={handleDelete}>
-                                        X
-                                    </button>
-                                </span>
-                                <span className="region-name" onClick={openNewRegion}> 
-                                    {props.entry.name}
-                                </span>
+                                <WRow>
+                                    <WCol size='1'>
+                                        <button onClick={handleDelete} className='deleteButton'>
+                                            <span className='material-icons'>
+                                                close
+                                            </span>
+                                        </button>
+                                    </WCol>
+                                    <WCol size='11'>
+                                        <span className="region-name" onClick={openNewRegion}> 
+                                            {props.entry.name}
+                                        </span>
+                                    </WCol>
+                                </WRow>
                             </div>
                             : 
                         <div>

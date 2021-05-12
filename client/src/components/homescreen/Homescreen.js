@@ -290,14 +290,13 @@ const Homescreen = (props) => {
 
 	const history = useHistory();
 
-
 	return (
 		<WLayout wLayout="header">
 			<WLHeader>
 				<WNavbar color="colored">
 					<ul>
 						<WNavItem>
-							<Logo className='logo' />
+							<Logo className='logo' history={history} />
 						</WNavItem>
 					</ul>
 					<ul>

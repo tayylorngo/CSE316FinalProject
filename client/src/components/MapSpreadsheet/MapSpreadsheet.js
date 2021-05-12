@@ -103,13 +103,6 @@ const MapSpreadsheet = (props) => {
             <WRow>
                 <WCol id="controls" size='2'>
                     <WButton 
-                        onClick={goHome}
-                        color="primary"
-                        shape="pill"
-                    >
-                        <span className="material-icons">home</span>
-                    </WButton>
-                    <WButton 
                         onClick={addRegion}
                         color="primary"
                         shape="pill"

@@ -35,12 +35,25 @@
     margin-top: 2%;
 }
 
+.region-name{
+    margin-right: 8%;
+}
+
 .region-name:hover{
     color: yellow;
 }
 
 .deleteButton{
+    background-color: transparent;
+    color: red;
+    border: none;
     margin-bottom: 2%;
+    cursor: pointer;
+}
+
+.deleteButton:hover{
+    color: white;
+    background-color: red;
 }
 
 .name-input{
