@@ -42,3 +42,11 @@
 .deleteButton{
     margin-bottom: 2%;
 }
+
+.name-input{
+    width: fit-content;
+    margin-left: 20%;
+    margin-top: 1%;
+    outline: none;
+    background-color: transparent;
+}
