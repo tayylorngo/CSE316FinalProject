@@ -35,3 +35,17 @@
 #nameOfRegion:hover{
     color: darkblue;
 }
+
+.marginTop{
+    margin-top: 2.3%;
+}
+
+.marginTop2{
+    margin-top: 1.4%;
+}
+
+.whiteColor{ 
+    color: white;
+    font-size: 2rem;
+    margin-right: 0.5%;
+}

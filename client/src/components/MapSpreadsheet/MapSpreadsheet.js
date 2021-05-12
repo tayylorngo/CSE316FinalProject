@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import './MapSpreadsheet.css';
 import {WRow, WCol, WButton} from 'wt-frontend';
 import RegionEntry from '../RegionEntry/RegionEntry';
@@ -6,6 +6,7 @@ import { Redirect, useParams } from 'react-router-dom';
 import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
 import * as mutations 					from '../../cache/mutations';
+import DeleteSubregion from '../modals/DeleteSubregion';
 
 const MapSpreadsheet = (props) => {
 
@@ -16,6 +17,10 @@ const MapSpreadsheet = (props) => {
 	}
 
     const [AddRegion] 				= useMutation(mutations.ADD_REGION, mutationOptions);
+    const [DeleteRegion]            = useMutation(mutations.DELETE_REGION, mutationOptions);
+
+    const [showDelete, toggleShowDelete] = useState(false);
+    const [regionToBeDeleted, setRegionToBeDeleted] = useState({});
 
     let activeRegion = {};
     let subregions = [];
@@ -52,7 +57,18 @@ const MapSpreadsheet = (props) => {
 			landmarks: []
 		};
 		let index = currMap.subregions.length;
-		AddRegion({variables: {region: newRegion, _id: currMap._id, index: index}, refetchQueries: [{query: GET_DB_REGIONS}]});
+		await AddRegion({variables: {region: newRegion, _id: currMap._id, index: index}, refetchQueries: [{query: GET_DB_REGIONS}]});
+    }
+
+    const deleteRegion = async (_id) => {
+        await DeleteRegion({variables: {_id: _id}, refetchQueries: [{query: GET_DB_REGIONS}]});
+        setRegionToBeDeleted({});
+    }
+
+    const handleSetRegionToBeDeleted = (_id) => {
+        toggleShowDelete(true);
+        const selectedRegion = subregions.find(region => region._id === _id);
+        setRegionToBeDeleted(selectedRegion);
     }
 
     const goHome = () => {
@@ -72,27 +88,13 @@ const MapSpreadsheet = (props) => {
         props.history.push('/maps/' + _id);
     }
 
-    const marginTop = {
-        marginTop: "2.3%"
-    }
-
-    const marginTop2 = {
-        marginTop: "1.4%"
-    }
-
-    const whiteColor = {
-        color: "white",
-        fontSize: "2rem",
-        marginRight: "0.5%"
-    }
-
     if(!loading && Object.keys(activeRegion).length === 0){
         return <Redirect to='/home'/>
     }
 
     return(
         <div id="map-spreadsheet">
-            <div id="regionName"><span style={whiteColor}>Region Name: </span><span id="nameOfRegion">{activeRegion.name}</span></div>
+            <div id="regionName"><span className="whiteColor">Region Name: </span><span id="nameOfRegion">{activeRegion.name}</span></div>
             <WRow>
                 <WCol id="controls" size='2'>
                     <WButton 
@@ -120,19 +122,19 @@ const MapSpreadsheet = (props) => {
             </WRow>
             <WRow>
                 <WCol size="2" className="table-heading">
-                    <div style={marginTop}>Name</div>
+                    <div className='marginTop'>Name</div>
                 </WCol>
                 <WCol size="2" className="table-heading">
-                <div style={marginTop}>Capital</div>
+                <div className='marginTop'>Capital</div>
                 </WCol>
                 <WCol size="2" className="table-heading">
-                <div style={marginTop}>Leader</div>
+                <div className='marginTop'>Leader</div>
                 </WCol>
                 <WCol size="2" className="table-heading">
-                <div style={marginTop}>Flag</div>
+                <div className='marginTop'>Flag</div>
                 </WCol>
                 <WCol size="4" className="table-heading">
-                <div style={marginTop2}>Landmarks</div>
+                <div className='marginTop2'>Landmarks</div>
                 </WCol>
             </WRow>
             {
@@ -144,10 +146,17 @@ const MapSpreadsheet = (props) => {
                         handleSetActiveMap={setOtherRegion}
                         activeRegion={activeRegion}
                         history={props.history}
+                        handleDeleteRegion={handleSetRegionToBeDeleted}
                     />
                     )
                 )
             }
+            {showDelete ? <DeleteSubregion 
+                            showDelete={showDelete} 
+                            toggleShowDelete={toggleShowDelete}
+                            deleteRegion={deleteRegion}
+                            regionToBeDeleted={regionToBeDeleted}
+                            /> : null}
         </div>
     );
 }

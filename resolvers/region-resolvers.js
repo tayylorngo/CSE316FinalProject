@@ -76,6 +76,29 @@ module.exports = {
 				return false;
 			}
 		},
+		deleteRegion: async(_, args) => {
+			const { _id } = args;
+			const objectId = new ObjectId(_id);
+			const found = await Region.findOne({_id: objectId});
+			if(found.parentRegion !== 'none'){
+				const parentId = new ObjectId(found.parentRegion);
+				const foundParent = await Region.findOne({_id: parentId});
+				let subregions = foundParent.subregions;
+				for(let i = 0; i < subregions.length; i++){
+					if(subregions[i] === _id){
+						subregions.splice(i, 1);
+					}
+				}
+				await Region.updateOne({_id: parentId}, {subregions: subregions});
+			}
+			const deleted = await Region.deleteOne({_id: objectId});
+			if(deleted){
+				return true;
+			}
+			else{
+				return false;
+			}
+		},
 		editMapName: async(_, args) => {
 			const {_id, name} = args;
 			const objectId = new ObjectId(_id);

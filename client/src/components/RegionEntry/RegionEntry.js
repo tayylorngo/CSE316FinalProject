@@ -1,6 +1,6 @@
 import React from 'react';
 import './RegionEntry.css';
-import {WRow, WCol} from 'wt-frontend';
+import {WRow, WCol, WButton} from 'wt-frontend';
 
 const RegionEntry = (props) => {
 
@@ -12,11 +12,24 @@ const RegionEntry = (props) => {
         props.history.push("/viewer/" + props.activeRegion._id);
     }
 
+    const handleDelete = () => {
+        props.handleDeleteRegion(props.entry._id);
+    }
+
     return(
         <div>
             <WRow>
                 <WCol size="2" className="tableEntry subregion-name">
-                    <div className="entry-name region-name" onClick={openNewRegion}>{props.entry.name}</div>
+                    <div className="entry-name">
+                        <span className='deleteButton'>
+                            <button onClick={handleDelete}>
+                                X
+                            </button>
+                        </span>
+                        <span className="region-name" onClick={openNewRegion}> 
+                            {props.entry.name}
+                        </span>
+                    </div>
                 </WCol>
                 <WCol size="2" className="tableEntry capital-name">
                     <div className="entry-name">{props.entry.capital}</div>

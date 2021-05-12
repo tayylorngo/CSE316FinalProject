@@ -335,6 +335,7 @@ const Homescreen = (props) => {
 				}
 			</WLMain>
 				<Switch>
+					<Redirect exact from="/" to={ {pathname: "/home"} } />
 					<Route exact path="/home" render={() => 
 						<WLMain id="main-page">
 						 	<Welcome
