@@ -20,15 +20,18 @@ const RegionEntry = (props) => {
         props.handleDeleteRegion(props.entry._id);
     }
 
-    const handleEditName = () => {
+    const handleEditName = (e) => {
+        props.updateRegion(props.entry._id, 'name', e.target.value);
         toggleEditingName(!editingName);
     }
 
-    const handleEditCapital = () => {
+    const handleEditCapital = (e) => {
+        props.updateRegion(props.entry._id, 'capital', e.target.value);
         toggleEditingCapital(!editingCapital);
     }
 
-    const handleEditLeader = () => {
+    const handleEditLeader = (e) => {
+        props.updateRegion(props.entry._id, 'leader', e.target.value);
         toggleEditingLeader(!editingLeader);
     }
 
@@ -41,7 +44,7 @@ const RegionEntry = (props) => {
             <WRow>
                 <WCol size="2" className="tableEntry subregion-name">
                     {!editingName ? 
-                            <div className="entry-name" onDoubleClick={handleEditName}>
+                            <div className="entry-name" onDoubleClick={() => {toggleEditingName(!editingName)}}>
                                 <span className='deleteButton'>
                                     <button onClick={handleDelete}>
                                         X
@@ -67,7 +70,7 @@ const RegionEntry = (props) => {
                 </WCol>
                 <WCol size="2" className="tableEntry capital-name">
                     {!editingCapital ? 
-                        <div className="entry-name" onDoubleClick={handleEditCapital}>
+                        <div className="entry-name" onDoubleClick={() => {toggleEditingCapital(!editingCapital)}}>
                             {props.entry.capital}
                         </div> :
                     <div>
@@ -85,7 +88,7 @@ const RegionEntry = (props) => {
                 </WCol>
                 <WCol size="2" className="tableEntry leader-name">
                     {!editingLeader ? 
-                        <div className="entry-name" onDoubleClick={handleEditLeader}>
+                        <div className="entry-name" onDoubleClick={() => {toggleEditingLeader(!editingLeader)}}>
                             {props.entry.leader}
                         </div> : 
                         <div>

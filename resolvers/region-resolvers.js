@@ -104,6 +104,20 @@ module.exports = {
 			const objectId = new ObjectId(_id);
 			await Region.updateOne({_id: objectId}, {name: name});
 			return "YO";
+		},
+		updateRegion: async(_, args) => {
+			const {_id, field, value} = args;
+			const objectId = new ObjectId(_id);
+			if(field === 'name'){
+				await Region.updateOne({_id: objectId}, {name: value});
+			}
+			else if(field === 'capital'){
+				await Region.updateOne({_id: objectId}, {capital: value});
+			}
+			else if(field === 'leader'){
+				await Region.updateOne({_id: objectId}, {leader: value});
+			}
+			return value;
 		}
 	}
 }

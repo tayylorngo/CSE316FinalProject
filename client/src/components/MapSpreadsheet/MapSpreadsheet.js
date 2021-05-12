@@ -18,6 +18,7 @@ const MapSpreadsheet = (props) => {
 
     const [AddRegion] 				= useMutation(mutations.ADD_REGION, mutationOptions);
     const [DeleteRegion]            = useMutation(mutations.DELETE_REGION, mutationOptions);
+    const [UpdateRegion]            = useMutation(mutations.UPDATE_REGION, mutationOptions);
 
     const [showDelete, toggleShowDelete] = useState(false);
     const [regionToBeDeleted, setRegionToBeDeleted] = useState({});
@@ -63,6 +64,10 @@ const MapSpreadsheet = (props) => {
     const deleteRegion = async (_id) => {
         await DeleteRegion({variables: {_id: _id}, refetchQueries: [{query: GET_DB_REGIONS}]});
         setRegionToBeDeleted({});
+    }
+
+    const updateRegion = async (_id, field, value) => {
+        await UpdateRegion({variables: {_id: _id, field: field, value: value}, refetchQueries: [{query: GET_DB_REGIONS}]});
     }
 
     const handleSetRegionToBeDeleted = (_id) => {
@@ -147,6 +152,7 @@ const MapSpreadsheet = (props) => {
                         activeRegion={activeRegion}
                         history={props.history}
                         handleDeleteRegion={handleSetRegionToBeDeleted}
+                        updateRegion={updateRegion}
                     />
                     )
                 )

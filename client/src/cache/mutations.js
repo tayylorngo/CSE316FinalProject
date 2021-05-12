@@ -66,6 +66,12 @@ export const DELETE_MAP = gql`
 	}
 `;
 
+export const UPDATE_REGION = gql`
+	mutation UpdateRegion($_id: String!, $field: String!, $value: String!){
+		updateRegion(_id: $_id, field: $field, value: $value)
+	}
+`;
+
 export const EDIT_MAP_NAME = gql`
 	mutation EditMapName($_id: String!, $name: String!){
 		editMapName(_id: $_id, name: $name)
