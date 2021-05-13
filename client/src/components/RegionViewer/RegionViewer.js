@@ -53,6 +53,11 @@ const RegionViewer = (props) => {
                 return a.toLowerCase().localeCompare(b.toLowerCase());
             });
         }
+        if(Object.keys(parentRegion).length === 0){
+            parentRegion = {
+                name: 'none'
+            }
+        }
     }
 
     const [landmarkToBeAdded, setLandmarkToBeAdded] = useState('');
@@ -157,7 +162,9 @@ const RegionViewer = (props) => {
                         <div>
                             <span className='region-viewer-title'>Parent Region: </span>
                             <span className='region-data' id="parent-region-style">{parentRegion.name}</span>
-                            <span className='material-icons edit-parent-region' onClick={() => toggleEditingParentRegion(true)}>edit</span>  
+                            {parentRegion.name !== 'none' ? 
+                                <span className='material-icons edit-parent-region' onClick={() => toggleEditingParentRegion(true)}>edit</span> 
+                            : null}
                         </div> : 
                         <div>
                             <WInput 
