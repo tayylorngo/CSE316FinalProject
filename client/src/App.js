@@ -3,7 +3,7 @@ import Homescreen 		from './components/homescreen/Homescreen';
 import { useQuery } 	from '@apollo/client';
 import * as queries 	from './cache/queries';
 import { jsTPS } 		from './utils/jsTPS';
-import { BrowserRouter, Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { BrowserRouter, withRouter } from 'react-router-dom';
  
 const App = () => {
 	let user = null;

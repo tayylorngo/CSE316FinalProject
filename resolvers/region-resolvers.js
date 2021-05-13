@@ -145,6 +145,19 @@ module.exports = {
 			else{
 				return false;
 			}
+		},
+		editLandmark: async(_, args) => {
+			const {_id, newLandmark, prevLandmark} = args;
+			const objectId = new ObjectId(_id);
+			const found = await Region.findOne({_id: objectId});
+			let landmarks = found.landmarks;
+			for(let i = 0; i < landmarks.length; i++){
+				if(landmarks[i] === prevLandmark){
+					landmarks[i] = newLandmark;
+				}
+			}
+			await Region.updateOne({_id: objectId}, {landmarks: landmarks});
+			return newLandmark;
 		}
 	}
 }

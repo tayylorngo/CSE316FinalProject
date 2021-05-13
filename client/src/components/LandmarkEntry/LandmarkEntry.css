@@ -29,3 +29,8 @@
     background-color: transparent;
     cursor: default;
 }
+
+.landmark-input{
+    width: 80%;
+    margin-left: 5%;
+}

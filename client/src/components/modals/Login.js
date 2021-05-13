@@ -19,7 +19,7 @@ const Login = (props) => {
 
 	const handleLogin = async (e) => {
 
-		const { loading, error, data } = await Login({ variables: { ...input } });
+		const { loading, data } = await Login({ variables: { ...input } });
 		if (loading) { toggleLoading(true) };
 		if (data.login._id === null) {
 			displayErrorMsg(true);

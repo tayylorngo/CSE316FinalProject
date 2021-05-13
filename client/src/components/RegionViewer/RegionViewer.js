@@ -18,7 +18,7 @@ const RegionViewer = (props) => {
 
     const {id} = useParams();
 
-	const { loading, error, data, refetch } = useQuery(GET_DB_REGIONS);
+	const { loading, error, data } = useQuery(GET_DB_REGIONS);
     if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
     if(data){
@@ -42,7 +42,9 @@ const RegionViewer = (props) => {
                 defaultAllLandmarks = [...defaultAllLandmarks, (landmark)];
             }
         }
-        landmarks.sort();
+        landmarks.sort(function (a, b) {
+            return a.toLowerCase().localeCompare(b.toLowerCase());
+        });
     }
 
     const [landmarkToBeAdded, setLandmarkToBeAdded] = useState('');
@@ -57,6 +59,7 @@ const RegionViewer = (props) => {
 
     const [AddLandmark] 				= useMutation(mutations.ADD_LANDMARK, mutationOptions);
     const [DeleteLandmark]              = useMutation(mutations.DELETE_LANDMARK, mutationOptions);
+    const [EditLandmark]                = useMutation(mutations.EDIT_LANDMARK, mutationOptions);
 
     const pic = 'https://cdn11.bigcommerce.com/s-kh80nbh17m/images/stencil/1280x1280/products/8349/36571/352BB113-139F-4718-A609-46F63A57B849-xl__41206.1561690686.1280.1280__08270.1574698216.jpg?c=2';
 
@@ -96,6 +99,11 @@ const RegionViewer = (props) => {
         setLandmarkToBeDeleted('');
     }
 
+    const editLandmark = async (newLandmark, prevLandmark) => {
+        await EditLandmark({variables: {_id: activeRegion._id, newLandmark: newLandmark, prevLandmark: prevLandmark}
+            ,refetchQueries: [{query: GET_DB_REGIONS}]});
+    }
+
     return(
         <div className='region-viewer'>
             <WRow>
@@ -111,7 +119,7 @@ const RegionViewer = (props) => {
             </WRow>
             <WRow>
                 <WCol size='6' className='region-data-titles'>
-                    <img src={pic}></img>
+                    <img src={pic} alt='pic'></img>
                     <div>
                         <span className='region-viewer-title'>Region Name: </span>
                         <span className='region-data'>{activeRegion.name}</span>
@@ -142,6 +150,7 @@ const RegionViewer = (props) => {
                             activeLandmarks={activeRegionLandmarks}
                             deleteLandmark={deleteLandmark}
                             showDelete={handleDeleteLandmark}
+                            editLandmark={editLandmark}
                         />
                     </div>
                     <div>

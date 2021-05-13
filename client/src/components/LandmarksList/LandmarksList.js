@@ -1,7 +1,6 @@
 import React from 'react';
 import LandmarkEntry from '../LandmarkEntry/LandmarkEntry';
 import './LandmarksList.css';
-import {WInput} from 'wt-frontend';
 
 const LandmarksList = (props) => {
 
@@ -11,10 +10,12 @@ const LandmarksList = (props) => {
             props.landmarks &&
             props.landmarks.map(landmark => (
                 <LandmarkEntry
+                    key={landmark}
                     landmark={landmark}
                     activeRegionLandmarks={props.activeLandmarks}
                     deleteLandmark={props.deleteLandmark}
                     showDelete={props.showDelete}
+                    editLandmark={props.editLandmark}
                 />)
                 )
             }

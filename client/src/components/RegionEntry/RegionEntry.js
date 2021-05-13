@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './RegionEntry.css';
-import {WRow, WCol, WButton, WInput} from 'wt-frontend';
+import {WRow, WCol, WInput} from 'wt-frontend';
 
 const RegionEntry = (props) => {
 

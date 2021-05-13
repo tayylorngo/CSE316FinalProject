@@ -90,6 +90,12 @@ export const DELETE_LANDMARK = gql`
 	}
 `;
 
+export const EDIT_LANDMARK = gql`
+	mutation EditLandmark($_id: String!, $newLandmark: String!, $prevLandmark: String!){
+		editLandmark(_id: $_id, newLandmark: $newLandmark, prevLandmark: $prevLandmark)
+	}
+`;
+
 export const DELETE_ITEM = gql`
 	mutation DeleteItem($itemId: String!, $_id: String!) {
 		deleteItem(itemId: $itemId, _id: $_id) {
