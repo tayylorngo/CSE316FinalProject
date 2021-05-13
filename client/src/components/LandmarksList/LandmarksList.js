@@ -1,18 +1,18 @@
 import React from 'react';
 import LandmarkEntry from '../LandmarkEntry/LandmarkEntry';
 import './LandmarksList.css';
+import {WInput} from 'wt-frontend';
 
 const LandmarksList = (props) => {
 
     return(
         <div id='landmarks-list'>
             {
-                props.map.landmarks &&
-                props.map.landmarks.map(landmark => (
-                    <LandmarkEntry
-                        landmark={landmark}
-                    />
-                    )
+            props.map.landmarks &&
+            props.map.landmarks.map(landmark => (
+                <LandmarkEntry
+                    landmark={landmark}
+                />)
                 )
             }
         </div>

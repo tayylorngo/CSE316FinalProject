@@ -118,6 +118,15 @@ module.exports = {
 				await Region.updateOne({_id: objectId}, {leader: value});
 			}
 			return value;
+		},
+		addLandmark: async(_, args) => {
+			const {_id, name} = args;
+			const objectId = new ObjectId(_id);
+			const found = await Region.findOne({_id: objectId});
+			let landmarks = found.landmarks;
+			landmarks.push(name);
+			await Region.updateOne({_id: objectId}, {landmarks: landmarks});
+			return name;
 		}
 	}
 }

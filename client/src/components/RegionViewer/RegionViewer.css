@@ -49,3 +49,21 @@
 #region-landmark-title{
     color: white;
 }
+
+.landmark-input{
+    width: stretch;
+}
+
+.landmark-input-col{
+    height: stretch;
+}
+
+.landmark-input-col input {
+    height: stretch;
+}
+
+.add-landmark-button{
+    text-align: center;
+    width: stretch;
+    color: darkgreen;
+}

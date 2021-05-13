@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import './RegionViewer.css';
-import {WRow, WCol, WButton} from 'wt-frontend';
+import {WRow, WCol, WButton, WInput} from 'wt-frontend';
 import LandmarksList from '../LandmarksList/LandmarksList';
 import {useParams, Redirect} from 'react-router-dom';
 import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
+import * as mutations 					from '../../cache/mutations';
 
 const RegionViewer = (props) => {
 
@@ -30,11 +31,18 @@ const RegionViewer = (props) => {
 		}
     }
 
-    const pic = 'https://cdn11.bigcommerce.com/s-kh80nbh17m/images/stencil/1280x1280/products/8349/36571/352BB113-139F-4718-A609-46F63A57B849-xl__41206.1561690686.1280.1280__08270.1574698216.jpg?c=2';
+    const [landmarkToBeAdded, setLandmarkToBeAdded] = useState('');
 
-    const goHome = () => {
-        props.history.push('/maps');
-    }
+    const mutationOptions = {
+		refetchQueries: [{ query: GET_DB_REGIONS }], 
+		awaitRefetchQueries: true,
+		// onCompleted: () => reloadMap()
+	}
+
+    const [AddLandmark] 				= useMutation(mutations.ADD_LANDMARK, mutationOptions);
+
+
+    const pic = 'https://cdn11.bigcommerce.com/s-kh80nbh17m/images/stencil/1280x1280/products/8349/36571/352BB113-139F-4718-A609-46F63A57B849-xl__41206.1561690686.1280.1280__08270.1574698216.jpg?c=2';
 
     const returnToSpreadsheet = () => {
         props.history.push('/maps/' + activeRegion._id);
@@ -44,17 +52,23 @@ const RegionViewer = (props) => {
         return <Redirect to='/home'/>
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if(landmarkToBeAdded === ''){
+            return;
+        }
+		await AddLandmark({variables: {_id: activeRegion._id, name: landmarkToBeAdded}, refetchQueries: [{query: GET_DB_REGIONS}]});
+        setLandmarkToBeAdded('');
+    }
+
+    const handleChange = (e) => {
+        setLandmarkToBeAdded(e.target.value);
+    }
+
     return(
         <div className='region-viewer'>
             <WRow>
                 <WCol id="controls" size='2'>
-                    <WButton 
-                        color="primary"
-                        shape="pill"
-                        onClick={goHome}
-                    >
-                    <span className="material-icons">home</span>
-                    </WButton>
                     <WButton 
                         color="primary"
                         shape="pill"
@@ -92,6 +106,29 @@ const RegionViewer = (props) => {
                     <h1 id="region-landmark-title">Region Landmarks: </h1>
                     <div id='landmark-list'>
                         <LandmarksList map={activeRegion}/>
+                    </div>
+                    <div>
+                        <form id='landmark-form' onSubmit={handleSubmit}>
+                            <WRow>
+                                    <WCol size='1' className='landmark-input-col'>
+                                        <WButton
+                                            className='add-landmark-button'
+                                            type='submit'
+                                            form='landmark-form'
+                                        >
+                                            <span className='material-icons'>add</span>
+                                        </WButton>
+                                    </WCol>
+                                    <WCol size='11' className='landmark-input-col'>
+                                        <WInput
+                                            type='text'
+                                            className='landmark-input'
+                                            onChange={handleChange}
+                                            value={landmarkToBeAdded}
+                                        />
+                                    </WCol>
+                            </WRow>
+                        </form>
                     </div>
                 </WCol>
             </WRow>
