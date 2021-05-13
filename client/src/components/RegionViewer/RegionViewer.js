@@ -11,7 +11,9 @@ import * as mutations 					from '../../cache/mutations';
 const RegionViewer = (props) => {
 
     let activeRegion = {};
-    let parentRegion = {};
+    let parentRegion = {
+        subregions: []
+    };
     let subregions = [];
     let landmarks = [];
     let activeRegionLandmarks = [];
@@ -55,7 +57,7 @@ const RegionViewer = (props) => {
         }
         if(Object.keys(parentRegion).length === 0){
             parentRegion = {
-                name: 'none'
+                name: 'none',
             }
         }
     }
@@ -137,6 +139,30 @@ const RegionViewer = (props) => {
         toggleEditingParentRegion(false);
     }
 
+    const viewPreviousSibling = () => {
+        for(let i = 0; i < parentRegion.subregions.length; i++){
+            if(parentRegion.subregions[i] === activeRegion._id && parentRegion.subregions[i - 1] !== undefined){
+                props.history.push("/viewer/" + parentRegion.subregions[i - 1]);
+                break;
+            }
+            if(parentRegion.subregions[i] === activeRegion._id && parentRegion.subregions[i - 1] === undefined){
+                props.history.push("/viewer/" + parentRegion.subregions[parentRegion.subregions.length - 1]);
+            }
+        }
+    }
+
+    const viewNextSibling = () => {
+        for(let i = 0; i < parentRegion.subregions.length; i++){
+            if(parentRegion.subregions[i] === activeRegion._id && parentRegion.subregions[i + 1] !== undefined){
+                props.history.push("/viewer/" + parentRegion.subregions[i + 1]);
+                break;
+            }
+            if(parentRegion.subregions[i] === activeRegion._id && parentRegion.subregions[i + 1] === undefined){
+                props.history.push("/viewer/" + parentRegion.subregions[0]);
+            }
+        }
+    }
+
     return(
         <div className='region-viewer'>
             <WRow>
@@ -148,6 +174,42 @@ const RegionViewer = (props) => {
                     >
                     <span className="material-icons">menu</span>
                     </WButton>
+                    {
+                        parentRegion.subregions.length > 1 ?                     
+                        <WButton 
+                            color="primary"
+                            shape="pill"
+                            onClick={viewPreviousSibling}
+                        >
+                        <span className="material-icons">arrow_back</span>
+                        </WButton> : 
+                        <WButton 
+                            color="primary"
+                            shape="pill"
+                            onClick={viewPreviousSibling}
+                            disabled="True"
+                        >
+                        <span className="material-icons">arrow_back</span>
+                        </WButton>
+                    }
+                    {
+                        parentRegion.subregions.length > 1 ?                     
+                        <WButton 
+                            color="primary"
+                            shape="pill"
+                            onClick={viewNextSibling}
+                        >
+                        <span className="material-icons">arrow_forward</span>
+                        </WButton> : 
+                        <WButton 
+                            color="primary"
+                            shape="pill"
+                            onClick={viewNextSibling}
+                            disabled="True"
+                        >
+                        <span className="material-icons">arrow_forward</span>
+                        </WButton>
+                    }
                 </WCol>
             </WRow>
             <WRow>
