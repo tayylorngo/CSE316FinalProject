@@ -69,7 +69,7 @@ const Homescreen = (props) => {
 	if(error) { console.log(error, 'error'); }
 	if(data) { 
 		for(let region of data.getAllRegions) {
-			regions.push(region)
+			regions.push(region);
 			if(region.parentRegion === "none"){
 				maps.push(region);
 			}
@@ -307,6 +307,7 @@ const Homescreen = (props) => {
 							reloadMaps={refetch} 			setActiveList={loadTodoList}
 							user={props.user}
 							history={history}
+							regions={regions}
 						/>
 					</ul>
 				</WNavbar>
@@ -333,6 +334,7 @@ const Homescreen = (props) => {
 					showNewMap && (<AddNewMap fetchUser={props.fetchUser} addNewMap={addNewMap} setShowNewMap={setShowNewMap} user={props.user} />)
 				}
 			</WLMain>
+
 				<Switch>
 					<Redirect exact from="/" to={ {pathname: "/home"} } />
 					<Route exact path="/home" render={() => 
