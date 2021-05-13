@@ -14,6 +14,7 @@ const LandmarksList = (props) => {
                     landmark={landmark}
                     activeRegionLandmarks={props.activeLandmarks}
                     deleteLandmark={props.deleteLandmark}
+                    showDelete={props.showDelete}
                 />)
                 )
             }

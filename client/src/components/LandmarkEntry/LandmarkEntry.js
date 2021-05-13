@@ -5,7 +5,8 @@ import './LandmarkEntry.css';
 const LandmarkEntry = (props) => {
 
     const deleteLandmark = () => {
-        props.deleteLandmark(props.landmark);
+        props.showDelete(props.landmark);
+        // props.deleteLandmark(props.landmark);
     }
 
     return(

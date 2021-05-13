@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './RegionViewer.css';
 import {WRow, WCol, WButton, WInput} from 'wt-frontend';
 import LandmarksList from '../LandmarksList/LandmarksList';
+import DeleteLandmarkModal from '../modals/DeleteLandmarkModal';
 import {useParams, Redirect} from 'react-router-dom';
 import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
@@ -13,6 +14,7 @@ const RegionViewer = (props) => {
     let subregions = [];
     let landmarks = [];
     let activeRegionLandmarks = [];
+    let defaultAllLandmarks = [];
 
     const {id} = useParams();
 
@@ -33,15 +35,19 @@ const RegionViewer = (props) => {
 		}
         landmarks = activeRegion.landmarks;
         activeRegionLandmarks = activeRegion.landmarks;
+        defaultAllLandmarks = activeRegion.landmarks;
         for(let region of subregions){
             for(let landmark of region.landmarks){
                 landmarks = [...landmarks, (landmark + " - " + region.name)];
+                defaultAllLandmarks = [...defaultAllLandmarks, (landmark)];
             }
         }
         landmarks.sort();
     }
 
     const [landmarkToBeAdded, setLandmarkToBeAdded] = useState('');
+    const [landmarkToBeDeleted, setLandmarkToBeDeleted] = useState('');
+    const [showDelete, toggleShowDelete]            = useState(false);
 
     const mutationOptions = {
 		refetchQueries: [{ query: GET_DB_REGIONS }], 
@@ -67,6 +73,11 @@ const RegionViewer = (props) => {
         if(landmarkToBeAdded === ''){
             return;
         }
+        if(defaultAllLandmarks.includes(landmarkToBeAdded)){
+            alert('Landmark already exists!');
+            setLandmarkToBeAdded('');
+            return;
+        }
 		await AddLandmark({variables: {_id: activeRegion._id, name: landmarkToBeAdded}, refetchQueries: [{query: GET_DB_REGIONS}]});
         setLandmarkToBeAdded('');
     }
@@ -75,8 +86,14 @@ const RegionViewer = (props) => {
         setLandmarkToBeAdded(e.target.value);
     }
 
+    const handleDeleteLandmark = (landmark) => {
+        toggleShowDelete(true);
+        setLandmarkToBeDeleted(landmark);
+    }
+
     const deleteLandmark = async (landmark) => {
         await DeleteLandmark({variables: {_id: activeRegion._id, name: landmark}, refetchQueries: [{query: GET_DB_REGIONS}]});
+        setLandmarkToBeDeleted('');
     }
 
     return(
@@ -124,6 +141,7 @@ const RegionViewer = (props) => {
                             landmarks={landmarks}
                             activeLandmarks={activeRegionLandmarks}
                             deleteLandmark={deleteLandmark}
+                            showDelete={handleDeleteLandmark}
                         />
                     </div>
                     <div>
@@ -151,6 +169,14 @@ const RegionViewer = (props) => {
                     </div>
                 </WCol>
             </WRow>
+            {
+                showDelete ? <DeleteLandmarkModal
+                                showDelete={showDelete}
+                                toggleShowDelete={toggleShowDelete}
+                                landmarkToBeDeleted={landmarkToBeDeleted}
+                                deleteLandmark={deleteLandmark}
+                            /> : null
+            }
         </div>
     )
 }
