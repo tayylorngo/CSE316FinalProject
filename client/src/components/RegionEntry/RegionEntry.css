@@ -63,3 +63,8 @@
     outline: none;
     background-color: transparent;
 }
+
+.first-landmark{
+    margin-top: 1.2%;
+    cursor: pointer;
+}

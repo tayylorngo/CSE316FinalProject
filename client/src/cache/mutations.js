@@ -84,6 +84,12 @@ export const ADD_LANDMARK = gql`
 	}
 `;
 
+export const DELETE_LANDMARK = gql`
+	mutation DeleteLandmark($_id: String!, $name: String!){
+		deleteLandmark(_id: $_id, name: $name)
+	}
+`;
+
 export const DELETE_ITEM = gql`
 	mutation DeleteItem($itemId: String!, $_id: String!) {
 		deleteItem(itemId: $itemId, _id: $_id) {

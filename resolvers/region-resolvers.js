@@ -127,6 +127,24 @@ module.exports = {
 			landmarks.push(name);
 			await Region.updateOne({_id: objectId}, {landmarks: landmarks});
 			return name;
+		},
+		deleteLandmark: async(_, args) => {
+			const {_id, name} = args;
+			const objectId = new ObjectId(_id);
+			const found = await Region.findOne({_id: objectId});
+			let landmarks = found.landmarks;
+			for(let i = 0; i < landmarks.length; i++){
+				if(landmarks[i] === name){
+					landmarks.splice(i, 1);
+				}
+			}
+			let data = await Region.updateOne({_id: objectId}, {landmarks: landmarks});
+			if(data){
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
 	}
 }

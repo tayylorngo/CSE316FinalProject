@@ -2,3 +2,30 @@
     margin-top: 2%;
     font-size: 1.25rem;
 }
+
+.landmark-name{
+    margin-right: 20%;
+}
+
+.landmark-col{
+    margin-top: 1%;
+}
+
+.delete-landmark-button{
+    background-color: transparent;
+    color: red;
+    height: fit-content;
+    width: fit-content;
+}
+
+.edit-landmark-button{
+    background-color: transparent;
+    color: white;
+    height: fit-content;
+    width: fit-content;
+}
+
+.hidden-button{
+    background-color: transparent;
+    cursor: default;
+}

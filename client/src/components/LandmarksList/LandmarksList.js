@@ -8,10 +8,12 @@ const LandmarksList = (props) => {
     return(
         <div id='landmarks-list'>
             {
-            props.map.landmarks &&
-            props.map.landmarks.map(landmark => (
+            props.landmarks &&
+            props.landmarks.map(landmark => (
                 <LandmarkEntry
                     landmark={landmark}
+                    activeRegionLandmarks={props.activeLandmarks}
+                    deleteLandmark={props.deleteLandmark}
                 />)
                 )
             }

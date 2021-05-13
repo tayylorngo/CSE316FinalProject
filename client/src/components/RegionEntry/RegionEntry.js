@@ -114,7 +114,11 @@ const RegionEntry = (props) => {
                     <div className="entry-name">{props.entry._id}</div>
                 </WCol>
                 <WCol size="4" className="tableEntry landmarks" onClick={openRegionViewer}>
-                    <div className="entry-name">{props.entry.landmarks}</div>
+                    {
+                        props.entry.landmarks[0] ? 
+                            <div className='first-landmark'>{props.entry.landmarks[0]}, ...</div>
+                        : <div className='first-landmark'>...</div>
+                    }
                 </WCol>
             </WRow>
         </div>

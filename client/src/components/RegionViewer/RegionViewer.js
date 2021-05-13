@@ -11,6 +11,8 @@ const RegionViewer = (props) => {
 
     let activeRegion = {};
     let subregions = [];
+    let landmarks = [];
+    let activeRegionLandmarks = [];
 
     const {id} = useParams();
 
@@ -29,6 +31,14 @@ const RegionViewer = (props) => {
                 subregions.push(region);            
             }
 		}
+        landmarks = activeRegion.landmarks;
+        activeRegionLandmarks = activeRegion.landmarks;
+        for(let region of subregions){
+            for(let landmark of region.landmarks){
+                landmarks = [...landmarks, (landmark + " - " + region.name)];
+            }
+        }
+        landmarks.sort();
     }
 
     const [landmarkToBeAdded, setLandmarkToBeAdded] = useState('');
@@ -40,7 +50,7 @@ const RegionViewer = (props) => {
 	}
 
     const [AddLandmark] 				= useMutation(mutations.ADD_LANDMARK, mutationOptions);
-
+    const [DeleteLandmark]              = useMutation(mutations.DELETE_LANDMARK, mutationOptions);
 
     const pic = 'https://cdn11.bigcommerce.com/s-kh80nbh17m/images/stencil/1280x1280/products/8349/36571/352BB113-139F-4718-A609-46F63A57B849-xl__41206.1561690686.1280.1280__08270.1574698216.jpg?c=2';
 
@@ -65,6 +75,10 @@ const RegionViewer = (props) => {
         setLandmarkToBeAdded(e.target.value);
     }
 
+    const deleteLandmark = async (landmark) => {
+        await DeleteLandmark({variables: {_id: activeRegion._id, name: landmark}, refetchQueries: [{query: GET_DB_REGIONS}]});
+    }
+
     return(
         <div className='region-viewer'>
             <WRow>
@@ -74,7 +88,7 @@ const RegionViewer = (props) => {
                         shape="pill"
                         onClick={returnToSpreadsheet}
                     >
-                    <span className="material-icons">arrow_back</span>
+                    <span className="material-icons">menu</span>
                     </WButton>
                 </WCol>
             </WRow>
@@ -105,7 +119,12 @@ const RegionViewer = (props) => {
                 <WCol size='6'>
                     <h1 id="region-landmark-title">Region Landmarks: </h1>
                     <div id='landmark-list'>
-                        <LandmarksList map={activeRegion}/>
+                        <LandmarksList 
+                            map={activeRegion} 
+                            landmarks={landmarks}
+                            activeLandmarks={activeRegionLandmarks}
+                            deleteLandmark={deleteLandmark}
+                        />
                     </div>
                     <div>
                         <form id='landmark-form' onSubmit={handleSubmit}>
