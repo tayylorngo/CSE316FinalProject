@@ -11,10 +11,12 @@ import * as mutations 					from '../../cache/mutations';
 const RegionViewer = (props) => {
 
     let activeRegion = {};
+    let parentRegion = {};
     let subregions = [];
     let landmarks = [];
     let activeRegionLandmarks = [];
     let defaultAllLandmarks = [];
+    let allRegions = [];
 
     const {id} = useParams();
 
@@ -29,6 +31,10 @@ const RegionViewer = (props) => {
             }
 		}
         for(let region of data.getAllRegions) {
+            allRegions.push(region);
+            if(region._id === activeRegion.parentRegion){
+                parentRegion = region;
+            }
             if(region.parentRegion === activeRegion._id){
                 subregions.push(region);            
             }
@@ -42,14 +48,17 @@ const RegionViewer = (props) => {
                 defaultAllLandmarks = [...defaultAllLandmarks, (landmark)];
             }
         }
-        landmarks.sort(function (a, b) {
-            return a.toLowerCase().localeCompare(b.toLowerCase());
-        });
+        if(landmarks.length > 1){
+            landmarks = landmarks.slice().sort(function (a, b) {
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+            });
+        }
     }
 
     const [landmarkToBeAdded, setLandmarkToBeAdded] = useState('');
     const [landmarkToBeDeleted, setLandmarkToBeDeleted] = useState('');
     const [showDelete, toggleShowDelete]            = useState(false);
+    const [editingParentRegion, toggleEditingParentRegion] = useState(false);
 
     const mutationOptions = {
 		refetchQueries: [{ query: GET_DB_REGIONS }], 
@@ -60,6 +69,7 @@ const RegionViewer = (props) => {
     const [AddLandmark] 				= useMutation(mutations.ADD_LANDMARK, mutationOptions);
     const [DeleteLandmark]              = useMutation(mutations.DELETE_LANDMARK, mutationOptions);
     const [EditLandmark]                = useMutation(mutations.EDIT_LANDMARK, mutationOptions);
+    const [EditParentRegion]            = useMutation(mutations.EDIT_PARENT_REGION, mutationOptions);
 
     const pic = 'https://cdn11.bigcommerce.com/s-kh80nbh17m/images/stencil/1280x1280/products/8349/36571/352BB113-139F-4718-A609-46F63A57B849-xl__41206.1561690686.1280.1280__08270.1574698216.jpg?c=2';
 
@@ -104,6 +114,24 @@ const RegionViewer = (props) => {
             ,refetchQueries: [{query: GET_DB_REGIONS}]});
     }
 
+    const editParentRegion = async (e) => {
+        let parentRegionId = null;
+        for(let region of allRegions){
+            if(e.target.value === region.name && !activeRegion.subregions.includes(region._id)){
+                parentRegionId = region._id;
+                break;
+            }
+        }
+        if(parentRegionId === null){
+            alert("Cannot move region to selected parent region.");
+        }
+        else{
+            await EditParentRegion({variables: {_id: activeRegion._id, newParentRegion: parentRegionId}
+                , refetchQueries: [{query: GET_DB_REGIONS}]}); 
+        }
+        toggleEditingParentRegion(false);
+    }
+
     return(
         <div className='region-viewer'>
             <WRow>
@@ -124,10 +152,27 @@ const RegionViewer = (props) => {
                         <span className='region-viewer-title'>Region Name: </span>
                         <span className='region-data'>{activeRegion.name}</span>
                     </div>
-                    <div>
-                        <span className='region-viewer-title'>Parent Region: </span>
-                        <span className='region-data' id="parent-region-style">{activeRegion.parentRegion}</span>
-                    </div>
+                    {
+                        !editingParentRegion ? 
+                        <div>
+                            <span className='region-viewer-title'>Parent Region: </span>
+                            <span className='region-data' id="parent-region-style">{parentRegion.name}</span>
+                            <span className='material-icons edit-parent-region' onClick={() => toggleEditingParentRegion(true)}>edit</span>  
+                        </div> : 
+                        <div>
+                            <WInput 
+                                wType='filled'
+                                className='change-parent-region-input'
+                                labelText="Parent Region"
+                                labelAnimation='fixed-shrink'
+                                barAnimation='left-to-right'
+                                defaultValue={parentRegion.name}
+                                autoFocus
+                                onBlur={editParentRegion}
+                            >
+                            </WInput>
+                        </div>
+                    }
                     <div>
                         <span className='region-viewer-title'>Region Capital: </span>
                         <span className='region-data'>{activeRegion.capital}</span>

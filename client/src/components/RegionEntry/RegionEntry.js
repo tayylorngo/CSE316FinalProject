@@ -70,7 +70,7 @@ const RegionEntry = (props) => {
                                 defaultValue={props.entry.name}
                                 onBlur={handleEditName}
                                 autoFocus
-                            />;
+                            />
                         </div>
                     }
                 </WCol>

@@ -26,6 +26,7 @@ const typeDefs = gql `
         addLandmark(_id: String!, name: String!): String
         deleteLandmark(_id: String!, name: String!): Boolean
         editLandmark(_id: String, newLandmark: String!, prevLandmark: String!): String
+        editParentRegion(_id: String, newParentRegion: String!) : Boolean
     }
     input RegionInput{
         _id: String

@@ -158,6 +158,30 @@ module.exports = {
 			}
 			await Region.updateOne({_id: objectId}, {landmarks: landmarks});
 			return newLandmark;
+		},
+		editParentRegion: async(_, args) => {
+			const {_id, newParentRegion} = args;
+			const objectId = new ObjectId(_id);
+			const newParentRegionId = new ObjectId(newParentRegion);
+
+			const found = await Region.findOne({_id: objectId});
+			const oldParentId = new ObjectId(found.parentRegion);
+			await Region.updateOne({_id: objectId}, {parentRegion: newParentRegionId});
+
+			const foundParentRegion = await Region.findOne({_id: newParentRegionId});
+			let subregions = foundParentRegion.subregions;
+			subregions = [...subregions, _id];
+			await Region.updateOne({_id: foundParentRegion}, {subregions: subregions});
+
+			const foundOldParentRegion = await Region.findOne({_id: oldParentId});
+			let oldSubregions = foundOldParentRegion.subregions;
+			for(let i = 0; i < oldSubregions.length; i++){
+				if(oldSubregions[i] === _id){
+					oldSubregions.splice(i, 1);
+				}
+			}
+			await Region.updateOne({_id: foundOldParentRegion}, {subregions: oldSubregions});
+			return true;
 		}
 	}
 }

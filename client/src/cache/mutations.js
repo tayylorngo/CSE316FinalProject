@@ -96,6 +96,12 @@ export const EDIT_LANDMARK = gql`
 	}
 `;
 
+export const EDIT_PARENT_REGION = gql`
+	mutation EditParentRegion($_id: String!, $newParentRegion: String!){
+		editParentRegion(_id: $_id, newParentRegion: $newParentRegion)
+	}
+`;
+
 export const DELETE_ITEM = gql`
 	mutation DeleteItem($itemId: String!, $_id: String!) {
 		deleteItem(itemId: $itemId, _id: $_id) {

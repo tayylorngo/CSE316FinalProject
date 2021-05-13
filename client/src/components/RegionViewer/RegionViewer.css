@@ -67,3 +67,14 @@
     width: stretch;
     color: darkgreen;
 }
+
+.edit-parent-region{
+    margin-left: 3%;
+    cursor: pointer;
+}
+
+.change-parent-region-input{
+    margin-left: 10%;
+    height: stretch;
+    width: 60%;
+}
