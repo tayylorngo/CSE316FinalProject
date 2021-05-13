@@ -44,12 +44,28 @@ const RegionViewer = (props) => {
         landmarks = activeRegion.landmarks;
         activeRegionLandmarks = activeRegion.landmarks;
         defaultAllLandmarks = activeRegion.landmarks;
-        for(let region of subregions){
-            for(let landmark of region.landmarks){
-                landmarks = [...landmarks, (landmark + " - " + region.name)];
-                defaultAllLandmarks = [...defaultAllLandmarks, (landmark)];
-            }
+        const regionTraversal = (activeRegion) => {
+            if(activeRegion.subregions.length === 0)
+                return
+            activeRegion.subregions.forEach(subregion => {
+            allRegions.forEach(region => {
+                if (region._id === subregion){
+                    region.landmarks.forEach(landmark => {
+                        defaultAllLandmarks = [...defaultAllLandmarks, (landmark)];
+                        landmarks = [...landmarks, (landmark + " - " + region.name)];
+                    })
+                    regionTraversal(region)
+                    }
+                })
+            })
         }
+        regionTraversal(activeRegion);
+        // for(let region of subregions){
+        //     for(let landmark of region.landmarks){
+        //         landmarks = [...landmarks, (landmark + " - " + region.name)];
+        //         defaultAllLandmarks = [...defaultAllLandmarks, (landmark)];
+        //     }
+        // }
         if(landmarks.length > 1){
             landmarks = landmarks.slice().sort(function (a, b) {
                 return a.toLowerCase().localeCompare(b.toLowerCase());
