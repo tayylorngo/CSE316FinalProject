@@ -102,6 +102,12 @@ export const EDIT_PARENT_REGION = gql`
 	}
 `;
 
+export const SORT_REGION = gql`
+	mutation SortRegion($_id: String!, $field: String!){
+		sortRegion(_id: $_id, field: $field)
+	}
+`;
+
 export const DELETE_ITEM = gql`
 	mutation DeleteItem($itemId: String!, $_id: String!) {
 		deleteItem(itemId: $itemId, _id: $_id) {

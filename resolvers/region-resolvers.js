@@ -182,6 +182,29 @@ module.exports = {
 			}
 			await Region.updateOne({_id: foundOldParentRegion}, {subregions: oldSubregions});
 			return true;
+		},
+		sortRegion: async(_, args) => {
+			const {_id, field} = args;
+			const objectId = new ObjectId(_id);
+			const found = await Region.findOne({_id: objectId});
+			let subregions = found.subregions;
+			let subregionsArr = [];
+			for(let i = 0; i < subregions.length; i++){
+				let region = await Region.findOne({_id: new ObjectId(subregions[i])});
+				subregionsArr.push(region);
+			}
+			let subregionsArrCopy = [...subregionsArr];
+			subregionsArr.sort((a, b) => (String(a[field]).localeCompare(String(b[field]))));
+			if(JSON.stringify(subregionsArr) === JSON.stringify(subregionsArrCopy)){
+				subregionsArr.sort((a, b) => (String(b[field]).localeCompare(String(a[field]))));
+			}
+			let newSubregions = [];
+			for(subregion of subregionsArr){
+				newSubregions.push(String(subregion._id));
+			}
+			console.log(newSubregions)
+			await Region.updateOne({_id: objectId}, {subregions: newSubregions});
+			return "";
 		}
 	}
 }

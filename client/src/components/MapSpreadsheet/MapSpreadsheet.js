@@ -19,6 +19,7 @@ const MapSpreadsheet = (props) => {
     const [AddRegion] 				= useMutation(mutations.ADD_REGION, mutationOptions);
     const [DeleteRegion]            = useMutation(mutations.DELETE_REGION, mutationOptions);
     const [UpdateRegion]            = useMutation(mutations.UPDATE_REGION, mutationOptions);
+    const [SortRegion]              = useMutation(mutations.SORT_REGION, mutationOptions);
 
     const [showDelete, toggleShowDelete] = useState(false);
     const [regionToBeDeleted, setRegionToBeDeleted] = useState({});
@@ -38,9 +39,12 @@ const MapSpreadsheet = (props) => {
                 break;
             }
 		}
-        for(let region of data.getAllRegions) {
-            if(region.parentRegion === activeRegion._id){
-                subregions.push(region);            
+        for(let subregion of activeRegion.subregions) {
+            for(let region of data.getAllRegions){
+                if(region._id === subregion){
+                    subregions.push(region);
+                    break;
+                }
             }
 		}
     }
@@ -89,6 +93,10 @@ const MapSpreadsheet = (props) => {
         }
     }
 
+    const sort = async (field) => {
+        await SortRegion({variables: {_id: activeRegion._id, field: field}, refetchQueries: [{query: GET_DB_REGIONS}]});
+    }
+
     const setOtherRegion = (_id) => {
         props.history.push('/maps/' + _id);
     }
@@ -120,13 +128,13 @@ const MapSpreadsheet = (props) => {
             </WRow>
             <WRow>
                 <WCol size="2" className="table-heading">
-                    <div className='marginTop'>Name</div>
+                    <div className='marginTop' onClick={() => sort('name')}>Name</div>
                 </WCol>
                 <WCol size="2" className="table-heading">
-                <div className='marginTop'>Capital</div>
+                <div className='marginTop' onClick={() => sort('capital')}>Capital</div>
                 </WCol>
                 <WCol size="2" className="table-heading">
-                <div className='marginTop'>Leader</div>
+                <div className='marginTop' onClick={() => sort('leader')}>Leader</div>
                 </WCol>
                 <WCol size="2" className="table-heading">
                 <div className='marginTop'>Flag</div>
