@@ -78,3 +78,7 @@
     height: stretch;
     width: 60%;
 }
+
+.undo-redo-buttons{
+    margin-top: 3%;
+}

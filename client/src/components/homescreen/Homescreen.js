@@ -369,6 +369,7 @@ const Homescreen = (props) => {
 					<Route exact path='/viewer/:id' render={() => 
                         <WLMain id="main-page">
 							<RegionViewer
+								tps={props.tps}
 								history={history}
         					/>    	
 						</WLMain>

@@ -112,10 +112,14 @@ const MapSpreadsheet = (props) => {
     }
 
     const setOtherRegion = (_id) => {
+        props.tps.clearAllTransactions();
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
         props.history.push('/maps/' + _id);
     }
 
     if(!loading && Object.keys(activeRegion).length === 0){
+        props.tps.clearAllTransactions();
         return <Redirect to='/home'/>
     }
 

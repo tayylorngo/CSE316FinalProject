@@ -200,6 +200,32 @@ export class UpdateRegions_Transaction extends jsTPS_Transaction {
     }
 }
 
+export class UpdateLandmarks_Transaction extends jsTPS_Transaction{
+    // opcodes: 0 - delete, 1 - add 
+    constructor(regionId, landmark, opcode, addFunc, delFunc){
+        super();
+        this.regionId = regionId;
+        this.landmark = landmark;
+        this.opcode = opcode;
+        this.addFunction = addFunc;
+        this.deleteFunction = delFunc;
+    }
+
+    async doTransaction(){
+        let data;
+        this.opcode === 0 ? {data} = await this.deleteFunction({variables: {_id: this.regionId, name: this.landmark}})
+        : {data} = await this.addFunction({variables: {_id: this.regionId, name: this.landmark}});
+        return data;
+    }
+
+    async undoTransaction(){
+        let data;
+        this.opcode === 1 ? {data} = await this.deleteFunction({variables: {_id: this.regionId, name: this.landmark}})
+        : {data} = await this.addFunction({variables: {_id: this.regionId, name: this.landmark}});
+        return data;
+    }
+}
+
 /*  Handles create/delete of list items */
 export class UpdateListItems_Transaction extends jsTPS_Transaction {
     // opcodes: 0 - delete, 1 - add 

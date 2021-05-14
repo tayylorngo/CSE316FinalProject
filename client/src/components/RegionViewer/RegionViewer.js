@@ -7,6 +7,7 @@ import {useParams, Redirect} from 'react-router-dom';
 import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
 import * as mutations 					from '../../cache/mutations';
+import { UpdateLandmarks_Transaction } from '../../utils/jsTPS';
 
 const RegionViewer = (props) => {
 
@@ -72,6 +73,8 @@ const RegionViewer = (props) => {
     const [landmarkToBeDeleted, setLandmarkToBeDeleted] = useState('');
     const [showDelete, toggleShowDelete]            = useState(false);
     const [editingParentRegion, toggleEditingParentRegion] = useState(false);
+    const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
+	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
     const mutationOptions = {
 		refetchQueries: [{ query: GET_DB_REGIONS }], 
@@ -87,10 +90,16 @@ const RegionViewer = (props) => {
     const pic = 'https://cdn11.bigcommerce.com/s-kh80nbh17m/images/stencil/1280x1280/products/8349/36571/352BB113-139F-4718-A609-46F63A57B849-xl__41206.1561690686.1280.1280__08270.1574698216.jpg?c=2';
 
     const returnToSpreadsheet = () => {
+        props.tps.clearAllTransactions();
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
         props.history.push('/maps/' + activeRegion._id);
     }
 
     if(!loading && Object.keys(activeRegion).length === 0){
+        props.tps.clearAllTransactions();
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
         return <Redirect to='/home'/>
     }
 
@@ -104,7 +113,9 @@ const RegionViewer = (props) => {
             setLandmarkToBeAdded('');
             return;
         }
-		await AddLandmark({variables: {_id: activeRegion._id, name: landmarkToBeAdded}, refetchQueries: [{query: GET_DB_REGIONS}]});
+        let transaction = new UpdateLandmarks_Transaction(activeRegion._id, landmarkToBeAdded, 1, AddLandmark, DeleteLandmark);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
         setLandmarkToBeAdded('');
     }
 
@@ -118,7 +129,10 @@ const RegionViewer = (props) => {
     }
 
     const deleteLandmark = async (landmark) => {
-        await DeleteLandmark({variables: {_id: activeRegion._id, name: landmark}, refetchQueries: [{query: GET_DB_REGIONS}]});
+        let transaction = new UpdateLandmarks_Transaction(activeRegion._id, landmark, 0, AddLandmark, DeleteLandmark);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
+        // await DeleteLandmark({variables: {_id: activeRegion._id, name: landmark}, refetchQueries: [{query: GET_DB_REGIONS}]});
         setLandmarkToBeDeleted('');
     }
 
@@ -169,6 +183,22 @@ const RegionViewer = (props) => {
         }
     }
 
+    const tpsUndo = async () => {
+		const ret = await props.tps.undoTransaction();
+		if(ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
+	const tpsRedo = async () => {
+		const ret = await props.tps.doTransaction();
+		if(ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
     return(
         <div className='region-viewer'>
             <WRow>
@@ -216,6 +246,24 @@ const RegionViewer = (props) => {
                         <span className="material-icons">arrow_forward</span>
                         </WButton>
                     }
+                    <WButton 
+                        className='undo-redo-buttons'
+                        color="primary"
+                        shape="pill"
+                        disabled={!canUndo}
+                        onClick={tpsUndo}
+                    >
+                    <span className="material-icons">undo</span>
+                    </WButton>
+                    <WButton 
+                        className='undo-redo-buttons'
+                        color="primary"
+                        shape="pill"
+                        disabled={!canRedo}
+                        onClick={tpsRedo}
+                    >
+                    <span className="material-icons">redo</span>
+                    </WButton>                    
                 </WCol>
             </WRow>
             <WRow>
