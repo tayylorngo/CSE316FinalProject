@@ -77,7 +77,26 @@ export class SortItems_Transaction extends jsTPS_Transaction{
 }
 
 export class EditRegion_Transaction extends jsTPS_Transaction {
+    constructor(regionId, field, prev, update, updateFunc){
+        super();
+        this.regionId = regionId;
+        this.field = field;
+        this.prev = prev;
+        this.update = update;
+        this.updateFunction = updateFunc;
+    }
 
+    async doTransaction(){
+        const {data} = await this.updateFunction(
+            {variables: {_id: this.regionId, field: this.field, value: this.update}});
+        return data;
+    }
+
+    async undoTransaction(){
+        const {data} = await this.updateFunction(
+            {variables: {_id: this.regionId, field: this.field, value: this.prev}});
+        return data;
+    }
 
 }
 

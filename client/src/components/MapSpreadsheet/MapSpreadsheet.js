@@ -7,7 +7,7 @@ import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
 import * as mutations 					from '../../cache/mutations';
 import DeleteSubregion from '../modals/DeleteSubregion';
-import { UpdateRegions_Transaction } from '../../utils/jsTPS';
+import { EditRegion_Transaction, UpdateRegions_Transaction } from '../../utils/jsTPS';
 
 const MapSpreadsheet = (props) => {
 
@@ -80,8 +80,11 @@ const MapSpreadsheet = (props) => {
         setRegionToBeDeleted({});
     }
 
-    const updateRegion = async (_id, field, value) => {
-        await UpdateRegion({variables: {_id: _id, field: field, value: value}, refetchQueries: [{query: GET_DB_REGIONS}]});
+    const updateRegion = async (_id, field, prev, value) => {
+        let transaction = new EditRegion_Transaction(_id, field, prev, value, UpdateRegion);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
+        // await UpdateRegion({variables: {_id: _id, field: field, value: value}, refetchQueries: [{query: GET_DB_REGIONS}]});
     }
 
     const handleSetRegionToBeDeleted = (_id) => {

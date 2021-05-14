@@ -21,17 +21,17 @@ const RegionEntry = (props) => {
     }
 
     const handleEditName = (e) => {
-        props.updateRegion(props.entry._id, 'name', e.target.value);
+        props.updateRegion(props.entry._id, 'name', props.entry.name, e.target.value);
         toggleEditingName(!editingName);
     }
 
     const handleEditCapital = (e) => {
-        props.updateRegion(props.entry._id, 'capital', e.target.value);
+        props.updateRegion(props.entry._id, 'capital', props.entry.capital, e.target.value);
         toggleEditingCapital(!editingCapital);
     }
 
     const handleEditLeader = (e) => {
-        props.updateRegion(props.entry._id, 'leader', e.target.value);
+        props.updateRegion(props.entry._id, 'leader', props.entry.capital, e.target.value);
         toggleEditingLeader(!editingLeader);
     }
 
