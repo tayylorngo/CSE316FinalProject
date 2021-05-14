@@ -146,11 +146,13 @@ export class UpdateRegions_Transaction extends jsTPS_Transaction {
     async undoTransaction(){
         let data;
         if(this.deletedRegion && this.opcode === 0){
-            data = await this.addFunction({variables: {region: this.prevRegion, _id: this.regionId, index: this.index}});
+            data = await this.addFunction({variables: {region: this.region, _id: this.regionId, index: this.index}});
         }
-        this.opcode === 1 ? {data} = await this.deleteFunction({variables: {_id: this.prevRegion}})
-        : { data } = await this.addFunction(
-            {variables: {region: this.region, _id: this.regionId, index: this.index}});
+        else{
+            this.opcode === 1 ? {data} = await this.deleteFunction({variables: {_id: this.prevRegion}})
+            : { data } = await this.addFunction(
+                {variables: {region: this.region, _id: this.regionId, index: this.index}});
+        }
         if(this.opcode !== 1) {
             this.prevRegion = data.addRegion;
         }

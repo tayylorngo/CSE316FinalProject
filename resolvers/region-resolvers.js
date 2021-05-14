@@ -48,8 +48,13 @@ module.exports = {
 			const found = await Region.findOne({_id: parentRegionId});
 			let subregions1 = found.subregions;
 			let newId = new ObjectId();
+			if(region._id === ''){
+				region._id = newId;
+			}
+			else{
+				newId = region._id;
+			}
 			subregions1.splice(index, 0, newId);
-			if(region._id === '') region._id = newId;
 			let {id, owner, capital, leader, name, parentRegion, subregions, landmarks} = region;
 			let newRegion = new Region({
 				_id: newId,

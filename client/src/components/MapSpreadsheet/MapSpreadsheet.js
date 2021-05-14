@@ -72,7 +72,11 @@ const MapSpreadsheet = (props) => {
     }
 
     const deleteRegion = async (_id) => {
-        await DeleteRegion({variables: {_id: _id}, refetchQueries: [{query: GET_DB_REGIONS}]});
+        let index = activeRegion.subregions.indexOf(_id);
+        let transaction = new UpdateRegions_Transaction(activeRegion._id, regionToBeDeleted, 0, AddRegion, DeleteRegion, index);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
+        // await DeleteRegion({variables: {_id: _id}, refetchQueries: [{query: GET_DB_REGIONS}]});
         setRegionToBeDeleted({});
     }
 

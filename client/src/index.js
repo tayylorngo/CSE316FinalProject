@@ -33,6 +33,7 @@ const cache = new InMemoryCache({
 			}
 		}
 	},
+	addTypename: false
 });
 
 // bad hardcoding, localhost port should match port in the backend's .env file
