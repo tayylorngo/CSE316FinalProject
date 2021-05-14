@@ -7,7 +7,7 @@ import {useParams, Redirect} from 'react-router-dom';
 import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
 import * as mutations 					from '../../cache/mutations';
-import { UpdateLandmarks_Transaction } from '../../utils/jsTPS';
+import { EditLandmark_Transaction, UpdateLandmarks_Transaction } from '../../utils/jsTPS';
 
 const RegionViewer = (props) => {
 
@@ -137,8 +137,11 @@ const RegionViewer = (props) => {
     }
 
     const editLandmark = async (newLandmark, prevLandmark) => {
-        await EditLandmark({variables: {_id: activeRegion._id, newLandmark: newLandmark, prevLandmark: prevLandmark}
-            ,refetchQueries: [{query: GET_DB_REGIONS}]});
+        let transaction = new EditLandmark_Transaction(activeRegion._id, prevLandmark, newLandmark, EditLandmark);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
+        // await EditLandmark({variables: {_id: activeRegion._id, newLandmark: newLandmark, prevLandmark: prevLandmark}
+        //     ,refetchQueries: [{query: GET_DB_REGIONS}]});
     }
 
     const editParentRegion = async (e) => {
