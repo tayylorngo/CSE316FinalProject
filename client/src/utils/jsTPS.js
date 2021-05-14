@@ -48,6 +48,27 @@ export class ReorderItems_Transaction extends jsTPS_Transaction {
     
 }
 
+export class SortRegions_Transaction extends jsTPS_Transaction{
+    constructor(regionId, field, sortFunc, setSubregionsFunc, prevSubregions){
+        super();
+        this.regionId = regionId;
+        this.field = field;
+        this.sortingFunction = sortFunc;
+        this.setSubregionsFunction = setSubregionsFunc;
+        this.prevSubregions = prevSubregions;
+    }
+
+    async doTransaction(){
+        const {data} = await this.sortingFunction({variables: {_id: this.regionId, field: this.field}});
+        return data;
+    }
+
+    async undoTransaction(){
+        const {data} = await this.setSubregionsFunction({variables: {_id: this.regionId, subregions: this.prevSubregions}});
+        return data;
+    }
+}
+
 export class SortItems_Transaction extends jsTPS_Transaction{
     constructor(listID, nextSortRule, prevSortRule, callback) {
         super();

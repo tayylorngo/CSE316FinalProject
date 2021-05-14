@@ -108,6 +108,12 @@ export const SORT_REGION = gql`
 	}
 `;
 
+export const SET_SUBREGIONS = gql`
+	mutation SetSubregions($_id: String!, $subregions: [String]){
+		setSubregions(_id: $_id, subregions: $subregions)
+	}
+`;
+
 export const DELETE_ITEM = gql`
 	mutation DeleteItem($itemId: String!, $_id: String!) {
 		deleteItem(itemId: $itemId, _id: $_id) {

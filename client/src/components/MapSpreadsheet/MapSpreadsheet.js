@@ -7,7 +7,7 @@ import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
 import * as mutations 					from '../../cache/mutations';
 import DeleteSubregion from '../modals/DeleteSubregion';
-import { EditRegion_Transaction, UpdateRegions_Transaction } from '../../utils/jsTPS';
+import { EditRegion_Transaction, SortRegions_Transaction, UpdateRegions_Transaction } from '../../utils/jsTPS';
 
 const MapSpreadsheet = (props) => {
 
@@ -21,6 +21,7 @@ const MapSpreadsheet = (props) => {
     const [DeleteRegion]            = useMutation(mutations.DELETE_REGION, mutationOptions);
     const [UpdateRegion]            = useMutation(mutations.UPDATE_REGION, mutationOptions);
     const [SortRegion]              = useMutation(mutations.SORT_REGION, mutationOptions);
+    const [SetSubregions]           = useMutation(mutations.SET_SUBREGIONS, mutationOptions);
 
     const [showDelete, toggleShowDelete] = useState(false);
     const [regionToBeDeleted, setRegionToBeDeleted] = useState({});
@@ -68,7 +69,6 @@ const MapSpreadsheet = (props) => {
         let transaction = new UpdateRegions_Transaction(currMap._id, newRegion, 1, AddRegion, DeleteRegion, index);
         props.tps.addTransaction(transaction);
         tpsRedo();
-		// await AddRegion({variables: {region: newRegion, _id: currMap._id, index: index}, refetchQueries: [{query: GET_DB_REGIONS}]});
     }
 
     const deleteRegion = async (_id) => {
@@ -76,7 +76,6 @@ const MapSpreadsheet = (props) => {
         let transaction = new UpdateRegions_Transaction(activeRegion._id, regionToBeDeleted, 0, AddRegion, DeleteRegion, index);
         props.tps.addTransaction(transaction);
         tpsRedo();
-        // await DeleteRegion({variables: {_id: _id}, refetchQueries: [{query: GET_DB_REGIONS}]});
         setRegionToBeDeleted({});
     }
 
@@ -84,7 +83,6 @@ const MapSpreadsheet = (props) => {
         let transaction = new EditRegion_Transaction(_id, field, prev, value, UpdateRegion);
         props.tps.addTransaction(transaction);
         tpsRedo();
-        // await UpdateRegion({variables: {_id: _id, field: field, value: value}, refetchQueries: [{query: GET_DB_REGIONS}]});
     }
 
     const handleSetRegionToBeDeleted = (_id) => {
@@ -107,7 +105,10 @@ const MapSpreadsheet = (props) => {
     }
 
     const sort = async (field) => {
-        await SortRegion({variables: {_id: activeRegion._id, field: field}, refetchQueries: [{query: GET_DB_REGIONS}]});
+        let transaction = new SortRegions_Transaction(activeRegion._id, field, SortRegion, SetSubregions, activeRegion.subregions);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
+        // await SortRegion({variables: {_id: activeRegion._id, field: field}, refetchQueries: [{query: GET_DB_REGIONS}]});
     }
 
     const setOtherRegion = (_id) => {

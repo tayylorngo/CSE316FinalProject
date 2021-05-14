@@ -196,7 +196,8 @@ module.exports = {
 			let subregionsArr = [];
 			for(let i = 0; i < subregions.length; i++){
 				let region = await Region.findOne({_id: new ObjectId(subregions[i])});
-				subregionsArr.push(region);
+				if(region !== null)
+					subregionsArr.push(region);
 			}
 			let subregionsArrCopy = [...subregionsArr];
 			subregionsArr.sort((a, b) => (String(a[field]).localeCompare(String(b[field]))));
@@ -207,8 +208,12 @@ module.exports = {
 			for(subregion of subregionsArr){
 				newSubregions.push(String(subregion._id));
 			}
-			console.log(newSubregions)
 			await Region.updateOne({_id: objectId}, {subregions: newSubregions});
+			return "";
+		},
+		setSubregions: async(_, args) => {
+			const {_id, subregions} = args;
+			await Region.updateOne({_id: new ObjectId(_id)}, {subregions: subregions});
 			return "";
 		}
 	}

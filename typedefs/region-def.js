@@ -28,6 +28,7 @@ const typeDefs = gql `
         editLandmark(_id: String!, newLandmark: String!, prevLandmark: String!): String
         editParentRegion(_id: String!, newParentRegion: String!) : Boolean
         sortRegion(_id: String!, field: String!): String
+        setSubregions(_id: String!, subregions: [String]): String
     }
     input RegionInput{
         _id: String
