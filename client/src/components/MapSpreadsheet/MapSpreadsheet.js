@@ -92,6 +92,9 @@ const MapSpreadsheet = (props) => {
     }
 
     const goHome = () => {
+        props.tps.clearAllTransactions();
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
         props.history.push('/maps');
     }
 
@@ -100,6 +103,9 @@ const MapSpreadsheet = (props) => {
             goHome();
         }
         else{
+            props.tps.clearAllTransactions();
+            setCanUndo(props.tps.hasTransactionToUndo());
+            setCanRedo(props.tps.hasTransactionToRedo());
             props.history.push('/maps/' + activeRegion.parentRegion);
         }
     }
@@ -120,6 +126,8 @@ const MapSpreadsheet = (props) => {
 
     if(!loading && Object.keys(activeRegion).length === 0){
         props.tps.clearAllTransactions();
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
         return <Redirect to='/home'/>
     }
 
@@ -222,6 +230,9 @@ const MapSpreadsheet = (props) => {
                         history={props.history}
                         handleDeleteRegion={handleSetRegionToBeDeleted}
                         updateRegion={updateRegion}
+                        tps={props.tps}
+                        setCanRedo={setCanRedo}
+                        setCanUndo={setCanUndo}
                     />
                     )
                 )

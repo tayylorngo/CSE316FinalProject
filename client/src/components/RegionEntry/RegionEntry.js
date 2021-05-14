@@ -13,6 +13,9 @@ const RegionEntry = (props) => {
     }
 
     const openRegionViewer = () => {
+        props.tps.clearAllTransactions();
+        props.setCanUndo(props.tps.hasTransactionToUndo());
+        props.setCanRedo(props.tps.hasTransactionToRedo());
         props.history.push("/viewer/" + props.activeRegion._id);
     }
 

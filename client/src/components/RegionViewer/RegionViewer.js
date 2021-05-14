@@ -7,7 +7,7 @@ import {useParams, Redirect} from 'react-router-dom';
 import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
 import * as mutations 					from '../../cache/mutations';
-import { EditLandmark_Transaction, UpdateLandmarks_Transaction } from '../../utils/jsTPS';
+import { EditLandmark_Transaction, UpdateLandmarks_Transaction, UpdateParentRegion_Transaction } from '../../utils/jsTPS';
 
 const RegionViewer = (props) => {
 
@@ -140,8 +140,6 @@ const RegionViewer = (props) => {
         let transaction = new EditLandmark_Transaction(activeRegion._id, prevLandmark, newLandmark, EditLandmark);
         props.tps.addTransaction(transaction);
         tpsRedo();
-        // await EditLandmark({variables: {_id: activeRegion._id, newLandmark: newLandmark, prevLandmark: prevLandmark}
-        //     ,refetchQueries: [{query: GET_DB_REGIONS}]});
     }
 
     const editParentRegion = async (e) => {
@@ -156,8 +154,11 @@ const RegionViewer = (props) => {
             alert("Cannot move region to selected parent region.");
         }
         else{
-            await EditParentRegion({variables: {_id: activeRegion._id, newParentRegion: parentRegionId}
-                , refetchQueries: [{query: GET_DB_REGIONS}]}); 
+            let transaction = new UpdateParentRegion_Transaction(activeRegion._id, parentRegionId, activeRegion.parentRegion, EditParentRegion);
+            props.tps.addTransaction(transaction);
+            tpsRedo();
+            // await EditParentRegion({variables: {_id: activeRegion._id, newParentRegion: parentRegionId}
+            //     , refetchQueries: [{query: GET_DB_REGIONS}]}); 
         }
         toggleEditingParentRegion(false);
     }

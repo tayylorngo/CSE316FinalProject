@@ -143,6 +143,27 @@ export class EditLandmark_Transaction extends jsTPS_Transaction{
     }
 }
 
+export class UpdateParentRegion_Transaction extends jsTPS_Transaction{
+    constructor(regionId, newParentRegionId, oldParentRegionId, updateFunc){
+        super();
+        this.regionId = regionId;
+        this.newParentRegionId = newParentRegionId;
+        this.oldParentRegionId = oldParentRegionId;
+        this.updateFunction = updateFunc;
+    }
+
+    async doTransaction(){
+        const {data} = this.updateFunction({variables: {_id: this.regionId, newParentRegion: this.newParentRegionId}});
+        return data;
+    }
+
+    async undoTransaction(){
+        const {data} = this.updateFunction({variables: {_id: this.regionId, newParentRegion: this.oldParentRegionId}});
+        return data;
+    }
+
+}
+
 export class EditItem_Transaction extends jsTPS_Transaction {
 	constructor(listID, itemID, field, prev, update, flag, callback) {
 		super();
