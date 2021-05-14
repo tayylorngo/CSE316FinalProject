@@ -63,7 +63,7 @@ module.exports = {
 			});
 			await Region.updateOne({_id: parentRegionId}, {subregions: subregions1});
 			const updated = await newRegion.save();
-			return "";
+			return String(newId);
 		},
 		deleteMap: async(_, args) => {
 			const { _id } = args;

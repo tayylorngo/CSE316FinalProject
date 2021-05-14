@@ -12,6 +12,7 @@ const RegionViewer = (props) => {
 
     let activeRegion = {};
     let parentRegion = {
+        name: "none",
         subregions: []
     };
     let subregions = [];
@@ -60,21 +61,10 @@ const RegionViewer = (props) => {
             })
         }
         regionTraversal(activeRegion);
-        // for(let region of subregions){
-        //     for(let landmark of region.landmarks){
-        //         landmarks = [...landmarks, (landmark + " - " + region.name)];
-        //         defaultAllLandmarks = [...defaultAllLandmarks, (landmark)];
-        //     }
-        // }
         if(landmarks.length > 1){
             landmarks = landmarks.slice().sort(function (a, b) {
                 return a.toLowerCase().localeCompare(b.toLowerCase());
             });
-        }
-        if(Object.keys(parentRegion).length === 0){
-            parentRegion = {
-                name: 'none',
-            }
         }
     }
 

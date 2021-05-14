@@ -362,6 +362,7 @@ const Homescreen = (props) => {
 							<MapSpreadsheet
 								history={history}
 								user={props.user}
+								tps={props.tps}
 							/> 	
 						</WLMain>
 					}/>

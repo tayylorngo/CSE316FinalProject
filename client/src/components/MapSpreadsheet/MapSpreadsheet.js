@@ -7,6 +7,7 @@ import { useQuery, useMutation } 		from '@apollo/client';
 import { GET_DB_REGIONS }	from '../../cache/queries';
 import * as mutations 					from '../../cache/mutations';
 import DeleteSubregion from '../modals/DeleteSubregion';
+import { UpdateRegions_Transaction } from '../../utils/jsTPS';
 
 const MapSpreadsheet = (props) => {
 
@@ -23,6 +24,8 @@ const MapSpreadsheet = (props) => {
 
     const [showDelete, toggleShowDelete] = useState(false);
     const [regionToBeDeleted, setRegionToBeDeleted] = useState({});
+    const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
+	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
     let activeRegion = {};
     let subregions = [];
@@ -62,7 +65,10 @@ const MapSpreadsheet = (props) => {
 			landmarks: []
 		};
 		let index = currMap.subregions.length;
-		await AddRegion({variables: {region: newRegion, _id: currMap._id, index: index}, refetchQueries: [{query: GET_DB_REGIONS}]});
+        let transaction = new UpdateRegions_Transaction(currMap._id, newRegion, 1, AddRegion, DeleteRegion, index);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
+		// await AddRegion({variables: {region: newRegion, _id: currMap._id, index: index}, refetchQueries: [{query: GET_DB_REGIONS}]});
     }
 
     const deleteRegion = async (_id) => {
@@ -105,11 +111,34 @@ const MapSpreadsheet = (props) => {
         return <Redirect to='/home'/>
     }
 
+    const tpsUndo = async () => {
+		const ret = await props.tps.undoTransaction();
+		if(ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
+	const tpsRedo = async () => {
+		const ret = await props.tps.doTransaction();
+		if(ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
     return(
         <div id="map-spreadsheet">
             <div id="regionName"><span className="whiteColor">Region Name: </span><span id="nameOfRegion">{activeRegion.name}</span></div>
             <WRow>
                 <WCol id="controls" size='2'>
+                    <WButton 
+                        onClick={returnToParentRegion}
+                        color="primary"
+                        shape="pill"
+                    >
+                        <span className="material-icons">arrow_back_ios_new</span>
+                    </WButton>
                     <WButton 
                         onClick={addRegion}
                         color="primary"
@@ -117,24 +146,51 @@ const MapSpreadsheet = (props) => {
                     >
                         <span className="material-icons">add</span>
                     </WButton>
-                    <WButton 
-                        onClick={returnToParentRegion}
+                    {
+                        canUndo ? 
+                        <WButton 
                         color="primary"
                         shape="pill"
-                    >
-                        <span className="material-icons">arrow_back</span>
-                    </WButton>
+                        onClick={tpsUndo}
+                        >
+                        <span className="material-icons">undo</span>
+                        </WButton> : 
+                        <WButton 
+                        color="primary"
+                        shape="pill"
+                        disabled
+                        >
+                        <span className="material-icons">undo</span>
+                        </WButton>
+                    }
+                    {
+                        canRedo ? 
+                        <WButton 
+                        color="primary"
+                        shape="pill"
+                        onClick={tpsRedo}
+                        >
+                        <span className="material-icons">redo</span>
+                        </WButton> : 
+                        <WButton 
+                        color="primary"
+                        shape="pill"
+                        disabled
+                        >
+                        <span className="material-icons">redo</span>
+                        </WButton>
+                    }
                 </WCol>
             </WRow>
             <WRow>
                 <WCol size="2" className="table-heading">
-                    <div className='marginTop' onClick={() => sort('name')}>Name</div>
+                    <div className='marginTop sort-header' onClick={() => sort('name')}>Name</div>
                 </WCol>
                 <WCol size="2" className="table-heading">
-                <div className='marginTop' onClick={() => sort('capital')}>Capital</div>
+                <div className='marginTop sort-header' onClick={() => sort('capital')}>Capital</div>
                 </WCol>
                 <WCol size="2" className="table-heading">
-                <div className='marginTop' onClick={() => sort('leader')}>Leader</div>
+                <div className='marginTop sort-header' onClick={() => sort('leader')}>Leader</div>
                 </WCol>
                 <WCol size="2" className="table-heading">
                 <div className='marginTop'>Flag</div>

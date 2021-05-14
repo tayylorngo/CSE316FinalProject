@@ -76,6 +76,11 @@ export class SortItems_Transaction extends jsTPS_Transaction{
     }
 }
 
+export class EditRegion_Transaction extends jsTPS_Transaction {
+
+
+}
+
 export class EditItem_Transaction extends jsTPS_Transaction {
 	constructor(listID, itemID, field, prev, update, flag, callback) {
 		super();
@@ -112,10 +117,51 @@ export class EditItem_Transaction extends jsTPS_Transaction {
     }
 }
 
+export class UpdateRegions_Transaction extends jsTPS_Transaction {
+    // opcodes: 0 - delete, 1 - add 
+    constructor(regionId, region, opcode, addFunc, delFunc, index = -1){
+        super();
+        this.regionId = regionId;
+        this.region = region;
+        this.opcode = opcode;
+        this.addFunction = addFunc;
+        this.deleteFunction = delFunc;
+        this.index = index;
+    }
+
+    async doTransaction(){
+        let data;
+        this.opcode === 0 ? {data} = await this.deleteFunction({variables: {_id: this.region._id}})
+        : { data } = await this.addFunction(
+            {variables: {region: this.region, _id: this.regionId, index: this.index}});
+        if(this.opcode !== 0) {
+            this.prevRegion = data.addRegion;
+        }
+        if(this.opcode === 0){
+            this.deletedRegion = true;
+        }
+        return data;
+    }
+    
+    async undoTransaction(){
+        let data;
+        if(this.deletedRegion && this.opcode === 0){
+            data = await this.addFunction({variables: {region: this.prevRegion, _id: this.regionId, index: this.index}});
+        }
+        this.opcode === 1 ? {data} = await this.deleteFunction({variables: {_id: this.prevRegion}})
+        : { data } = await this.addFunction(
+            {variables: {region: this.region, _id: this.regionId, index: this.index}});
+        if(this.opcode !== 1) {
+            this.prevRegion = data.addRegion;
+        }
+        return data;
+    }
+}
+
 /*  Handles create/delete of list items */
 export class UpdateListItems_Transaction extends jsTPS_Transaction {
     // opcodes: 0 - delete, 1 - add 
-    constructor(listID, itemID, item, opcode, addfunc, delfunc, index = -1) {
+    constructor(listID, itemID, item, opcode, addfunc, delfunc, index) {
         super();
         this.listID = listID;
 		this.itemID = itemID;

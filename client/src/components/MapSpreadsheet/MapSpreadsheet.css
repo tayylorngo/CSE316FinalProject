@@ -49,3 +49,8 @@
     font-size: 2rem;
     margin-right: 0.5%;
 }
+
+.sort-header:hover{
+    color: green;
+    cursor: pointer;
+}
