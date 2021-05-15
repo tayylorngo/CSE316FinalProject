@@ -23,7 +23,7 @@ import MapContents from '../MapContents/MapContents';
 import MapSpreadsheet from '../MapSpreadsheet/MapSpreadsheet';
 import RegionViewer from '../RegionViewer/RegionViewer';
 import './Homescreen.css';
-import {Route, useHistory, Switch, Redirect} from 'react-router-dom';
+import {Route, useHistory, Switch, Redirect, useParams} from 'react-router-dom';
 import AddNewMap from '../modals/AddNewMap';
 
 const Homescreen = (props) => {
@@ -47,6 +47,7 @@ const Homescreen = (props) => {
 	let todolists 	= [];
 	let regions = [];
 	let maps = [];
+	let activeRegion = '';
 
 	const [mapToBeDeleted, setMapToBeDeleted] = useState({});
 

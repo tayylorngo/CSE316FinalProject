@@ -28,6 +28,7 @@ const MapContents = (props) => {
                         setShowDelete={props.setShowDelete} 
                         editMapName={props.editMapName}
                         handleSetActive={props.handleSetActive}
+                        toggleActiveRegion={props.toggleActiveRegion}
                     />
                 </WCol>
                 <WCol size="6" className="map-list-col" id="map-list-col-right">

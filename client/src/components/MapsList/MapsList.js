@@ -14,7 +14,8 @@ const MapsList = (props) => {
                     name={entry.name}
                     editMapName={props.editMapName}    
                     setShowDelete={props.setShowDelete}
-                    handleSetActive={props.handleSetActive}            
+                    handleSetActive={props.handleSetActive}
+                    toggleActiveRegion={props.toggleActiveRegion}            
                 />
                 )
             )

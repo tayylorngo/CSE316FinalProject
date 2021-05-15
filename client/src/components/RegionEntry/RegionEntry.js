@@ -42,6 +42,8 @@ const RegionEntry = (props) => {
         color: "black"
     }
 
+    
+
     return(
         <div>
             <WRow>
@@ -66,6 +68,17 @@ const RegionEntry = (props) => {
                             : 
                         <div>
                            <WInput
+                                onKeyDown={(e) => {
+                                    if(e.keyCode === 13) {
+                                        handleEditName(e);
+                                    }
+                                    if(e.keyCode === 39){
+                                        handleEditName(e);
+                                        toggleEditingCapital(!editingCapital);
+                                        toggleEditingName(!editingName);
+                                    }
+                                }
+                            }                           
                                 wType="lined"
                                 style={blackText}
                                 className="name-input"
@@ -84,6 +97,22 @@ const RegionEntry = (props) => {
                         </div> :
                     <div>
                         <WInput
+                            onKeyDown={(e) => {
+                                    if(e.keyCode === 13) {
+                                        handleEditCapital(e);
+                                    }
+                                    if(e.keyCode === 37){
+                                        handleEditCapital(e);
+                                        toggleEditingCapital(!editingCapital);
+                                        toggleEditingName(!editingName);
+                                    }
+                                    if(e.keyCode === 39){
+                                        handleEditCapital(e);
+                                        toggleEditingCapital(!editingCapital);
+                                        toggleEditingLeader(!editingLeader);
+                                    }
+                                }
+                            } 
                             wType="lined"
                             autoFocus
                             style={blackText}
@@ -102,6 +131,17 @@ const RegionEntry = (props) => {
                         </div> : 
                         <div>
                             <WInput
+                                onKeyDown={(e) => {
+                                    if(e.keyCode === 13) {
+                                        handleEditLeader(e);
+                                    }
+                                    if(e.keyCode === 37){
+                                        handleEditLeader(e);
+                                        toggleEditingLeader(!editingLeader);
+                                        toggleEditingCapital(!editingCapital);
+                                    }
+                                }
+                            }
                                 wType="lined"
                                 autoFocus
                                 style={blackText}
