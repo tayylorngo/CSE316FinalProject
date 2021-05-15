@@ -21,6 +21,7 @@ const RegionViewer = (props) => {
     let activeRegionLandmarks = [];
     let defaultAllLandmarks = [];
     let allRegions = [];
+    let regionPath = [];
 
     const {id} = useParams();
 
@@ -66,6 +67,17 @@ const RegionViewer = (props) => {
             landmarks = landmarks.slice().sort(function (a, b) {
                 return a.toLowerCase().localeCompare(b.toLowerCase());
             });
+        }
+        regionPath.push(activeRegion);
+        let tempRegion = activeRegion;
+        while(tempRegion.parentRegion !== 'none'){
+            for(let region of data.getAllRegions){
+                if(region._id === tempRegion.parentRegion){
+                    regionPath.push(region);
+                    tempRegion = region;
+                    break;
+                }
+            }
         }
     }
 
@@ -166,10 +178,16 @@ const RegionViewer = (props) => {
     const viewPreviousSibling = () => {
         for(let i = 0; i < parentRegion.subregions.length; i++){
             if(parentRegion.subregions[i] === activeRegion._id && parentRegion.subregions[i - 1] !== undefined){
+                props.tps.clearAllTransactions();
+                setCanUndo(props.tps.hasTransactionToUndo());
+                setCanRedo(props.tps.hasTransactionToRedo());
                 props.history.push("/viewer/" + parentRegion.subregions[i - 1]);
                 break;
             }
             if(parentRegion.subregions[i] === activeRegion._id && parentRegion.subregions[i - 1] === undefined){
+                props.tps.clearAllTransactions();
+                setCanUndo(props.tps.hasTransactionToUndo());
+                setCanRedo(props.tps.hasTransactionToRedo());
                 props.history.push("/viewer/" + parentRegion.subregions[parentRegion.subregions.length - 1]);
             }
         }
@@ -178,13 +196,26 @@ const RegionViewer = (props) => {
     const viewNextSibling = () => {
         for(let i = 0; i < parentRegion.subregions.length; i++){
             if(parentRegion.subregions[i] === activeRegion._id && parentRegion.subregions[i + 1] !== undefined){
+                props.tps.clearAllTransactions();
+                setCanUndo(props.tps.hasTransactionToUndo());
+                setCanRedo(props.tps.hasTransactionToRedo());
                 props.history.push("/viewer/" + parentRegion.subregions[i + 1]);
                 break;
             }
             if(parentRegion.subregions[i] === activeRegion._id && parentRegion.subregions[i + 1] === undefined){
+                props.tps.clearAllTransactions();
+                setCanUndo(props.tps.hasTransactionToUndo());
+                setCanRedo(props.tps.hasTransactionToRedo());
                 props.history.push("/viewer/" + parentRegion.subregions[0]);
             }
         }
+    }
+
+    const setOtherRegion = (_id) => {
+        props.tps.clearAllTransactions();
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
+        props.history.push("/viewer/" + _id);
     }
 
     const tpsUndo = async () => {
@@ -282,6 +313,27 @@ const RegionViewer = (props) => {
                     >
                     <span className="material-icons">redo</span>
                     </WButton>                    
+                </WCol>
+                <WCol size='10'>
+                {
+                regionPath &&
+                    regionPath.reverse().map((region, index) => (
+                        index <= 0 ? 
+                            <span 
+                                className='region-tree-path'
+                                onClick={() => {
+                                    setOtherRegion(region._id)
+                                }}
+                            >{region.name}</span> :
+                            <span 
+                                className='region-tree-path'
+                                onClick={() => {
+                                    setOtherRegion(region._id)
+                                }}
+                            > {'>'} {region.name}</span>
+                        )
+                    )
+                }                    
                 </WCol>
             </WRow>
             <WRow>

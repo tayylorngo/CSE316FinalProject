@@ -112,6 +112,13 @@ const MapSpreadsheet = (props) => {
         props.history.push('/maps');
     }
 
+    const openRegionViewer = () => {
+        props.tps.clearAllTransactions();
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
+        props.history.push("/viewer/" + activeRegion._id);
+    }
+
     const returnToParentRegion = () => {
         if(activeRegion.parentRegion === "none"){
             goHome();
@@ -210,13 +217,13 @@ const MapSpreadsheet = (props) => {
             <div id="regionName"><span className="whiteColor">Current Region Name: </span><span id="nameOfRegion">{activeRegion.name}</span></div>
             <WRow>
                 <WCol id="controls" size='2'>
-                    <WButton 
+                    {/* <WButton 
                         onClick={returnToParentRegion}
                         color="primary"
                         shape="pill"
                     >
                         <span className="material-icons">arrow_back_ios_new</span>
-                    </WButton>
+                    </WButton> */}
                     <WButton 
                         onClick={addRegion}
                         color="primary"
@@ -274,7 +281,7 @@ const MapSpreadsheet = (props) => {
                 <div className='marginTop'>Flag</div>
                 </WCol>
                 <WCol size="4" className="table-heading">
-                <div className='marginTop2'>Landmarks</div>
+                <div className='marginTop2' onClick={openRegionViewer}>Landmarks</div>
                 </WCol>
             </WRow>
             {
