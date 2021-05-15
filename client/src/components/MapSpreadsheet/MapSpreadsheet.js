@@ -105,12 +105,12 @@ const MapSpreadsheet = (props) => {
         setRegionToBeDeleted(selectedRegion);
     }
 
-    const goHome = () => {
-        props.tps.clearAllTransactions();
-        setCanUndo(props.tps.hasTransactionToUndo());
-        setCanRedo(props.tps.hasTransactionToRedo());
-        props.history.push('/maps');
-    }
+    // const goHome = () => {
+    //     props.tps.clearAllTransactions();
+    //     setCanUndo(props.tps.hasTransactionToUndo());
+    //     setCanRedo(props.tps.hasTransactionToRedo());
+    //     props.history.push('/maps');
+    // }
 
     const openRegionViewer = () => {
         props.tps.clearAllTransactions();
@@ -119,17 +119,17 @@ const MapSpreadsheet = (props) => {
         props.history.push("/viewer/" + activeRegion._id);
     }
 
-    const returnToParentRegion = () => {
-        if(activeRegion.parentRegion === "none"){
-            goHome();
-        }
-        else{
-            props.tps.clearAllTransactions();
-            setCanUndo(props.tps.hasTransactionToUndo());
-            setCanRedo(props.tps.hasTransactionToRedo());
-            props.history.push('/maps/' + activeRegion.parentRegion);
-        }
-    }
+    // const returnToParentRegion = () => {
+    //     if(activeRegion.parentRegion === "none"){
+    //         goHome();
+    //     }
+    //     else{
+    //         props.tps.clearAllTransactions();
+    //         setCanUndo(props.tps.hasTransactionToUndo());
+    //         setCanRedo(props.tps.hasTransactionToRedo());
+    //         props.history.push('/maps/' + activeRegion.parentRegion);
+    //     }
+    // }
 
     const sort = async (field) => {
         let transaction = new SortRegions_Transaction(activeRegion._id, field, SortRegion, SetSubregions, activeRegion.subregions);
@@ -196,13 +196,15 @@ const MapSpreadsheet = (props) => {
                         regionPath &&
                             regionPath.reverse().map((region, index) => (
                                 index <= 0 ? 
-                                    <span 
+                                    <span
+                                        key={index} 
                                         className='region-tree-path'
                                         onClick={() => {
                                             setOtherRegion(region._id)
                                         }}
                                     >{region.name}</span> :
                                     <span 
+                                        key={index} 
                                         className='region-tree-path'
                                         onClick={() => {
                                             setOtherRegion(region._id)

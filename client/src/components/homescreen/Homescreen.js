@@ -20,36 +20,17 @@ import AddNewMap from '../modals/AddNewMap';
 
 const Homescreen = (props) => {
 
-	const keyCombination = (e, callback) => {
-		if(e.key === 'z' && e.ctrlKey) {
-			if(props.tps.hasTransactionToUndo()) {
-				tpsUndo();
-			}
-		}
-		else if (e.key === 'y' && e.ctrlKey) { 
-			if(props.tps.hasTransactionToRedo()) {
-				tpsRedo();
-			}
-		}
-	}
-	document.onkeydown = keyCombination;
-
 	const auth = props.user === null ? false : true;
 
-	let todolists 	= [];
 	let regions = [];
 	let maps = [];
 
 	const [mapToBeDeleted, setMapToBeDeleted] = useState({});
 
-	const [activeList, setActiveList] 		= useState({});
 	const [showDelete, toggleShowDelete] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [showNewMap, toggleShowNewMap] 	= useState(false);
-
-	const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
-	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
 	const[showUpdate, toggleShowUpdate] = useState(false);
 
@@ -66,15 +47,6 @@ const Homescreen = (props) => {
 		}
 	}
 
-
-	const loadTodoList = (list) => {
-		props.tps.clearAllTransactions();
-		setCanUndo(props.tps.hasTransactionToUndo());
-		setCanRedo(props.tps.hasTransactionToRedo());
-		setActiveList(list);
-	}
-
-
 	const loadMapToBeDeleted = (map) => {
 		setMapToBeDeleted(map);
 	}
@@ -88,22 +60,6 @@ const Homescreen = (props) => {
 	const [AddMap] 					= useMutation(mutations.ADD_MAP, mutationOptions);
 	const [DeleteMap]				= useMutation(mutations.DELETE_MAP, mutationOptions);
 	const [EditMapName]				= useMutation(mutations.EDIT_MAP_NAME, mutationOptions);
-
-	const tpsUndo = async () => {
-		const ret = await props.tps.undoTransaction();
-		if(ret) {
-			setCanUndo(props.tps.hasTransactionToUndo());
-			setCanRedo(props.tps.hasTransactionToRedo());
-		}
-	}
-
-	const tpsRedo = async () => {
-		const ret = await props.tps.doTransaction();
-		if(ret) {
-			setCanUndo(props.tps.hasTransactionToUndo());
-			setCanRedo(props.tps.hasTransactionToRedo());
-		}
-	}
 
 	const addNewMap = async (name) => {
 		let map = {
@@ -193,7 +149,7 @@ const Homescreen = (props) => {
 							fetchUser={props.fetchUser} 	auth={auth} 
 							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
 							setShowUpdate={setShowUpdate}
-							reloadMaps={refetch} 			setActiveList={loadTodoList}
+							reloadMaps={refetch} 			
 							user={props.user}
 							history={history}
 							regions={regions}

@@ -64,7 +64,7 @@ const RegionEntry = (props) => {
                 props.setCurrEditType('');
             }
         }
-    });
+    }, [props, editingName, editingCapital, editingLeader]);
 
     const blackText = {
         color: "black"
