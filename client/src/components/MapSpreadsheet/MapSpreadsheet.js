@@ -32,6 +32,7 @@ const MapSpreadsheet = (props) => {
 
     let activeRegion = {};
     let subregions = [];
+    let regionPath = [];
 
     const {id} = useParams();
 
@@ -53,6 +54,17 @@ const MapSpreadsheet = (props) => {
                 }
             }
 		}
+        regionPath.push(activeRegion);
+        let tempRegion = activeRegion;
+        while(tempRegion.parentRegion !== 'none'){
+            for(let region of data.getAllRegions){
+                if(region._id === tempRegion.parentRegion){
+                    regionPath.push(region);
+                    tempRegion = region;
+                    break;
+                }
+            }
+        }
     }
 
     const addRegion = async () => {
@@ -154,9 +166,48 @@ const MapSpreadsheet = (props) => {
         setCurrEditType(field);
     }
 
+    const keyCombination = (e, callback) => {
+		if(e.key === 'z' && e.ctrlKey) {
+			if(props.tps.hasTransactionToUndo()) {
+				tpsUndo();
+			}
+		}
+		else if (e.key === 'y' && e.ctrlKey) { 
+			if(props.tps.hasTransactionToRedo()) {
+				tpsRedo();
+			}
+		}
+	}
+	document.onkeydown = keyCombination;
+
     return(
         <div id="map-spreadsheet">
-            <div id="regionName"><span className="whiteColor">Region Name: </span><span id="nameOfRegion">{activeRegion.name}</span></div>
+            <div id='region-tree'>
+                <WRow>
+                    <WCol size='12'>
+                        {
+                        regionPath &&
+                            regionPath.reverse().map((region, index) => (
+                                index <= 0 ? 
+                                    <span 
+                                        className='region-tree-path'
+                                        onClick={() => {
+                                            setOtherRegion(region._id)
+                                        }}
+                                    >{region.name}</span> :
+                                    <span 
+                                        className='region-tree-path'
+                                        onClick={() => {
+                                            setOtherRegion(region._id)
+                                        }}
+                                    > {'>'} {region.name}</span>
+                                )
+                            )
+                        }
+                    </WCol>
+                </WRow>
+            </div>
+            <div id="regionName"><span className="whiteColor">Current Region Name: </span><span id="nameOfRegion">{activeRegion.name}</span></div>
             <WRow>
                 <WCol id="controls" size='2'>
                     <WButton 

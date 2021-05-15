@@ -2,11 +2,11 @@
     text-align: center;
     margin: 0 auto;
     width: 80%;
-    margin-top: 3%;
+    margin-top: 2%;
 }
 
 #regionName{
-    margin-bottom: 2%;
+    margin-bottom: 1%;
 }
 
 .table-heading{
@@ -53,4 +53,30 @@
 .sort-header:hover{
     color: green;
     cursor: pointer;
+}
+
+.region-tree-path{
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 0.3%;
+}
+
+.region-tree-path:hover{
+    color: rgb(251, 255, 0);
+}
+
+.arrow-right{
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    pointer-events: none;
+    margin-left: 0.5%;
+}
+
+#region-tree{
+    margin-top: 0 auto;
+    margin-bottom: 2%;
 }
