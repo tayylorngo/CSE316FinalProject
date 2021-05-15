@@ -27,6 +27,8 @@ const MapSpreadsheet = (props) => {
     const [regionToBeDeleted, setRegionToBeDeleted] = useState({});
     const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+    const [regionIndex, setRegionIndex] = useState(-1); 
+    const [currEditType, setCurrEditType] = useState('');
 
     let activeRegion = {};
     let subregions = [];
@@ -147,6 +149,11 @@ const MapSpreadsheet = (props) => {
 		}
 	}
 
+    const handleMoveUpDownInput = (index, field) => {
+        setRegionIndex(index);
+        setCurrEditType(field);
+    }
+
     return(
         <div id="map-spreadsheet">
             <div id="regionName"><span className="whiteColor">Region Name: </span><span id="nameOfRegion">{activeRegion.name}</span></div>
@@ -221,7 +228,7 @@ const MapSpreadsheet = (props) => {
             </WRow>
             {
                 subregions &&
-                subregions.map(entry => (
+                subregions.map((entry, index) => (
                     <RegionEntry
                         key={entry._id}
                         entry={entry}
@@ -233,6 +240,12 @@ const MapSpreadsheet = (props) => {
                         tps={props.tps}
                         setCanRedo={setCanRedo}
                         setCanUndo={setCanUndo}
+                        handleMoveUpDownInput={handleMoveUpDownInput}
+                        index={index}
+                        regionIndex={regionIndex}
+                        setRegionIndex={setRegionIndex}
+                        currEditType={currEditType}
+                        setCurrEditType={setCurrEditType}
                     />
                     )
                 )

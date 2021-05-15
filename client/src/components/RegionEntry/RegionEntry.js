@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './RegionEntry.css';
 import {WRow, WCol, WInput} from 'wt-frontend';
 
@@ -24,25 +24,39 @@ const RegionEntry = (props) => {
     }
 
     const handleEditName = (e) => {
+        props.setRegionIndex(-1);
         props.updateRegion(props.entry._id, 'name', props.entry.name, e.target.value);
         toggleEditingName(!editingName);
     }
 
     const handleEditCapital = (e) => {
+        props.setRegionIndex(-1);
         props.updateRegion(props.entry._id, 'capital', props.entry.capital, e.target.value);
         toggleEditingCapital(!editingCapital);
     }
 
     const handleEditLeader = (e) => {
+        props.setRegionIndex(-1);
         props.updateRegion(props.entry._id, 'leader', props.entry.capital, e.target.value);
         toggleEditingLeader(!editingLeader);
     }
 
+    const handleMoveUpDownInput = (dir, field) => {
+        props.handleMoveUpDownInput(dir + props.index, field);
+    }
+
+    useEffect(() => {
+        if(props.currEditType === 'name'){
+            if(!editingName){
+                toggleEditingName(props.index === props.regionIndex);
+                props.setCurrEditType('');
+            }
+        }
+    });
+
     const blackText = {
         color: "black"
     }
-
-    
 
     return(
         <div>
@@ -76,6 +90,16 @@ const RegionEntry = (props) => {
                                         handleEditName(e);
                                         toggleEditingCapital(!editingCapital);
                                         toggleEditingName(!editingName);
+                                    }
+                                    //down
+                                    if(e.keyCode === 40){
+                                        handleEditName(e);
+                                        handleMoveUpDownInput(1, 'name');
+                                    }
+                                    //up
+                                    if(e.keyCode === 38){
+                                        handleEditName(e);
+                                        handleMoveUpDownInput(-1, 'name');
                                     }
                                 }
                             }                           
