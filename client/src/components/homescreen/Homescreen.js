@@ -1,29 +1,21 @@
 import Logo 							from '../navbar/Logo';
 import Login 							from '../modals/Login';
 import Delete 							from '../modals/Delete';
-import MainContents 					from '../main/MainContents';
 import CreateAccount 					from '../modals/CreateAccount';
 import NavbarOptions 					from '../navbar/NavbarOptions';
 import * as mutations 					from '../../cache/mutations';
-import SidebarContents 					from '../sidebar/SidebarContents';
-import { GET_DB_TODOS } 				from '../../cache/queries';
 import { GET_DB_REGIONS }				from '../../cache/queries';
-import React, { useEffect, useState } 				from 'react';
+import React, { useState } 				from 'react';
 import { useMutation, useQuery } 		from '@apollo/client';
-import { WNavbar, WSidebar, WNavItem } 	from 'wt-frontend';
-import { WLayout, WLHeader, WLMain, WLSide } from 'wt-frontend';
-import { UpdateListField_Transaction, 
-	SortItems_Transaction,
-	UpdateListItems_Transaction, 
-	ReorderItems_Transaction, 
-	EditItem_Transaction } 				from '../../utils/jsTPS';
+import { WNavbar, WNavItem } 	from 'wt-frontend';
+import { WLayout, WLHeader, WLMain } from 'wt-frontend';
 import UpdateAccount from '../modals/UpdateAccount';
 import Welcome from '../Welcome/Welcome';
 import MapContents from '../MapContents/MapContents';
 import MapSpreadsheet from '../MapSpreadsheet/MapSpreadsheet';
 import RegionViewer from '../RegionViewer/RegionViewer';
 import './Homescreen.css';
-import {Route, useHistory, Switch, Redirect, useParams} from 'react-router-dom';
+import {Route, useHistory, Switch, Redirect} from 'react-router-dom';
 import AddNewMap from '../modals/AddNewMap';
 
 const Homescreen = (props) => {
@@ -47,12 +39,9 @@ const Homescreen = (props) => {
 	let todolists 	= [];
 	let regions = [];
 	let maps = [];
-	let activeRegion = '';
 
 	const [mapToBeDeleted, setMapToBeDeleted] = useState({});
 
-	let SidebarData = [];
-	const [sortRule, setSortRule] = useState('unsorted'); // 1 is ascending, -1 desc
 	const [activeList, setActiveList] 		= useState({});
 	const [showDelete, toggleShowDelete] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
@@ -77,22 +66,6 @@ const Homescreen = (props) => {
 		}
 	}
 
-	// NOTE: might not need to be async
-	const reloadList = async () => {
-		if (activeList._id) {
-			let tempID = activeList._id;
-			let list = todolists.find(list => list._id === tempID);
-			setActiveList(list);
-		}
-	}
-
-	// const reloadMap = async () => {
-	// 	if(activeMap._id){
-	// 		let tempID = activeMap._id;
-	// 		let map = regions.find(map => map._id === tempID);
-	// 		setActiveMap(map);
-	// 	}
-	// }
 
 	const loadTodoList = (list) => {
 		props.tps.clearAllTransactions();
@@ -101,9 +74,6 @@ const Homescreen = (props) => {
 		setActiveList(list);
 	}
 
-	// const loadMap = (map) => {
-	// 	setActiveMap(map);
-	// }
 
 	const loadMapToBeDeleted = (map) => {
 		setMapToBeDeleted(map);
@@ -114,15 +84,6 @@ const Homescreen = (props) => {
 		awaitRefetchQueries: true,
 		// onCompleted: () => reloadMap()
 	}
-
-	const [ReorderTodoItems] 		= useMutation(mutations.REORDER_ITEMS, mutationOptions);
-	const [sortTodoItems] 		= useMutation(mutations.SORT_ITEMS, mutationOptions);
-	const [UpdateTodoItemField] 	= useMutation(mutations.UPDATE_ITEM_FIELD, mutationOptions);
-	const [UpdateTodolistField] 	= useMutation(mutations.UPDATE_TODOLIST_FIELD, mutationOptions);
-	const [DeleteTodoItem] 			= useMutation(mutations.DELETE_ITEM, mutationOptions);
-	const [AddTodoItem] 			= useMutation(mutations.ADD_ITEM, mutationOptions);
-	const [AddTodolist] 			= useMutation(mutations.ADD_TODOLIST);
-	const [DeleteTodolist] 			= useMutation(mutations.DELETE_TODOLIST);
 
 	const [AddMap] 					= useMutation(mutations.ADD_MAP, mutationOptions);
 	const [DeleteMap]				= useMutation(mutations.DELETE_MAP, mutationOptions);
@@ -143,58 +104,6 @@ const Homescreen = (props) => {
 			setCanRedo(props.tps.hasTransactionToRedo());
 		}
 	}
-
-	const addItem = async () => {
-		let list = activeList;
-		const items = list.items;
-		const newItem = {
-			_id: '',
-			description: 'No Description',
-			due_date: 'No Date',
-			assigned_to: 'No One',
-			completed: false
-		};
-		let opcode = 1;
-		let itemID = newItem._id;
-		let listID = activeList._id;
-		let transaction = new UpdateListItems_Transaction(listID, itemID, newItem, opcode, AddTodoItem, DeleteTodoItem);
-		props.tps.addTransaction(transaction);
-		tpsRedo();
-	};
-
-	const deleteItem = async (item, index) => {
-		let listID = activeList._id;
-		let itemID = item._id;
-		let opcode = 0;
-		let itemToDelete = {
-			_id: item._id,
-			description: item.description,
-			due_date: item.due_date,
-			assigned_to: item.assigned_to,
-			completed: item.completed
-		}
-		let transaction = new UpdateListItems_Transaction(listID, itemID, itemToDelete, opcode, AddTodoItem, DeleteTodoItem, index);
-		props.tps.addTransaction(transaction);
-		tpsRedo();
-
-	};
-
-	const editItem = async (itemID, field, value, prev) => {
-		let flag = 0;
-		if (field === 'completed') flag = 1;
-		let listID = activeList._id;
-		let transaction = new EditItem_Transaction(listID, itemID, field, prev, value, flag, UpdateTodoItemField);
-		props.tps.addTransaction(transaction);
-		tpsRedo();
-
-	};
-
-	const reorderItem = async (itemID, dir) => {
-		let listID = activeList._id;
-		let transaction = new ReorderItems_Transaction(listID, itemID, dir, ReorderTodoItems);
-		props.tps.addTransaction(transaction);
-		tpsRedo();
-	};
 
 	const addNewMap = async (name) => {
 		let map = {
@@ -222,18 +131,6 @@ const Homescreen = (props) => {
 		console.log(_id);
 		await EditMapName({variables: {_id: _id, name: name}, refetchQueries: [{query: GET_DB_REGIONS}]});
 	}
-
-	const updateListField = async (_id, field, value, prev) => {
-		let transaction = new UpdateListField_Transaction(_id, field, prev, value, UpdateTodolistField);
-		props.tps.addTransaction(transaction);
-		tpsRedo();
-
-	};
-
-	const handleSetActive = (_id) => {
-		const selectedList = todolists.find(todo => todo._id === _id);
-		loadTodoList(selectedList);
-	};
 
 	const handleSetActiveMap = (_id) => {
 		history.push('/maps/' + _id);
@@ -280,15 +177,6 @@ const Homescreen = (props) => {
 		toggleShowUpdate(!showUpdate);
 	}
 	
-	const sort = (criteria) => {
-		let prevSortRule = sortRule;
-		setSortRule(criteria);
-		let transaction = new SortItems_Transaction(activeList._id, criteria, prevSortRule, sortTodoItems);
-		console.log(transaction)
-		props.tps.addTransaction(transaction);
-		tpsRedo();
-	}
-
 	const history = useHistory();
 
 	return (
