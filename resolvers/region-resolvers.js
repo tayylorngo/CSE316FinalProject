@@ -186,7 +186,7 @@ module.exports = {
 				}
 			}
 			await Region.updateOne({_id: foundOldParentRegion}, {subregions: oldSubregions});
-			return true;
+			return "";
 		},
 		sortRegion: async(_, args) => {
 			const {_id, field} = args;

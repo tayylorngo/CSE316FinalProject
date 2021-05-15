@@ -169,8 +169,6 @@ const RegionViewer = (props) => {
             let transaction = new UpdateParentRegion_Transaction(activeRegion._id, parentRegionId, activeRegion.parentRegion, EditParentRegion);
             props.tps.addTransaction(transaction);
             tpsRedo();
-            // await EditParentRegion({variables: {_id: activeRegion._id, newParentRegion: parentRegionId}
-            //     , refetchQueries: [{query: GET_DB_REGIONS}]}); 
         }
         toggleEditingParentRegion(false);
     }
@@ -321,11 +319,13 @@ const RegionViewer = (props) => {
                         index <= 0 ? 
                             <span 
                                 className='region-tree-path'
+                                key={index}
                                 onClick={() => {
                                     setOtherRegion(region._id)
                                 }}
                             >{region.name}</span> :
                             <span 
+                                key={index}
                                 className='region-tree-path'
                                 onClick={() => {
                                     setOtherRegion(region._id)

@@ -81,13 +81,13 @@ export class UpdateParentRegion_Transaction extends jsTPS_Transaction{
     }
 
     async doTransaction(){
-        const {data} = this.updateFunction({variables: {_id: this.regionId, newParentRegion: this.newParentRegionId}});
-        return data;
+        this.updateFunction({variables: {_id: this.regionId, newParentRegion: this.newParentRegionId}});
+        return "YOOO";
     }
 
     async undoTransaction(){
-        const {data} = this.updateFunction({variables: {_id: this.regionId, newParentRegion: this.oldParentRegionId}});
-        return data;
+        this.updateFunction({variables: {_id: this.regionId, newParentRegion: this.oldParentRegionId}});
+        return "YOOO";
     }
 
 }
