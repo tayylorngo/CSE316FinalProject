@@ -52,6 +52,18 @@ const RegionEntry = (props) => {
                 props.setCurrEditType('');
             }
         }
+        if(props.currEditType === 'capital'){
+            if(!editingCapital){
+                toggleEditingCapital(props.index === props.regionIndex);
+                props.setCurrEditType('');
+            }
+        }
+        if(props.currEditType === 'leader'){
+            if(!editingLeader){
+                toggleEditingLeader(props.index === props.regionIndex);
+                props.setCurrEditType('');
+            }
+        }
     });
 
     const blackText = {
@@ -92,12 +104,12 @@ const RegionEntry = (props) => {
                                         toggleEditingName(!editingName);
                                     }
                                     //down
-                                    if(e.keyCode === 40){
+                                    if(e.keyCode === 40 && props.index !== props.activeRegion.subregions.length - 1){
                                         handleEditName(e);
                                         handleMoveUpDownInput(1, 'name');
                                     }
                                     //up
-                                    if(e.keyCode === 38){
+                                    if(e.keyCode === 38  && props.index !== 0){
                                         handleEditName(e);
                                         handleMoveUpDownInput(-1, 'name');
                                     }
@@ -135,6 +147,16 @@ const RegionEntry = (props) => {
                                         toggleEditingCapital(!editingCapital);
                                         toggleEditingLeader(!editingLeader);
                                     }
+                                    //down
+                                    if(e.keyCode === 40 && props.index !== props.activeRegion.subregions.length - 1){
+                                        handleEditCapital(e);
+                                        handleMoveUpDownInput(1, 'capital');
+                                    }
+                                    //up
+                                    if(e.keyCode === 38  && props.index !== 0){
+                                        handleEditCapital(e);
+                                        handleMoveUpDownInput(-1, 'capital');
+                                    }                                    
                                 }
                             } 
                             wType="lined"
@@ -163,7 +185,16 @@ const RegionEntry = (props) => {
                                         handleEditLeader(e);
                                         toggleEditingLeader(!editingLeader);
                                         toggleEditingCapital(!editingCapital);
+                                    }                                    //down
+                                    if(e.keyCode === 40 && props.index !== props.activeRegion.subregions.length - 1){
+                                        handleEditLeader(e);
+                                        handleMoveUpDownInput(1, 'leader');
                                     }
+                                    //up
+                                    if(e.keyCode === 38 && props.index !== 0){
+                                        handleEditLeader(e);
+                                        handleMoveUpDownInput(-1, 'leader');
+                                    }  
                                 }
                             }
                                 wType="lined"
