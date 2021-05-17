@@ -306,6 +306,7 @@ const MapSpreadsheet = (props) => {
                         setRegionIndex={setRegionIndex}
                         currEditType={currEditType}
                         setCurrEditType={setCurrEditType}
+                        regionPath={regionPath}
                     />
                     )
                 )

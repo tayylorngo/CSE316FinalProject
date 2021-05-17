@@ -8,9 +8,11 @@ const Welcome = (props) => {
         return <Redirect to='/maps'/>
     }
 
+    let src = 'https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Terrestrial_globe.svg/1200px-Terrestrial_globe.svg.png'
+
     return(
         <div>
-            <img id="globe-pic" src='https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Terrestrial_globe.svg/1200px-Terrestrial_globe.svg.png' alt='globe'></img>
+            <img id="globe-pic" src={src} alt='globe'></img>
             <div id="welcome">
                 Welcome to the World Data Mapper
             </div>

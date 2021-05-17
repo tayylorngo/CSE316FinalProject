@@ -8,6 +8,13 @@ const RegionEntry = (props) => {
     const [editingCapital, toggleEditingCapital] = useState(false);
     const [editingLeader, toggleEditingLeader] = useState(false);
 
+    let imgSrc = '../The World/';
+
+    for(let i = 0; i < props.regionPath.length; i++){
+        imgSrc += props.regionPath[i].name + '/';
+    }
+    imgSrc += props.entry.name + " Flag.png";
+
     const openNewRegion = () => {
         props.handleSetActiveMap(props.entry._id);
     }
@@ -209,7 +216,7 @@ const RegionEntry = (props) => {
                     }
                 </WCol>
                 <WCol size="2" className="tableEntry flag">
-                    <div className="entry-name">{props.entry._id}</div>
+                    <div className="entry-name"><img src={imgSrc} className='flag-image' alt="flag"></img></div>
                 </WCol>
                 <WCol size="4" className="tableEntry landmarks" onClick={openRegionViewer}>
                     {

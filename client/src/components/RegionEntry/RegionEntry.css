@@ -68,3 +68,9 @@
     margin-top: 1.2%;
     cursor: pointer;
 }
+
+.flag-image{
+    margin-top: 0%;
+    width: 35px;
+    height: 20px;
+}

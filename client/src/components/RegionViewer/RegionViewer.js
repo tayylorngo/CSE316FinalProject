@@ -22,6 +22,7 @@ const RegionViewer = (props) => {
     let defaultAllLandmarks = [];
     let allRegions = [];
     let regionPath = [];
+    let imgSrc;
 
     const {id} = useParams();
 
@@ -79,6 +80,12 @@ const RegionViewer = (props) => {
                 }
             }
         }
+        imgSrc = '../The World/';
+        regionPath.reverse();
+        for(let i = 0; i < regionPath.length - 1; i++){
+            imgSrc += regionPath[i].name + '/';
+        }
+        imgSrc += activeRegion.name + " Flag.png";
     }
 
     const [landmarkToBeAdded, setLandmarkToBeAdded] = useState('');
@@ -98,8 +105,6 @@ const RegionViewer = (props) => {
     const [DeleteLandmark]              = useMutation(mutations.DELETE_LANDMARK, mutationOptions);
     const [EditLandmark]                = useMutation(mutations.EDIT_LANDMARK, mutationOptions);
     const [EditParentRegion]            = useMutation(mutations.EDIT_PARENT_REGION, mutationOptions);
-
-    const pic = 'https://cdn11.bigcommerce.com/s-kh80nbh17m/images/stencil/1280x1280/products/8349/36571/352BB113-139F-4718-A609-46F63A57B849-xl__41206.1561690686.1280.1280__08270.1574698216.jpg?c=2';
 
     const returnToSpreadsheet = () => {
         props.tps.clearAllTransactions();
@@ -315,7 +320,7 @@ const RegionViewer = (props) => {
                 <WCol size='10'>
                 {
                 regionPath &&
-                    regionPath.reverse().map((region, index) => (
+                    regionPath.map((region, index) => (
                         index <= 0 ? 
                             <span 
                                 className='region-tree-path'
@@ -338,7 +343,7 @@ const RegionViewer = (props) => {
             </WRow>
             <WRow>
                 <WCol size='6' className='region-data-titles'>
-                    <img src={pic} alt='pic'></img>
+                    <img src={imgSrc} alt='pic'></img>
                     <div>
                         <span className='region-viewer-title'>Region Name: </span>
                         <span className='region-data'>{activeRegion.name}</span>
