@@ -82,3 +82,9 @@
 .undo-redo-buttons{
     margin-top: 3%;
 }
+
+#picOfFlag{
+    margin-top: 20%;
+    height: 300px;
+    width: 500px;
+}

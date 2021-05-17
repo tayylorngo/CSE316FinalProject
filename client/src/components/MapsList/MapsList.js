@@ -7,7 +7,7 @@ const MapsList = (props) => {
         <>
         {
             props.maps && 
-            props.maps.map(entry => (
+            props.maps.slice(0).reverse().map(entry => (
                 <MapEntry
                     key={entry._id}
                     id={entry._id}

@@ -28,7 +28,13 @@ module.exports = {
 		addMap: async(_, args) => {
 			const {region} = args;
 			const {_id, owner, capital, leader, name, parentRegion, subregions, landmarks} = region;
-			const mapId = new ObjectId();
+			let mapId;
+			if(_id !== ''){
+				mapId = _id;
+			}
+			else {
+				mapId = new ObjectId();
+			}
 			let newRegion = new Region({
 				_id: mapId,
 				owner: owner,

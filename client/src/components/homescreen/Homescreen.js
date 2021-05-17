@@ -60,6 +60,7 @@ const Homescreen = (props) => {
 	const [AddMap] 					= useMutation(mutations.ADD_MAP, mutationOptions);
 	const [DeleteMap]				= useMutation(mutations.DELETE_MAP, mutationOptions);
 	const [EditMapName]				= useMutation(mutations.EDIT_MAP_NAME, mutationOptions);
+	const [AddRegion]				= useMutation(mutations.ADD_REGION, mutationOptions);
 
 	const addNewMap = async (name) => {
 		let map = {
@@ -88,7 +89,15 @@ const Homescreen = (props) => {
 		await EditMapName({variables: {_id: _id, name: name}, refetchQueries: [{query: GET_DB_REGIONS}]});
 	}
 
-	const handleSetActiveMap = (_id) => {
+	const handleSetActiveMap = async (_id) => {
+		let oldMap;
+		for(let map of maps){
+			if(map._id === _id){
+				oldMap = map;
+			}
+		}
+		await DeleteMap({variables: {_id: _id}, refetchQueries: [{query: GET_DB_REGIONS}]});
+		await AddMap({variables: {region: oldMap}, refetchQueries: [{query: GET_DB_REGIONS}]});
 		history.push('/maps/' + _id);
 	}
 

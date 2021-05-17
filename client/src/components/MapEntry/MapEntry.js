@@ -15,7 +15,7 @@ const MapEntry = (props) => {
         toggleEditingMapName(!editingMapName);
     }
 
-    const handleSetActiveMap = () => {
+    const handleSetActiveMap = async() => {
         props.handleSetActive(props.id);
     }
 

@@ -343,7 +343,7 @@ const RegionViewer = (props) => {
             </WRow>
             <WRow>
                 <WCol size='6' className='region-data-titles'>
-                    <img src={imgSrc} alt='pic'></img>
+                    <img id='picOfFlag' src={imgSrc} alt='flag'></img>
                     <div>
                         <span className='region-viewer-title'>Region Name: </span>
                         <span className='region-data'>{activeRegion.name}</span>
