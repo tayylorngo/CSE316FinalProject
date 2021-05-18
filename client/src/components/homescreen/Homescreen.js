@@ -225,6 +225,7 @@ const Homescreen = (props) => {
 							<RegionViewer
 								tps={props.tps}
 								history={history}
+								user={props.user}
         					/>    	
 						</WLMain>
                 	}/>

@@ -37,6 +37,9 @@ const MapSpreadsheet = (props) => {
     const {id} = useParams();
 
 	const { loading, error, data } = useQuery(GET_DB_REGIONS);
+    if(!props.user && !loading){
+        props.history.push('/home');
+    }
     if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
     if(data){
