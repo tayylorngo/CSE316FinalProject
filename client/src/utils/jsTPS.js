@@ -36,6 +36,9 @@ export class EditRegion_Transaction extends jsTPS_Transaction {
     }
 
     async doTransaction(){
+        console.log(this.regionId);
+        console.log(this.field);
+        console.log(this.update);
         const {data} = await this.updateFunction(
             {variables: {_id: this.regionId, field: this.field, value: this.update}});
         return data;
@@ -105,11 +108,13 @@ export class UpdateRegions_Transaction extends jsTPS_Transaction {
 
     async doTransaction(){
         let data;
+
         this.opcode === 0 ? {data} = await this.deleteFunction({variables: {_id: this.region._id}})
         : { data } = await this.addFunction(
             {variables: {region: this.region, _id: this.regionId, index: this.index}});
         if(this.opcode !== 0) {
             this.prevRegion = data.addRegion;
+            this.region._id = this.prevRegion;
         }
         if(this.opcode === 0){
             this.deletedRegion = true;
